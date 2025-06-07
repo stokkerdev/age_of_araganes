@@ -1,0 +1,125 @@
+{
+  "players": [
+    {
+      "id": "stokker",
+      "name": "Stokker",
+      "avatar": "src/pics/stokker.jpg",
+      "matches": 0,
+      "wins": 0,
+      "losses": 0,
+      "points": 0,
+      "joinDate": "06-07-2025",
+      "favoriteStrategy": "rush",
+      "favoriteCivilization": "Mayas",
+      "status": "active",
+      "categoryStats": {
+        "military": { "total": 0, "average": 0, "matches": 0, "best": 0 },
+        "economy": { "total": 0, "average": 0, "matches": 0, "best": 0 },
+        "technology": { "total": 0, "average": 0, "matches": 0, "best": 0 },
+        "society": { "total": 0, "average": 0, "matches": 0, "best": 0 }
+      },
+      "matchHistory": []
+    },
+    {
+      "id": "kylecher",
+      "name": "Kylecher",
+      "avatar": "",
+      "matches": 0,
+      "wins": 0,
+      "losses": 0,
+      "points": 0,
+      "joinDate": "06-07-2025",
+      "favoriteStrategy": "none",
+      "favoriteCivilization": "none",
+      "status": "active",
+      "categoryStats": {
+        "military": { "total": 0, "average": 0, "matches": 0, "best": 0 },
+        "economy": { "total": 0, "average": 0, "matches": 0, "best": 0 },
+        "technology": { "total": 0, "average": 0, "matches": 0, "best": 0 },
+        "society": { "total": 0, "average": 0, "matches": 0, "best": 0 }
+      },
+      "matchHistory": []
+    },
+    {
+      "id": "nicoz",
+      "name": "NicoZ",
+      "avatar": "",
+      "matches": 0,
+      "wins": 0,
+      "losses": 0,
+      "points": 0,
+      "joinDate": "06-07-2025",
+      "favoriteStrategy": "rush",
+      "favoriteCivilization": "Mayas",
+      "status": "active",
+      "categoryStats": {
+        "military": { "total": 0, "average": 0, "matches": 0, "best": 0 },
+        "economy": { "total": 0, "average": 0, "matches": 0, "best": 0 },
+        "technology": { "total": 0, "average": 0, "matches": 0, "best": 0 },
+        "society": { "total": 0, "average": 0, "matches": 0, "best": 0 }
+      },
+      "matchHistory": []
+    },
+    {
+      "id": "gato_alado",
+      "name": "Gato Alado",
+      "avatar": "",
+      "matches": 0,
+      "wins": 0,
+      "losses": 0,
+      "points": 0,
+      "joinDate": "06-07-2025",
+      "favoriteStrategy": "rush",
+      "favoriteCivilization": "Mayas",
+      "status": "active",
+      "categoryStats": {
+        "military": { "total": 0, "average": 0, "matches": 0, "best": 0 },
+        "economy": { "total": 0, "average": 0, "matches": 0, "best": 0 },
+        "technology": { "total": 0, "average": 0, "matches": 0, "best": 0 },
+        "society": { "total": 0, "average": 0, "matches": 0, "best": 0 }
+      },
+      "matchHistory": []
+    },
+    {
+      "id": "cairbus",
+      "name": "Cairbus",
+      "avatar": "",
+      "matches": 0,
+      "wins": 0,
+      "losses": 0,
+      "points": 0,
+      "joinDate": "06-07-2025",
+      "favoriteStrategy": "rush",
+      "favoriteCivilization": "Mayas",
+      "status": "active",
+      "categoryStats": {
+        "military": { "total": 0, "average": 0, "matches": 0, "best": 0 },
+        "economy": { "total": 0, "average": 0, "matches": 0, "best": 0 },
+        "technology": { "total": 0, "average": 0, "matches": 0, "best": 0 },
+        "society": { "total": 0, "average": 0, "matches": 0, "best": 0 }
+      },
+      "matchHistory": []
+    },
+    {
+      "id": "artibool",
+      "name": "Artibool",
+      "avatar": "",
+      "matches": 0,
+      "wins": 0,
+      "losses": 0,
+      "points": 0,
+      "joinDate": "06-07-2025",
+      "favoriteStrategy": "rush",
+      "favoriteCivilization": "Mayas",
+      "status": "active",
+      "categoryStats": {
+        "military": { "total": 0, "average": 0, "matches": 0, "best": 0 },
+        "economy": { "total": 0, "average": 0, "matches": 0, "best": 0 },
+        "technology": { "total": 0, "average": 0, "matches": 0, "best": 0 },
+        "society": { "total": 0, "average": 0, "matches": 0, "best": 0 }
+      },
+      "matchHistory": []
+    }
+   
+  ]
+}

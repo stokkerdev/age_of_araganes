@@ -1,120 +1,16 @@
-// Tournament data with enhanced player information
-const tournamentData = {
-  players: [
-    { 
-      id: 'juan',
-      name: 'Juan', 
-      matches: 3, 
-      wins: 2, 
-      losses: 1, 
-      points: 6,
-      categoryStats: {
-        military: { total: 245, average: 81.7, matches: 3 },
-        economy: { total: 210, average: 70.0, matches: 3 },
-        technology: { total: 180, average: 60.0, matches: 3 },
-        society: { total: 165, average: 55.0, matches: 3 }
-      }
-    },
-    { 
-      id: 'maria',
-      name: 'María', 
-      matches: 3, 
-      wins: 3, 
-      losses: 0, 
-      points: 9,
-      categoryStats: {
-        military: { total: 270, average: 90.0, matches: 3 },
-        economy: { total: 285, average: 95.0, matches: 3 },
-        technology: { total: 255, average: 85.0, matches: 3 },
-        society: { total: 240, average: 80.0, matches: 3 }
-      }
-    },
-    { 
-      id: 'pedro',
-      name: 'Pedro', 
-      matches: 3, 
-      wins: 1, 
-      losses: 2, 
-      points: 3,
-      categoryStats: {
-        military: { total: 195, average: 65.0, matches: 3 },
-        economy: { total: 225, average: 75.0, matches: 3 },
-        technology: { total: 210, average: 70.0, matches: 3 },
-        society: { total: 180, average: 60.0, matches: 3 }
-      }
-    },
-    { 
-      id: 'carlos',
-      name: 'Carlos', 
-      matches: 2, 
-      wins: 1, 
-      losses: 1, 
-      points: 3,
-      categoryStats: {
-        military: { total: 170, average: 85.0, matches: 2 },
-        economy: { total: 130, average: 65.0, matches: 2 },
-        technology: { total: 120, average: 60.0, matches: 2 },
-        society: { total: 110, average: 55.0, matches: 2 }
-      }
-    },
-    { 
-      id: 'ana',
-      name: 'Ana', 
-      matches: 2, 
-      wins: 0, 
-      losses: 2, 
-      points: 0,
-      categoryStats: {
-        military: { total: 110, average: 55.0, matches: 2 },
-        economy: { total: 140, average: 70.0, matches: 2 },
-        technology: { total: 130, average: 65.0, matches: 2 },
-        society: { total: 120, average: 60.0, matches: 2 }
-      }
-    },
-    { 
-      id: 'luis',
-      name: 'Luis', 
-      matches: 3, 
-      wins: 2, 
-      losses: 1, 
-      points: 6,
-      categoryStats: {
-        military: { total: 225, average: 75.0, matches: 3 },
-        economy: { total: 240, average: 80.0, matches: 3 },
-        technology: { total: 270, average: 90.0, matches: 3 },
-        society: { total: 210, average: 70.0, matches: 3 }
-      }
-    },
-    { 
-      id: 'sofia',
-      name: 'Sofia', 
-      matches: 1, 
-      wins: 1, 
-      losses: 0, 
-      points: 3,
-      categoryStats: {
-        military: { total: 82, average: 82.0, matches: 1 },
-        economy: { total: 78, average: 78.0, matches: 1 },
-        technology: { total: 75, average: 75.0, matches: 1 },
-        society: { total: 80, average: 80.0, matches: 1 }
-      }
-    },
-    { 
-      id: 'diego',
-      name: 'Diego', 
-      matches: 1, 
-      wins: 0, 
-      losses: 1, 
-      points: 0,
-      categoryStats: {
-        military: { total: 58, average: 58.0, matches: 1 },
-        economy: { total: 62, average: 62.0, matches: 1 },
-        technology: { total: 55, average: 55.0, matches: 1 },
-        society: { total: 60, average: 60.0, matches: 1 }
-      }
-    }
-  ]
-};
+let tournamentData = { players: [] };
+
+fetch('data.json')
+  .then(response => response.json())
+  .then(data => {
+    tournamentData.players = data.players;
+    playersData.players = data.players;
+
+    // Iniciar la lógica después de que se hayan cargado los datos
+    if (window.initializeApp) initializeApp();
+    if (window.initializeProfiles) initializeProfiles();
+  });
+
 
 // DOM Elements
 const navToggle = document.getElementById('nav-toggle');
@@ -127,12 +23,21 @@ const totalMatchesEl = document.getElementById('total-matches');
 const currentLeaderEl = document.getElementById('current-leader');
 
 // Initialize the application
-document.addEventListener('DOMContentLoaded', function() {
+/* document.addEventListener('DOMContentLoaded', function() {
   initializeNavigation();
   initializeTable();
   updateStats();
   initializeScrollEffects();
-});
+}); */
+
+
+window.initializeApp = function() {
+  initializeNavigation();
+  initializeTable();
+  updateStats();
+  initializeScrollEffects();
+};
+
 
 // Navigation functionality
 function initializeNavigation() {

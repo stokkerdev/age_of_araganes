@@ -1,194 +1,22 @@
-// Player profiles data with detailed statistics
-const playersData = {
-  players: [
-    {
-      id: 'juan',
-      name: 'Juan',
-      avatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
-      matches: 3,
-      wins: 2,
-      losses: 1,
-      points: 6,
-      joinDate: '2024-12-01',
-      favoriteStrategy: 'Rush económico',
-      favoriteCivilization: 'Británicos',
-      status: 'active',
-      categoryStats: {
-        military: { total: 245, average: 81.7, matches: 3, best: 95 },
-        economy: { total: 210, average: 70.0, matches: 3, best: 85 },
-        technology: { total: 180, average: 60.0, matches: 3, best: 75 },
-        society: { total: 165, average: 55.0, matches: 3, best: 70 }
-      },
-      matchHistory: [
-        { opponent: 'Pedro', result: 'win', date: '2025-01-10', duration: '45min', scores: { military: 95, economy: 75, technology: 65, society: 60 } },
-        { opponent: 'Carlos', result: 'loss', date: '2025-01-08', duration: '38min', scores: { military: 70, economy: 85, technology: 75, society: 70 } },
-        { opponent: 'Ana', result: 'win', date: '2025-01-05', duration: '52min', scores: { military: 80, economy: 50, technology: 40, society: 35 } }
-      ]
-    },
-    {
-      id: 'maria',
-      name: 'María',
-      avatar: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
-      matches: 3,
-      wins: 3,
-      losses: 0,
-      points: 9,
-      joinDate: '2024-11-15',
-      favoriteStrategy: 'Boom económico',
-      favoriteCivilization: 'Francos',
-      status: 'active',
-      categoryStats: {
-        military: { total: 270, average: 90.0, matches: 3, best: 98 },
-        economy: { total: 285, average: 95.0, matches: 3, best: 100 },
-        technology: { total: 255, average: 85.0, matches: 3, best: 92 },
-        society: { total: 240, average: 80.0, matches: 3, best: 88 }
-      },
-      matchHistory: [
-        { opponent: 'Luis', result: 'win', date: '2025-01-12', duration: '41min', scores: { military: 85, economy: 100, technology: 92, society: 88 } },
-        { opponent: 'Sofia', result: 'win', date: '2025-01-09', duration: '35min', scores: { military: 98, economy: 95, technology: 85, society: 80 } },
-        { opponent: 'Diego', result: 'win', date: '2025-01-06', duration: '29min', scores: { military: 87, economy: 90, technology: 78, society: 72 } }
-      ]
-    },
-    {
-      id: 'pedro',
-      name: 'Pedro',
-      avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
-      matches: 3,
-      wins: 1,
-      losses: 2,
-      points: 3,
-      joinDate: '2024-12-10',
-      favoriteStrategy: 'Defensa y contraataque',
-      favoriteCivilization: 'Bizantinos',
-      status: 'active',
-      categoryStats: {
-        military: { total: 195, average: 65.0, matches: 3, best: 80 },
-        economy: { total: 225, average: 75.0, matches: 3, best: 90 },
-        technology: { total: 210, average: 70.0, matches: 3, best: 85 },
-        society: { total: 180, average: 60.0, matches: 3, best: 75 }
-      },
-      matchHistory: [
-        { opponent: 'Juan', result: 'loss', date: '2025-01-10', duration: '45min', scores: { military: 55, economy: 90, technology: 85, society: 75 } },
-        { opponent: 'María', result: 'loss', date: '2025-01-07', duration: '33min', scores: { military: 60, economy: 70, technology: 65, society: 50 } },
-        { opponent: 'Carlos', result: 'win', date: '2025-01-04', duration: '58min', scores: { military: 80, economy: 65, technology: 60, society: 55 } }
-      ]
-    },
-    {
-      id: 'carlos',
-      name: 'Carlos',
-      avatar: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
-      matches: 2,
-      wins: 1,
-      losses: 1,
-      points: 3,
-      joinDate: '2024-12-05',
-      favoriteStrategy: 'Rush militar',
-      favoriteCivilization: 'Mongoles',
-      status: 'active',
-      categoryStats: {
-        military: { total: 170, average: 85.0, matches: 2, best: 92 },
-        economy: { total: 130, average: 65.0, matches: 2, best: 75 },
-        technology: { total: 120, average: 60.0, matches: 2, best: 70 },
-        society: { total: 110, average: 55.0, matches: 2, best: 65 }
-      },
-      matchHistory: [
-        { opponent: 'Juan', result: 'win', date: '2025-01-08', duration: '38min', scores: { military: 92, economy: 55, technology: 50, society: 45 } },
-        { opponent: 'Pedro', result: 'loss', date: '2025-01-04', duration: '58min', scores: { military: 78, economy: 75, technology: 70, society: 65 } }
-      ]
-    },
-    {
-      id: 'ana',
-      name: 'Ana',
-      avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
-      matches: 2,
-      wins: 0,
-      losses: 2,
-      points: 0,
-      joinDate: '2024-12-20',
-      favoriteStrategy: 'Desarrollo equilibrado',
-      favoriteCivilization: 'Celtas',
-      status: 'active',
-      categoryStats: {
-        military: { total: 110, average: 55.0, matches: 2, best: 65 },
-        economy: { total: 140, average: 70.0, matches: 2, best: 80 },
-        technology: { total: 130, average: 65.0, matches: 2, best: 75 },
-        society: { total: 120, average: 60.0, matches: 2, best: 70 }
-      },
-      matchHistory: [
-        { opponent: 'Juan', result: 'loss', date: '2025-01-05', duration: '52min', scores: { military: 45, economy: 60, technology: 55, society: 50 } },
-        { opponent: 'Luis', result: 'loss', date: '2025-01-03', duration: '41min', scores: { military: 65, economy: 80, technology: 75, society: 70 } }
-      ]
-    },
-    {
-      id: 'luis',
-      name: 'Luis',
-      avatar: 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
-      matches: 3,
-      wins: 2,
-      losses: 1,
-      points: 6,
-      joinDate: '2024-11-28',
-      favoriteStrategy: 'Tecnología avanzada',
-      favoriteCivilization: 'Coreanos',
-      status: 'active',
-      categoryStats: {
-        military: { total: 225, average: 75.0, matches: 3, best: 88 },
-        economy: { total: 240, average: 80.0, matches: 3, best: 92 },
-        technology: { total: 270, average: 90.0, matches: 3, best: 98 },
-        society: { total: 210, average: 70.0, matches: 3, best: 82 }
-      },
-      matchHistory: [
-        { opponent: 'María', result: 'loss', date: '2025-01-12', duration: '41min', scores: { military: 70, economy: 75, technology: 85, society: 65 } },
-        { opponent: 'Sofia', result: 'win', date: '2025-01-09', duration: '47min', scores: { military: 88, economy: 92, technology: 98, society: 82 } },
-        { opponent: 'Ana', result: 'win', date: '2025-01-03', duration: '41min', scores: { military: 67, economy: 73, technology: 87, society: 63 } }
-      ]
-    },
-    {
-      id: 'sofia',
-      name: 'Sofia',
-      avatar: 'https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
-      matches: 1,
-      wins: 1,
-      losses: 0,
-      points: 3,
-      joinDate: '2025-01-01',
-      favoriteStrategy: 'Adaptativa',
-      favoriteCivilization: 'Vikingos',
-      status: 'active',
-      categoryStats: {
-        military: { total: 82, average: 82.0, matches: 1, best: 82 },
-        economy: { total: 78, average: 78.0, matches: 1, best: 78 },
-        technology: { total: 75, average: 75.0, matches: 1, best: 75 },
-        society: { total: 80, average: 80.0, matches: 1, best: 80 }
-      },
-      matchHistory: [
-        { opponent: 'Luis', result: 'loss', date: '2025-01-09', duration: '47min', scores: { military: 82, economy: 78, technology: 75, society: 80 } }
-      ]
-    },
-    {
-      id: 'diego',
-      name: 'Diego',
-      avatar: 'https://images.pexels.com/photos/1212984/pexels-photo-1212984.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
-      matches: 1,
-      wins: 0,
-      losses: 1,
-      points: 0,
-      joinDate: '2024-12-28',
-      favoriteStrategy: 'Exploración temprana',
-      favoriteCivilization: 'Aztecas',
-      status: 'active',
-      categoryStats: {
-        military: { total: 58, average: 58.0, matches: 1, best: 58 },
-        economy: { total: 62, average: 62.0, matches: 1, best: 62 },
-        technology: { total: 55, average: 55.0, matches: 1, best: 55 },
-        society: { total: 60, average: 60.0, matches: 1, best: 60 }
-      },
-      matchHistory: [
-        { opponent: 'María', result: 'loss', date: '2025-01-06', duration: '29min', scores: { military: 58, economy: 62, technology: 55, society: 60 } }
-      ]
-    }
-  ]
+let playersData = { players: [] };
+
+fetch('data.json')
+  .then(response => response.json())
+  .then(data => {
+    tournamentData.players = data.players;
+    playersData.players = data.players;
+
+    // Iniciar la lógica después de que se hayan cargado los datos
+    if (window.initializeApp) initializeApp();
+    if (window.initializeProfiles) initializeProfiles();
+  });
+
+
+window.initializeProfiles = function() {
+  window.playerProfileManager = new PlayerProfileManager();
+  updateMainStatsWithPlayerData();
 };
+
 
 // Player profile functionality
 class PlayerProfileManager {

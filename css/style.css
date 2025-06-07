@@ -209,6 +209,7 @@ body {
 
 .stat-label {
   font-size: 0.9rem;
+  color: var();
   opacity: 0.8;
   text-transform: uppercase;
   letter-spacing: 1px;
