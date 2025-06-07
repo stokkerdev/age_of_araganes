@@ -3,55 +3,194 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Age of Araganes - Resultados</title>
+  <title>Age of Araganes - Torneo Oficial</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
-  <header>
-    <h1>🏆 Torneo Age of Araganes</h1>
-    <nav>
-      <a href="#">Inicio</a>
-      <a href="#">Resultados</a>
-      <a href="/reglamento/reglamento.html">Reglamento</a>
-    </nav>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <span class="nav-logo">🏆</span>
+        <span class="nav-title">Age of Araganes</span>
+      </div>
+      <div class="nav-menu" id="nav-menu">
+        <a href="#inicio" class="nav-link active">Inicio</a>
+        <a href="#resultados" class="nav-link">Resultados</a>
+        <a href="#estadisticas" class="nav-link">Estadísticas</a>
+        <a href="reglamento/reglamento.html" class="nav-link">Reglamento</a>
+      </div>
+      <div class="nav-toggle" id="nav-toggle">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero" id="inicio">
+    <div class="hero-content">
+      <h1 class="hero-title">Torneo Age of Araganes</h1>
+      <p class="hero-subtitle">El torneo más épico de Age of Empires II</p>
+      <div class="hero-stats">
+        <div class="stat-card">
+          <div class="stat-number" id="total-players">8</div>
+          <div class="stat-label">Jugadores</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="total-matches">12</div>
+          <div class="stat-label">Partidas</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="tournament-phase">Fase 1</div>
+          <div class="stat-label">Estado</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-background"></div>
   </header>
 
   <main>
-    <section class="tabla-resultados">
-      <h2>Tabla de Resultados</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Jugador</th>
-            <th>Partidas Jugadas</th>
-            <th>Ganadas</th>
-            <th>Perdidas</th>
-            <th>Puntos</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Juan</td>
-            <td>3</td>
-            <td>2</td>
-            <td>1</td>
-            <td>6</td>
-          </tr>
-          <tr>
-            <td>Pedro</td>
-            <td>3</td>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-          </tr>
-          <!-- Agrega más jugadores aquí -->
-        </tbody>
-      </table>
+    <section class="section" id="resultados">
+      <div class="container">
+        <h2 class="section-title">Tabla de Clasificación</h2>
+        <div class="table-container">
+          <div class="table-controls">
+            <input type="text" id="search-player" placeholder="Buscar jugador..." class="search-input">
+            <select id="sort-by" class="sort-select">
+              <option value="points">Ordenar por Puntos</option>
+              <option value="wins">Ordenar por Victorias</option>
+              <option value="matches">Ordenar por Partidas</option>
+            </select>
+          </div>
+          <div class="table-wrapper">
+            <table class="results-table" id="results-table">
+              <thead>
+                <tr>
+                  <th>Posición</th>
+                  <th>Jugador</th>
+                  <th>Partidas</th>
+                  <th>Victorias</th>
+                  <th>Derrotas</th>
+                  <th>Puntos</th>
+                  <th>Ratio V/D</th>
+                </tr>
+              </thead>
+              <tbody id="table-body">
+                <!-- Data will be populated by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="estadisticas">
+      <div class="container">
+        <h2 class="section-title">Estadísticas del Torneo</h2>
+        <div class="stats-grid">
+          <div class="stats-card">
+            <div class="stats-icon">⚔️</div>
+            <div class="stats-content">
+              <h3>Partida más Larga</h3>
+              <p class="stats-value">2h 45min</p>
+              <p class="stats-detail">Juan vs Pedro</p>
+            </div>
+          </div>
+          <div class="stats-card">
+            <div class="stats-icon">🏃‍♂️</div>
+            <div class="stats-content">
+              <h3>Partida más Rápida</h3>
+              <p class="stats-value">18min</p>
+              <p class="stats-detail">Carlos vs Ana</p>
+            </div>
+          </div>
+          <div class="stats-card">
+            <div class="stats-icon">👑</div>
+            <div class="stats-content">
+              <h3>Líder Actual</h3>
+              <p class="stats-value" id="current-leader">Juan</p>
+              <p class="stats-detail">9 puntos</p>
+            </div>
+          </div>
+          <div class="stats-card">
+            <div class="stats-icon">🎯</div>
+            <div class="stats-content">
+              <h3>Mejor Ratio</h3>
+              <p class="stats-value">100%</p>
+              <p class="stats-detail">María (3/3)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Próximas Partidas</h2>
+        <div class="matches-grid">
+          <div class="match-card">
+            <div class="match-date">15 Enero 2025</div>
+            <div class="match-players">
+              <span class="player">Juan</span>
+              <span class="vs">VS</span>
+              <span class="player">Carlos</span>
+            </div>
+            <div class="match-time">20:00</div>
+          </div>
+          <div class="match-card">
+            <div class="match-date">16 Enero 2025</div>
+            <div class="match-players">
+              <span class="player">Pedro</span>
+              <span class="vs">VS</span>
+              <span class="player">Ana</span>
+            </div>
+            <div class="match-time">19:30</div>
+          </div>
+          <div class="match-card">
+            <div class="match-date">17 Enero 2025</div>
+            <div class="match-players">
+              <span class="player">María</span>
+              <span class="vs">VS</span>
+              <span class="player">Luis</span>
+            </div>
+            <div class="match-time">21:00</div>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 
-  <footer>
-    <p>© 2025 Torneo Age of Araganes - Todos los derechos reservados.</p>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Age of Araganes</h3>
+          <p>El torneo más competitivo de Age of Empires II</p>
+        </div>
+        <div class="footer-section">
+          <h4>Enlaces</h4>
+          <ul>
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#resultados">Resultados</a></li>
+            <li><a href="reglamento/reglamento.html">Reglamento</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contacto</h4>
+          <p>📧 torneo@ageofaraganes.com</p>
+          <p>🎮 Discord: AgeOfAraganes</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Torneo Age of Araganes. Todos los derechos reservados.</p>
+      </div>
+    </div>
   </footer>
+
+  <script src="js/main.js"></script>
 </body>
 </html>

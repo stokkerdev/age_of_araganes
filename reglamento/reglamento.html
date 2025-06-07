@@ -5,23 +5,340 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reglamento - Age of Araganes</title>
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header>
-    <h1>Reglamento Oficial - Torneo Age of Araganes</h1>
-    <nav>
-      <a href="../index.html">Inicio</a> |
-      <a href="reglamento.html">Reglamento</a>
-    </nav>
-  </header>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <span class="nav-logo">🏆</span>
+        <span class="nav-title">Age of Araganes</span>
+      </div>
+      <div class="nav-menu">
+        <a href="../index.html" class="nav-link">Inicio</a>
+        <a href="../index.html#resultados" class="nav-link">Resultados</a>
+        <a href="../index.html#estadisticas" class="nav-link">Estadísticas</a>
+        <a href="reglamento.html" class="nav-link active">Reglamento</a>
+      </div>
+    </div>
+  </nav>
 
-  <main>
-   <iframe src="../docs/reglamento.pdf" width="100%" height="600px" style="border: none;"></iframe>
+  <main style="margin-top: 70px;">
+    <section class="section">
+      <div class="container">
+        <h1 class="section-title">Reglamento Oficial</h1>
+        
+        <div class="reglamento-container">
+          <div class="reglamento-nav">
+            <h3>Índice</h3>
+            <ul>
+              <li><a href="#general">1. Normas Generales</a></li>
+              <li><a href="#formato">2. Formato del Torneo</a></li>
+              <li><a href="#partidas">3. Reglas de Partidas</a></li>
+              <li><a href="#puntuacion">4. Sistema de Puntuación</a></li>
+              <li><a href="#conducta">5. Código de Conducta</a></li>
+              <li><a href="#sanciones">6. Sanciones</a></li>
+            </ul>
+          </div>
 
+          <div class="reglamento-content">
+            <section id="general" class="reglamento-section">
+              <h2>1. Normas Generales</h2>
+              <div class="rule-card">
+                <h4>1.1 Participación</h4>
+                <p>El torneo está abierto a todos los jugadores que se registren dentro del plazo establecido. Cada participante debe tener una cuenta válida de Age of Empires II: Definitive Edition.</p>
+              </div>
+              
+              <div class="rule-card">
+                <h4>1.2 Registro</h4>
+                <p>Los jugadores deben registrarse proporcionando su nombre de usuario, contacto y nivel de experiencia aproximado.</p>
+              </div>
+
+              <div class="rule-card">
+                <h4>1.3 Comunicación</h4>
+                <p>La comunicación oficial se realizará a través del servidor de Discord del torneo. Es obligatorio estar presente en el canal durante las partidas.</p>
+              </div>
+            </section>
+
+            <section id="formato" class="reglamento-section">
+              <h2>2. Formato del Torneo</h2>
+              <div class="rule-card">
+                <h4>2.1 Estructura</h4>
+                <p>El torneo se divide en dos fases:</p>
+                <ul>
+                  <li><strong>Fase de Grupos:</strong> Todos contra todos en grupos de 4 jugadores</li>
+                  <li><strong>Fase Eliminatoria:</strong> Los 2 mejores de cada grupo pasan a eliminatorias directas</li>
+                </ul>
+              </div>
+
+              <div class="rule-card">
+                <h4>2.2 Duración</h4>
+                <p>El torneo tendrá una duración aproximada de 4 semanas, con partidas programadas los fines de semana.</p>
+              </div>
+            </section>
+
+            <section id="partidas" class="reglamento-section">
+              <h2>3. Reglas de Partidas</h2>
+              <div class="rule-card">
+                <h4>3.1 Configuración</h4>
+                <ul>
+                  <li><strong>Mapa:</strong> Arabia (salvo acuerdo mutuo)</li>
+                  <li><strong>Velocidad:</strong> Estándar</li>
+                  <li><strong>Población:</strong> 200</li>
+                  <li><strong>Recursos:</strong> Estándar</li>
+                  <li><strong>Edad inicial:</strong> Edad Oscura</li>
+                </ul>
+              </div>
+
+              <div class="rule-card">
+                <h4>3.2 Civilizaciones</h4>
+                <p>Todas las civilizaciones están permitidas. Se recomienda la selección aleatoria para mayor equidad.</p>
+              </div>
+
+              <div class="rule-card">
+                <h4>3.3 Puntualidad</h4>
+                <p>Los jugadores tienen un margen de 15 minutos de retraso. Pasado este tiempo, se otorgará la victoria por incomparecencia.</p>
+              </div>
+            </section>
+
+            <section id="puntuacion" class="reglamento-section">
+              <h2>4. Sistema de Puntuación</h2>
+              <div class="rule-card">
+                <h4>4.1 Puntos por Partida</h4>
+                <ul>
+                  <li><strong>Victoria:</strong> 3 puntos</li>
+                  <li><strong>Derrota:</strong> 0 puntos</li>
+                  <li><strong>Victoria por incomparecencia:</strong> 3 puntos</li>
+                </ul>
+              </div>
+
+              <div class="rule-card">
+                <h4>4.2 Criterios de Desempate</h4>
+                <p>En caso de empate en puntos, se aplicarán los siguientes criterios en orden:</p>
+                <ol>
+                  <li>Enfrentamiento directo</li>
+                  <li>Diferencia de partidas ganadas/perdidas</li>
+                  <li>Sorteo</li>
+                </ol>
+              </div>
+            </section>
+
+            <section id="conducta" class="reglamento-section">
+              <h2>5. Código de Conducta</h2>
+              <div class="rule-card">
+                <h4>5.1 Comportamiento</h4>
+                <p>Se espera un comportamiento respetuoso y deportivo de todos los participantes. Está prohibido:</p>
+                <ul>
+                  <li>Insultos o comentarios ofensivos</li>
+                  <li>Spam en el chat</li>
+                  <li>Comportamiento antideportivo</li>
+                  <li>Abandono injustificado de partidas</li>
+                </ul>
+              </div>
+
+              <div class="rule-card">
+                <h4>5.2 Fair Play</h4>
+                <p>Se prohíbe el uso de trucos, exploits o cualquier forma de trampa. Las partidas deben jugarse de manera limpia y honesta.</p>
+              </div>
+            </section>
+
+            <section id="sanciones" class="reglamento-section">
+              <h2>6. Sanciones</h2>
+              <div class="rule-card">
+                <h4>6.1 Tipos de Sanciones</h4>
+                <ul>
+                  <li><strong>Advertencia:</strong> Primera infracción menor</li>
+                  <li><strong>Pérdida de puntos:</strong> Infracciones repetidas</li>
+                  <li><strong>Descalificación:</strong> Infracciones graves o reiteradas</li>
+                </ul>
+              </div>
+
+              <div class="rule-card">
+                <h4>6.2 Proceso de Apelación</h4>
+                <p>Los jugadores pueden apelar las sanciones contactando a los organizadores dentro de las 24 horas siguientes a la sanción.</p>
+              </div>
+            </section>
+
+            <div class="contact-section">
+              <h3>Contacto de Organizadores</h3>
+              <p>Para dudas o consultas sobre el reglamento:</p>
+              <ul>
+                <li>📧 Email: torneo@ageofaraganes.com</li>
+                <li>🎮 Discord: AgeOfAraganes</li>
+                <li>📱 WhatsApp: +34 XXX XXX XXX</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <footer>
-    <p>&copy; 2025 Torneo Age of Araganes</p>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Age of Araganes</h3>
+          <p>El torneo más competitivo de Age of Empires II</p>
+        </div>
+        <div class="footer-section">
+          <h4>Enlaces</h4>
+          <ul>
+            <li><a href="../index.html">Inicio</a></li>
+            <li><a href="../index.html#resultados">Resultados</a></li>
+            <li><a href="reglamento.html">Reglamento</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contacto</h4>
+          <p>📧 torneo@ageofaraganes.com</p>
+          <p>🎮 Discord: AgeOfAraganes</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Torneo Age of Araganes. Todos los derechos reservados.</p>
+      </div>
+    </div>
   </footer>
+
+  <style>
+    .reglamento-container {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 3rem;
+      margin-top: 2rem;
+    }
+
+    .reglamento-nav {
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+      background: var(--bg-primary);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-color);
+    }
+
+    .reglamento-nav h3 {
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+    }
+
+    .reglamento-nav ul {
+      list-style: none;
+    }
+
+    .reglamento-nav li {
+      margin-bottom: 0.5rem;
+    }
+
+    .reglamento-nav a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+      display: block;
+      padding: 0.25rem 0;
+    }
+
+    .reglamento-nav a:hover {
+      color: var(--primary-color);
+    }
+
+    .reglamento-content {
+      background: var(--bg-primary);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-color);
+    }
+
+    .reglamento-section {
+      margin-bottom: 3rem;
+    }
+
+    .reglamento-section h2 {
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--primary-color);
+    }
+
+    .rule-card {
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      border-left: 4px solid var(--primary-color);
+    }
+
+    .rule-card h4 {
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+      font-size: 1.1rem;
+    }
+
+    .rule-card p, .rule-card li {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .rule-card ul, .rule-card ol {
+      margin-left: 1.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .rule-card li {
+      margin-bottom: 0.25rem;
+    }
+
+    .contact-section {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-top: 2rem;
+      border: 1px solid var(--border-color);
+    }
+
+    .contact-section h3 {
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .contact-section ul {
+      list-style: none;
+      margin-top: 1rem;
+    }
+
+    .contact-section li {
+      margin-bottom: 0.5rem;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 768px) {
+      .reglamento-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .reglamento-nav {
+        position: static;
+        order: 2;
+      }
+
+      .reglamento-content {
+        order: 1;
+        padding: 1.5rem;
+      }
+
+      .rule-card {
+        padding: 1rem;
+      }
+    }
+  </style>
 </body>
 </html>
