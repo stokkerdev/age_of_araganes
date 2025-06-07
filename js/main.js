@@ -1,13 +1,118 @@
-// Tournament data
+// Tournament data with enhanced player information
 const tournamentData = {
   players: [
-    { name: 'Stokker', matches: 0, wins: 0, losses: 0, points: 0 },
-    { name: 'Cairbus', matches: 0, wins: 0, losses: 0, points: 0 },
-    { name: 'Kylecher', matches: 0, wins: 0, losses: 0, points:0 },
-    { name: 'NicoZ', matches: 0, wins: 0, losses: 0, points: 0 },
-    { name: 'Artibool', matches: 0, wins: 0, losses: 0, points: 0 },
-    { name: 'Gato_Alado', matches: 0, wins: 0, losses: 0, points: 0 },
-  
+    { 
+      id: 'juan',
+      name: 'Juan', 
+      matches: 3, 
+      wins: 2, 
+      losses: 1, 
+      points: 6,
+      categoryStats: {
+        military: { total: 245, average: 81.7, matches: 3 },
+        economy: { total: 210, average: 70.0, matches: 3 },
+        technology: { total: 180, average: 60.0, matches: 3 },
+        society: { total: 165, average: 55.0, matches: 3 }
+      }
+    },
+    { 
+      id: 'maria',
+      name: 'María', 
+      matches: 3, 
+      wins: 3, 
+      losses: 0, 
+      points: 9,
+      categoryStats: {
+        military: { total: 270, average: 90.0, matches: 3 },
+        economy: { total: 285, average: 95.0, matches: 3 },
+        technology: { total: 255, average: 85.0, matches: 3 },
+        society: { total: 240, average: 80.0, matches: 3 }
+      }
+    },
+    { 
+      id: 'pedro',
+      name: 'Pedro', 
+      matches: 3, 
+      wins: 1, 
+      losses: 2, 
+      points: 3,
+      categoryStats: {
+        military: { total: 195, average: 65.0, matches: 3 },
+        economy: { total: 225, average: 75.0, matches: 3 },
+        technology: { total: 210, average: 70.0, matches: 3 },
+        society: { total: 180, average: 60.0, matches: 3 }
+      }
+    },
+    { 
+      id: 'carlos',
+      name: 'Carlos', 
+      matches: 2, 
+      wins: 1, 
+      losses: 1, 
+      points: 3,
+      categoryStats: {
+        military: { total: 170, average: 85.0, matches: 2 },
+        economy: { total: 130, average: 65.0, matches: 2 },
+        technology: { total: 120, average: 60.0, matches: 2 },
+        society: { total: 110, average: 55.0, matches: 2 }
+      }
+    },
+    { 
+      id: 'ana',
+      name: 'Ana', 
+      matches: 2, 
+      wins: 0, 
+      losses: 2, 
+      points: 0,
+      categoryStats: {
+        military: { total: 110, average: 55.0, matches: 2 },
+        economy: { total: 140, average: 70.0, matches: 2 },
+        technology: { total: 130, average: 65.0, matches: 2 },
+        society: { total: 120, average: 60.0, matches: 2 }
+      }
+    },
+    { 
+      id: 'luis',
+      name: 'Luis', 
+      matches: 3, 
+      wins: 2, 
+      losses: 1, 
+      points: 6,
+      categoryStats: {
+        military: { total: 225, average: 75.0, matches: 3 },
+        economy: { total: 240, average: 80.0, matches: 3 },
+        technology: { total: 270, average: 90.0, matches: 3 },
+        society: { total: 210, average: 70.0, matches: 3 }
+      }
+    },
+    { 
+      id: 'sofia',
+      name: 'Sofia', 
+      matches: 1, 
+      wins: 1, 
+      losses: 0, 
+      points: 3,
+      categoryStats: {
+        military: { total: 82, average: 82.0, matches: 1 },
+        economy: { total: 78, average: 78.0, matches: 1 },
+        technology: { total: 75, average: 75.0, matches: 1 },
+        society: { total: 80, average: 80.0, matches: 1 }
+      }
+    },
+    { 
+      id: 'diego',
+      name: 'Diego', 
+      matches: 1, 
+      wins: 0, 
+      losses: 1, 
+      points: 0,
+      categoryStats: {
+        military: { total: 58, average: 58.0, matches: 1 },
+        economy: { total: 62, average: 62.0, matches: 1 },
+        technology: { total: 55, average: 55.0, matches: 1 },
+        society: { total: 60, average: 60.0, matches: 1 }
+      }
+    }
   ]
 };
 
@@ -108,6 +213,10 @@ function initializeTable() {
           return b.wins - a.wins;
         case 'matches':
           return b.matches - a.matches;
+        case 'average':
+          const avgA = calculateTotalAverage(a);
+          const avgB = calculateTotalAverage(b);
+          return avgB - avgA;
         default:
           return b.points - a.points;
       }
@@ -127,6 +236,7 @@ function renderTable(players) {
     const ratio = player.matches > 0 ? (player.wins / player.matches * 100).toFixed(1) : '0.0';
     const ratioClass = getRatioClass(parseFloat(ratio));
     const positionClass = getPositionClass(position);
+    const totalAverage = calculateTotalAverage(player);
     
     const row = document.createElement('tr');
     row.className = positionClass;
@@ -137,11 +247,22 @@ function renderTable(players) {
       <td>${player.wins}</td>
       <td>${player.losses}</td>
       <td><strong>${player.points}</strong></td>
+      <td><strong>${totalAverage.toFixed(1)}</strong></td>
       <td class="${ratioClass}">${ratio}%</td>
+      <td>
+        <button class="view-profile-btn" onclick="openPlayerProfileFromTable('${player.id}')">
+          Ver Perfil
+        </button>
+      </td>
     `;
     
     tableBody.appendChild(row);
   });
+}
+
+function calculateTotalAverage(player) {
+  const stats = player.categoryStats;
+  return (stats.military.average + stats.economy.average + stats.technology.average + stats.society.average) / 4;
 }
 
 function getRatioClass(ratio) {
@@ -156,6 +277,14 @@ function getPositionClass(position) {
     case 2: return 'position-2';
     case 3: return 'position-3';
     default: return '';
+  }
+}
+
+// Function to open player profile from table
+function openPlayerProfileFromTable(playerId) {
+  // This will be called by the player profile manager
+  if (window.playerProfileManager) {
+    window.playerProfileManager.openPlayerProfile(playerId);
   }
 }
 
@@ -199,7 +328,7 @@ function initializeScrollEffects() {
   }, observerOptions);
 
   // Observe elements for animation
-  document.querySelectorAll('.stats-card, .match-card, .table-container').forEach(el => {
+  document.querySelectorAll('.stats-card, .match-card, .table-container, .player-card').forEach(el => {
     observer.observe(el);
   });
 }
@@ -220,7 +349,7 @@ function debounce(func, wait) {
 // Add some interactive features
 document.addEventListener('DOMContentLoaded', function() {
   // Add click effects to cards
-  document.querySelectorAll('.stats-card, .match-card').forEach(card => {
+  document.querySelectorAll('.stats-card, .match-card, .player-card').forEach(card => {
     card.addEventListener('click', function() {
       this.style.transform = 'scale(0.98)';
       setTimeout(() => {
@@ -246,14 +375,27 @@ window.TournamentApp = {
     updateStats();
   },
   
-  addMatch: function(player1, player2, winner) {
+  addMatch: function(player1, player2, winner, scores) {
     // Find players and update their stats
     const p1 = tournamentData.players.find(p => p.name === player1);
     const p2 = tournamentData.players.find(p => p.name === player2);
     
-    if (p1 && p2) {
+    if (p1 && p2 && scores) {
       p1.matches++;
       p2.matches++;
+      
+      // Update category stats for both players
+      Object.keys(scores.player1).forEach(category => {
+        p1.categoryStats[category].total += scores.player1[category];
+        p1.categoryStats[category].matches++;
+        p1.categoryStats[category].average = p1.categoryStats[category].total / p1.categoryStats[category].matches;
+      });
+      
+      Object.keys(scores.player2).forEach(category => {
+        p2.categoryStats[category].total += scores.player2[category];
+        p2.categoryStats[category].matches++;
+        p2.categoryStats[category].average = p2.categoryStats[category].total / p2.categoryStats[category].matches;
+      });
       
       if (winner === player1) {
         p1.wins++;
@@ -268,5 +410,9 @@ window.TournamentApp = {
       renderTable(tournamentData.players);
       updateStats();
     }
+  },
+
+  getPlayerStats: function(playerId) {
+    return tournamentData.players.find(p => p.id === playerId);
   }
 };

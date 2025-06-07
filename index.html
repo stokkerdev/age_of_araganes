@@ -20,6 +20,7 @@
       <div class="nav-menu" id="nav-menu">
         <a href="#inicio" class="nav-link active">Inicio</a>
         <a href="#resultados" class="nav-link">Resultados</a>
+        <a href="#jugadores" class="nav-link">Jugadores</a>
         <a href="#estadisticas" class="nav-link">Estadísticas</a>
         <a href="reglamento/reglamento.html" class="nav-link">Reglamento</a>
       </div>
@@ -64,6 +65,7 @@
               <option value="points">Ordenar por Puntos</option>
               <option value="wins">Ordenar por Victorias</option>
               <option value="matches">Ordenar por Partidas</option>
+              <option value="average">Ordenar por Promedio</option>
             </select>
           </div>
           <div class="table-wrapper">
@@ -76,7 +78,9 @@
                   <th>Victorias</th>
                   <th>Derrotas</th>
                   <th>Puntos</th>
+                  <th>Promedio</th>
                   <th>Ratio V/D</th>
+                  <th>Perfil</th>
                 </tr>
               </thead>
               <tbody id="table-body">
@@ -88,7 +92,24 @@
       </div>
     </section>
 
-    <section class="section section-alt" id="estadisticas">
+    <section class="section section-alt" id="jugadores">
+      <div class="container">
+        <h2 class="section-title">Perfiles de Jugadores</h2>
+        <div class="players-controls">
+          <input type="text" id="search-players" placeholder="Buscar jugador..." class="search-input">
+          <select id="filter-players" class="sort-select">
+            <option value="all">Todos los jugadores</option>
+            <option value="active">Jugadores activos</option>
+            <option value="top">Top performers</option>
+          </select>
+        </div>
+        <div class="players-grid" id="players-grid">
+          <!-- Player cards will be populated by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="estadisticas">
       <div class="container">
         <h2 class="section-title">Estadísticas del Torneo</h2>
         <div class="stats-grid">
@@ -122,6 +143,22 @@
               <h3>Mejor Ratio</h3>
               <p class="stats-value">none%</p>
               <p class="stats-detail">null</p>
+            </div>
+          </div>
+          <div class="stats-card">
+            <div class="stats-icon">🏛️</div>
+            <div class="stats-content">
+              <h3>Mejor Economía</h3>
+              <p class="stats-value" id="best-economy">85.2</p>
+              <p class="stats-detail">Promedio más alto</p>
+            </div>
+          </div>
+          <div class="stats-card">
+            <div class="stats-icon">⚔️</div>
+            <div class="stats-content">
+              <h3>Mejor Militar</h3>
+              <p class="stats-value" id="best-military">92.1</p>
+              <p class="stats-detail">Dominio en combate</p>
             </div>
           </div>
         </div>
@@ -164,6 +201,19 @@
     </section>
   </main>
 
+  <!-- Player Profile Modal -->
+  <div class="modal-overlay" id="player-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-player-name">Perfil del Jugador</h2>
+        <button class="modal-close" id="modal-close">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <!-- Player profile content will be populated by JavaScript -->
+      </div>
+    </div>
+  </div>
+
   <footer class="footer">
     <div class="container">
       <div class="footer-content">
@@ -176,6 +226,7 @@
           <ul>
             <li><a href="#inicio">Inicio</a></li>
             <li><a href="#resultados">Resultados</a></li>
+            <li><a href="#jugadores">Jugadores</a></li>
             <li><a href="reglamento/reglamento.html">Reglamento</a></li>
           </ul>
         </div>
@@ -192,5 +243,6 @@
   </footer>
 
   <script src="js/main.js"></script>
+  <script src="js/players.js"></script>
 </body>
 </html>
