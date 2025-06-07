@@ -1,14 +1,13 @@
 // Tournament data
 const tournamentData = {
   players: [
-    { name: 'Juan', matches: 3, wins: 2, losses: 1, points: 6 },
-    { name: 'Pedro', matches: 3, wins: 1, losses: 2, points: 3 },
-    { name: 'María', matches: 3, wins: 3, losses: 0, points: 9 },
-    { name: 'Carlos', matches: 2, wins: 1, losses: 1, points: 3 },
-    { name: 'Ana', matches: 2, wins: 0, losses: 2, points: 0 },
-    { name: 'Luis', matches: 3, wins: 2, losses: 1, points: 6 },
-    { name: 'Sofia', matches: 1, wins: 1, losses: 0, points: 3 },
-    { name: 'Diego', matches: 1, wins: 0, losses: 1, points: 0 }
+    { name: 'Stokker', matches: 0, wins: 0, losses: 0, points: 0 },
+    { name: 'Cairbus', matches: 0, wins: 0, losses: 0, points: 0 },
+    { name: 'Kylecher', matches: 0, wins: 0, losses: 0, points:0 },
+    { name: 'NicoZ', matches: 0, wins: 0, losses: 0, points: 0 },
+    { name: 'Artibool', matches: 0, wins: 0, losses: 0, points: 0 },
+    { name: 'Gato_Alado', matches: 0, wins: 0, losses: 0, points: 0 },
+  
   ]
 };
 
