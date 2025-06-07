@@ -105,7 +105,7 @@ class PlayerProfileManager {
           <span class="category-value">${player.categoryStats.military.average.toFixed(1)}</span>
         </div>
         <div class="category-mini" title="Economía">
-          <span class="category-icon">🏛️</span>
+          <span class="category-icon">💰</span>
           <span class="category-value">${player.categoryStats.economy.average.toFixed(1)}</span>
         </div>
         <div class="category-mini" title="Tecnología">

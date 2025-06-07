@@ -150,7 +150,6 @@ function renderTable(players) {
       <td class="player-name">${player.name}</td>
       <td>${player.matches}</td>
       <td>${player.wins}</td>
-      <td>${player.losses}</td>
       <td><strong>${player.points}</strong></td>
       <td><strong>${totalAverage.toFixed(1)}</strong></td>
       <td class="${ratioClass}">${ratio}%</td>
