@@ -118,10 +118,7 @@ function initializeTable() {
           return b.wins - a.wins;
         case 'matches':
           return b.matches - a.matches;
-        case 'average':
-          const avgA = calculateTotalAverage(a);
-          const avgB = calculateTotalAverage(b);
-          return avgB - avgA;
+ 
         default:
           return b.points - a.points;
       }
@@ -141,7 +138,6 @@ function renderTable(players) {
     const ratio = player.matches > 0 ? (player.wins / player.matches * 100).toFixed(1) : '0.0';
     const ratioClass = getRatioClass(parseFloat(ratio));
     const positionClass = getPositionClass(position);
-    const totalAverage = calculateTotalAverage(player);
     
     const row = document.createElement('tr');
     row.className = positionClass;
@@ -151,7 +147,6 @@ function renderTable(players) {
       <td>${player.matches}</td>
       <td>${player.wins}</td>
       <td><strong>${player.points}</strong></td>
-      <td><strong>${totalAverage.toFixed(1)}</strong></td>
       <td class="${ratioClass}">${ratio}%</td>
       <td>
         <button class="view-profile-btn" onclick="openPlayerProfileFromTable('${player.id}')">
@@ -164,10 +159,7 @@ function renderTable(players) {
   });
 }
 
-function calculateTotalAverage(player) {
-  const stats = player.categoryStats;
-  return (stats.military.average + stats.economy.average + stats.technology.average + stats.society.average) / 4;
-}
+
 
 function getRatioClass(ratio) {
   if (ratio >= 70) return 'ratio-good';
