@@ -1,5 +1,7 @@
 let playersData = { players: [] };
 
+
+
 fetch('data/data.json')
   .then(response => {
     if (!response.ok) {
@@ -8,14 +10,16 @@ fetch('data/data.json')
     return response.json();
   })
   .then(data => {
-    console.log("Datos cargados correctamente:", data);
+    playersData.players = data.players; // Aquí se guardan los datos
+    console.log("Datos cargados correctamente:", playersData.players);
+    initializeProfiles(); // Aquí se inicializa el sistema con los datos
   })
   .catch(error => {
     console.error("Error al cargar el JSON:", error);
   });
 
 
-window.initializeProfiles = function() {
+window.initializeProfiles = function () {
   window.playerProfileManager = new PlayerProfileManager();
   updateMainStatsWithPlayerData();
 };
@@ -30,7 +34,7 @@ class PlayerProfileManager {
     this.playersGrid = document.getElementById('players-grid');
     this.searchPlayers = document.getElementById('search-players');
     this.filterPlayers = document.getElementById('filter-players');
-    
+
     this.init();
   }
 
@@ -58,7 +62,7 @@ class PlayerProfileManager {
 
   renderPlayersGrid() {
     this.playersGrid.innerHTML = '';
-    
+
     this.players.forEach(player => {
       const playerCard = this.createPlayerCard(player);
       this.playersGrid.appendChild(playerCard);
@@ -68,7 +72,7 @@ class PlayerProfileManager {
   createPlayerCard(player) {
     const totalAverage = this.calculateTotalAverage(player);
     const winRate = player.matches > 0 ? ((player.wins / player.matches) * 100).toFixed(1) : '0.0';
-    
+
     const card = document.createElement('div');
     card.className = 'player-card';
     card.innerHTML = `
@@ -125,7 +129,7 @@ class PlayerProfileManager {
         Ver Perfil Completo
       </button>
     `;
-    
+
     return card;
   }
 
@@ -135,10 +139,10 @@ class PlayerProfileManager {
 
     const modalBody = document.getElementById('modal-body');
     const modalPlayerName = document.getElementById('modal-player-name');
-    
+
     modalPlayerName.textContent = `Perfil de ${player.name}`;
     modalBody.innerHTML = this.createPlayerProfileContent(player);
-    
+
     this.modal.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
@@ -146,7 +150,7 @@ class PlayerProfileManager {
   createPlayerProfileContent(player) {
     const totalAverage = this.calculateTotalAverage(player);
     const winRate = player.matches > 0 ? ((player.wins / player.matches) * 100).toFixed(1) : '0.0';
-    
+
     return `
       <div class="profile-header">
         <img src="${player.avatar}" alt="${player.name}" class="profile-avatar">
@@ -225,7 +229,7 @@ class PlayerProfileManager {
     return categories.map(category => {
       const stats = categoryStats[category.key];
       const percentage = (stats.average / 100) * 100;
-      
+
       return `
         <div class="category-stat">
           <div class="category-header">
@@ -255,7 +259,7 @@ class PlayerProfileManager {
       const resultClass = match.result === 'win' ? 'match-win' : 'match-loss';
       const resultText = match.result === 'win' ? 'Victoria' : 'Derrota';
       const totalScore = match.scores.military + match.scores.economy + match.scores.technology + match.scores.society;
-      
+
       return `
         <div class="match-item ${resultClass}">
           <div class="match-main">
@@ -298,36 +302,36 @@ class PlayerProfileManager {
   createPerformanceChart(player) {
     const categories = ['military', 'economy', 'technology', 'society'];
     const maxValue = 100;
-    
+
     return `
       <div class="radar-chart">
         <svg viewBox="0 0 200 200" class="radar-svg">
           <!-- Grid lines -->
           <g class="radar-grid">
             ${[20, 40, 60, 80, 100].map(value => {
-              const radius = (value / 100) * 80;
-              return `<circle cx="100" cy="100" r="${radius}" fill="none" stroke="#e5e7eb" stroke-width="1"/>`;
-            }).join('')}
+      const radius = (value / 100) * 80;
+      return `<circle cx="100" cy="100" r="${radius}" fill="none" stroke="#e5e7eb" stroke-width="1"/>`;
+    }).join('')}
             
             <!-- Axis lines -->
             ${categories.map((_, index) => {
-              const angle = (index * 90 - 90) * Math.PI / 180;
-              const x = 100 + 80 * Math.cos(angle);
-              const y = 100 + 80 * Math.sin(angle);
-              return `<line x1="100" y1="100" x2="${x}" y2="${y}" stroke="#e5e7eb" stroke-width="1"/>`;
-            }).join('')}
+      const angle = (index * 90 - 90) * Math.PI / 180;
+      const x = 100 + 80 * Math.cos(angle);
+      const y = 100 + 80 * Math.sin(angle);
+      return `<line x1="100" y1="100" x2="${x}" y2="${y}" stroke="#e5e7eb" stroke-width="1"/>`;
+    }).join('')}
           </g>
           
           <!-- Data polygon -->
           <polygon
             points="${categories.map((category, index) => {
-              const value = player.categoryStats[category].average;
-              const angle = (index * 90 - 90) * Math.PI / 180;
-              const radius = (value / 100) * 80;
-              const x = 100 + radius * Math.cos(angle);
-              const y = 100 + radius * Math.sin(angle);
-              return `${x},${y}`;
-            }).join(' ')}"
+      const value = player.categoryStats[category].average;
+      const angle = (index * 90 - 90) * Math.PI / 180;
+      const radius = (value / 100) * 80;
+      const x = 100 + radius * Math.cos(angle);
+      const y = 100 + radius * Math.sin(angle);
+      return `${x},${y}`;
+    }).join(' ')}"
             fill="rgba(37, 99, 235, 0.2)"
             stroke="#2563eb"
             stroke-width="2"
@@ -335,22 +339,22 @@ class PlayerProfileManager {
           
           <!-- Data points -->
           ${categories.map((category, index) => {
-            const value = player.categoryStats[category].average;
-            const angle = (index * 90 - 90) * Math.PI / 180;
-            const radius = (value / 100) * 80;
-            const x = 100 + radius * Math.cos(angle);
-            const y = 100 + radius * Math.sin(angle);
-            return `<circle cx="${x}" cy="${y}" r="3" fill="#2563eb"/>`;
-          }).join('')}
+      const value = player.categoryStats[category].average;
+      const angle = (index * 90 - 90) * Math.PI / 180;
+      const radius = (value / 100) * 80;
+      const x = 100 + radius * Math.cos(angle);
+      const y = 100 + radius * Math.sin(angle);
+      return `<circle cx="${x}" cy="${y}" r="3" fill="#2563eb"/>`;
+    }).join('')}
           
           <!-- Labels -->
           ${categories.map((category, index) => {
-            const angle = (index * 90 - 90) * Math.PI / 180;
-            const x = 100 + 95 * Math.cos(angle);
-            const y = 100 + 95 * Math.sin(angle);
-            const labels = { military: 'Mil', economy: 'Eco', technology: 'Tec', society: 'Soc' };
-            return `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" class="radar-label">${labels[category]}</text>`;
-          }).join('')}
+      const angle = (index * 90 - 90) * Math.PI / 180;
+      const x = 100 + 95 * Math.cos(angle);
+      const y = 100 + 95 * Math.sin(angle);
+      const labels = { military: 'Mil', economy: 'Eco', technology: 'Tec', society: 'Soc' };
+      return `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" class="radar-label">${labels[category]}</text>`;
+    }).join('')}
         </svg>
         
         <div class="chart-legend">
@@ -371,40 +375,31 @@ class PlayerProfileManager {
   filterAndRenderPlayers() {
     const searchTerm = this.searchPlayers.value.toLowerCase();
     const filterValue = this.filterPlayers.value;
-    
+
     let filteredPlayers = this.players;
-    
-    // Apply search filter
+
+    // Buscar por nombre
     if (searchTerm) {
       filteredPlayers = filteredPlayers.filter(player =>
-        player.name.toLowerCase().includes(searchTerm) ||
-        player.favoriteStrategy.toLowerCase().includes(searchTerm) ||
-        player.favoriteCivilization.toLowerCase().includes(searchTerm)
+        player.name.toLowerCase().includes(searchTerm)
       );
     }
-    
-    // Apply category filter
+
+    // Filtrar por estado si hay filtro seleccionado
     if (filterValue !== 'all') {
-      switch (filterValue) {
-        case 'active':
-          filteredPlayers = filteredPlayers.filter(player => player.status === 'active');
-          break;
-        case 'top':
-          filteredPlayers = filteredPlayers.filter(player => {
-            const totalAverage = this.calculateTotalAverage(player);
-            return totalAverage >= 70;
-          });
-          break;
-      }
+      filteredPlayers = filteredPlayers.filter(player =>
+        player.status === filterValue
+      );
     }
-    
-    // Re-render grid with filtered players
+
+    // Renderizar resultados filtrados
     this.playersGrid.innerHTML = '';
     filteredPlayers.forEach(player => {
       const playerCard = this.createPlayerCard(player);
       this.playersGrid.appendChild(playerCard);
     });
   }
+
 
   // Utility methods
   calculateTotalAverage(player) {
@@ -464,9 +459,9 @@ class PlayerProfileManager {
 }
 
 // Initialize player profile manager when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   window.playerProfileManager = new PlayerProfileManager();
-  
+
   // Update main stats with player data
   updateMainStatsWithPlayerData();
 });
@@ -474,10 +469,10 @@ document.addEventListener('DOMContentLoaded', function() {
 function updateMainStatsWithPlayerData() {
   const bestEconomy = playerProfileManager.getBestPlayerInCategory('economy');
   const bestMilitary = playerProfileManager.getBestPlayerInCategory('military');
-  
+
   const bestEconomyEl = document.getElementById('best-economy');
   const bestMilitaryEl = document.getElementById('best-military');
-  
+
   if (bestEconomyEl) bestEconomyEl.textContent = bestEconomy.categoryStats.economy.average.toFixed(1);
   if (bestMilitaryEl) bestMilitaryEl.textContent = bestMilitary.categoryStats.military.average.toFixed(1);
 }

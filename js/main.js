@@ -9,10 +9,14 @@ fetch('data/data.json')
   })
   .then(data => {
     console.log("Datos cargados correctamente:", data);
+    tournamentData.players = data.players; // 👈 Asignar los jugadores al estado global
+    initializeTable(); // 👈 Renderizar la tabla con los datos cargados
+    updateStats();     // 👈 Actualizar estadísticas
   })
   .catch(error => {
     console.error("Error al cargar el JSON:", error);
   });
+
 
 
 
