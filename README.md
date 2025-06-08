@@ -146,8 +146,8 @@ This project is open source and available under the [MIT License](LICENSE).
 ## Support
 
 For questions or support:
-- 📧 Email: stokkerma@gmail.com
-- 🎮 Discord: stokker_
+- 📧 Email: torneo@ageofaraganes.com
+- 🎮 Discord: AgeOfAraganes
 - 📱 Create an issue in this repository
 
 ---

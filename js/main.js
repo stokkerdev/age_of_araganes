@@ -1,161 +1,81 @@
 let tournamentData = { players: [] };
 
-// Initialize API and load data
-async function initializeDataFromAPI() {
-  try {
-    // Show loading state
-    showLoadingState();
-    
-    // Check if API is available
-    const apiAvailable = await window.tournamentAPI.waitForAPI(3, 1000);
-    
-    if (apiAvailable) {
-      console.log('🌐 Loading data from API...');
-      
-      // Load players from API
-      const playersResponse = await window.tournamentAPI.getPlayers({ sort: 'points', order: 'desc' });
-      
-      if (playersResponse.success) {
-        tournamentData.players = playersResponse.data;
-        console.log(`✅ Loaded ${tournamentData.players.length} players from API`);
-      } else {
-        throw new Error('Failed to load players from API');
-      }
-    } else {
-      console.log('📁 Loading fallback data...');
-      // Fallback to local data if API is unavailable
-      await loadFallbackData();
-    }
-    
-    // Update global data for other modules
-    if (window.playersData) {
-      window.playersData.players = tournamentData.players;
-    }
-    
-    // Initialize app components
-    if (window.initializeApp) window.initializeApp();
-    if (window.initializeProfiles) window.initializeProfiles();
-    
-    hideLoadingState();
-    
-  } catch (error) {
-    console.error('❌ Error loading data:', error);
-    
-    // Fallback to local data on error
-    await loadFallbackData();
-    
-    // Show error message to user
-    showErrorMessage('Unable to connect to server. Using offline data.');
-    
-    // Initialize app with fallback data
-    if (window.initializeApp) window.initializeApp();
-    if (window.initializeProfiles) window.initializeProfiles();
-    
-    hideLoadingState();
-  }
-}
-
-// Fallback data loading
-async function loadFallbackData() {
-  try {
-    const response = await fetch('data.json');
-    const data = await response.json();
+fetch('../data/data.json')
+  .then(response => response.json())
+  .then(data => {
     tournamentData.players = data.players;
+    playersData.players = data.players;
+
+    // Iniciar la lógica después de que se hayan cargado los datos
+    if (window.initializeApp) initializeApp();
+    if (window.initializeProfiles) initializeProfiles();
+  });
+
+
+async function cargarPartidas() {
+  try {
+    const resp = await fetch('../data/matches.json');
+    if (!resp.ok) throw new Error(`Error HTTP: ${resp.status}`);
+    const partidas = await resp.json();
     
-    if (window.playersData) {
-      window.playersData.players = data.players;
-    }
-    
-    console.log('📁 Loaded fallback data from data.json');
-  } catch (error) {
-    console.error('❌ Error loading fallback data:', error);
-    // Use minimal default data
-    tournamentData.players = [];
+    const grid = document.querySelector('.matches-grid');
+    grid.innerHTML = ''; // Limpia si ya había algo
+
+    partidas.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'match-card';
+
+      // Fecha
+      const dateDiv = document.createElement('div');
+      dateDiv.className = 'match-date';
+      dateDiv.textContent = formatearFecha(p.date);
+
+      // Jugadores
+      const playersDiv = document.createElement('div');
+      playersDiv.className = 'match-players';
+
+      p.players.forEach((player, index) => {
+        const span = document.createElement('span');
+        span.className = 'player';
+        span.textContent = player;
+        playersDiv.appendChild(span);
+        if (index < p.players.length - 1) {
+          const vs = document.createElement('span');
+          vs.className = 'vs';
+          vs.textContent = 'VS';
+          playersDiv.appendChild(vs);
+        }
+      });
+
+      // Hora
+      const timeDiv = document.createElement('div');
+      timeDiv.className = 'match-time';
+      timeDiv.textContent = formatearHora(p.time);
+
+      // Ensamblar tarjeta
+      card.appendChild(dateDiv);
+      card.appendChild(playersDiv);
+      card.appendChild(timeDiv);
+      grid.appendChild(card);
+    });
+
+  } catch (err) {
+    console.error('Error cargando partidas:', err);
   }
 }
 
-// Loading state management
-function showLoadingState() {
-  const loadingHTML = `
-    <div id="loading-overlay" style="
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.9);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      backdrop-filter: blur(5px);
-    ">
-      <div style="text-align: center;">
-        <div style="
-          width: 50px;
-          height: 50px;
-          border: 4px solid #e5e7eb;
-          border-top: 4px solid #2563eb;
-          border-radius: 50%;
-          animation: spin 1s linear infinite;
-          margin: 0 auto 1rem;
-        "></div>
-        <p style="color: #6b7280; font-size: 1.1rem;">Cargando datos del torneo...</p>
-      </div>
-    </div>
-    <style>
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-    </style>
-  `;
-  
-  document.body.insertAdjacentHTML('beforeend', loadingHTML);
+function formatearFecha(fecha) {
+  const [a, m, d] = fecha.split('-');
+  return `${d}-${m}-${a}`;
 }
 
-function hideLoadingState() {
-  const loadingOverlay = document.getElementById('loading-overlay');
-  if (loadingOverlay) {
-    loadingOverlay.remove();
-  }
+function formatearHora(hora24) {
+  const [h, m] = hora24.split(':');
+  let h12 = +h % 12 || 12;
+  let ampm = +h >= 12 ? 'PM' : 'AM';
+  return `${h12}:${m} ${ampm}`;
 }
 
-function showErrorMessage(message) {
-  const errorHTML = `
-    <div id="error-banner" style="
-      position: fixed;
-      top: 70px;
-      left: 0;
-      width: 100%;
-      background: #fef2f2;
-      border-bottom: 1px solid #fecaca;
-      padding: 1rem;
-      text-align: center;
-      z-index: 1000;
-      color: #dc2626;
-      font-weight: 500;
-    ">
-      ⚠️ ${message}
-      <button onclick="document.getElementById('error-banner').remove()" style="
-        margin-left: 1rem;
-        background: none;
-        border: none;
-        color: #dc2626;
-        cursor: pointer;
-        font-weight: bold;
-      ">×</button>
-    </div>
-  `;
-  
-  document.body.insertAdjacentHTML('afterbegin', errorHTML);
-  
-  // Auto-hide after 10 seconds
-  setTimeout(() => {
-    const banner = document.getElementById('error-banner');
-    if (banner) banner.remove();
-  }, 10000);
-}
 
 // DOM Elements
 const navToggle = document.getElementById('nav-toggle');
@@ -168,93 +88,38 @@ const totalMatchesEl = document.getElementById('total-matches');
 const currentLeaderEl = document.getElementById('current-leader');
 
 // Initialize the application
+/* document.addEventListener('DOMContentLoaded', function() {
+  initializeNavigation();
+  initializeTable();
+  updateStats();
+  initializeScrollEffects();
+}); */
+
+
 window.initializeApp = function() {
   cargarPartidas();
   initializeNavigation();
   initializeTable();
   updateStats();
   initializeScrollEffects();
-  setupAPIRefresh();
 };
 
-// Setup API refresh functionality
-function setupAPIRefresh() {
-  // Add refresh button to the page
-  const refreshButton = document.createElement('button');
-  refreshButton.innerHTML = '🔄 Actualizar Datos';
-  refreshButton.className = 'refresh-btn';
-  refreshButton.style.cssText = `
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 500;
-    box-shadow: var(--shadow-lg);
-    transition: all 0.3s ease;
-    z-index: 1000;
-  `;
-  
-  refreshButton.addEventListener('click', async () => {
-    refreshButton.innerHTML = '⏳ Actualizando...';
-    refreshButton.disabled = true;
-    
-    try {
-      // Clear API cache
-      window.tournamentAPI.clearAllCaches();
-      
-      // Reload data
-      await initializeDataFromAPI();
-      
-      refreshButton.innerHTML = '✅ Actualizado';
-      setTimeout(() => {
-        refreshButton.innerHTML = '🔄 Actualizar Datos';
-        refreshButton.disabled = false;
-      }, 2000);
-      
-    } catch (error) {
-      refreshButton.innerHTML = '❌ Error';
-      setTimeout(() => {
-        refreshButton.innerHTML = '🔄 Actualizar Datos';
-        refreshButton.disabled = false;
-      }, 2000);
-    }
-  });
-  
-  document.body.appendChild(refreshButton);
-  
-  // Auto-refresh every 5 minutes if API is available
-  setInterval(async () => {
-    const isHealthy = await window.tournamentAPI.checkHealth();
-    if (isHealthy) {
-      console.log('🔄 Auto-refreshing data...');
-      window.tournamentAPI.clearAllCaches();
-      await initializeDataFromAPI();
-    }
-  }, 5 * 60 * 1000); // 5 minutes
-}
 
 // Navigation functionality
 function initializeNavigation() {
   // Mobile menu toggle
-  if (navToggle && navMenu) {
-    navToggle.addEventListener('click', function() {
-      navMenu.classList.toggle('active');
-      navToggle.classList.toggle('active');
-    });
+  navToggle.addEventListener('click', function() {
+    navMenu.classList.toggle('active');
+    navToggle.classList.toggle('active');
+  });
 
-    // Close mobile menu when clicking on a link
-    document.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', function() {
-        navMenu.classList.remove('active');
-        navToggle.classList.remove('active');
-      });
+  // Close mobile menu when clicking on a link
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', function() {
+      navMenu.classList.remove('active');
+      navToggle.classList.remove('active');
     });
-  }
+  });
 
   // Smooth scrolling for navigation links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -297,60 +162,41 @@ function updateActiveNavLink() {
 
 // Table functionality
 function initializeTable() {
-  if (!tableBody) return;
-  
   renderTable(tournamentData.players);
   
   // Search functionality
-  if (searchInput) {
-    searchInput.addEventListener('input', debounce(function() {
-      const searchTerm = this.value.toLowerCase();
-      const filteredPlayers = tournamentData.players.filter(player =>
-        player.name.toLowerCase().includes(searchTerm)
-      );
-      renderTable(filteredPlayers);
-    }, 300));
-  }
+  searchInput.addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    const filteredPlayers = tournamentData.players.filter(player =>
+      player.name.toLowerCase().includes(searchTerm)
+    );
+    renderTable(filteredPlayers);
+  });
 
   // Sort functionality
-  if (sortSelect) {
-    sortSelect.addEventListener('change', function() {
-      const sortBy = this.value;
-      const sortedPlayers = [...tournamentData.players].sort((a, b) => {
-        switch (sortBy) {
-          case 'points':
-            return b.points - a.points;
-          case 'wins':
-            return b.wins - a.wins;
-          case 'matches':
-            return b.matches - a.matches;
-          default:
-            return b.points - a.points;
-        }
-      });
-      renderTable(sortedPlayers);
+  sortSelect.addEventListener('change', function() {
+    const sortBy = this.value;
+    const sortedPlayers = [...tournamentData.players].sort((a, b) => {
+      switch (sortBy) {
+        case 'points':
+          return b.points - a.points;
+        case 'wins':
+          return b.wins - a.wins;
+        case 'matches':
+          return b.matches - a.matches;
+        default:
+          return b.points - a.points;
+      }
     });
-  }
+    renderTable(sortedPlayers);
+  });
 }
 
 function renderTable(players) {
-  if (!tableBody) return;
-  
   // Sort players by points for position calculation
   const sortedPlayers = [...players].sort((a, b) => b.points - a.points);
   
   tableBody.innerHTML = '';
-  
-  if (sortedPlayers.length === 0) {
-    tableBody.innerHTML = `
-      <tr>
-        <td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
-          No hay jugadores disponibles
-        </td>
-      </tr>
-    `;
-    return;
-  }
   
   sortedPlayers.forEach((player, index) => {
     const position = index + 1;
@@ -378,6 +224,8 @@ function renderTable(players) {
   });
 }
 
+
+
 function getRatioClass(ratio) {
   if (ratio >= 70) return 'ratio-good';
   if (ratio >= 40) return 'ratio-average';
@@ -402,48 +250,14 @@ function openPlayerProfileFromTable(playerId) {
 }
 
 // Statistics update
-async function updateStats() {
-  try {
-    // Try to get fresh stats from API
-    const statsResponse = await window.tournamentAPI.getTournamentStats();
-    
-    if (statsResponse.success) {
-      const stats = statsResponse.data;
-      
-      if (totalPlayersEl) totalPlayersEl.textContent = stats.overview.totalPlayers;
-      if (totalMatchesEl) totalMatchesEl.textContent = stats.overview.totalMatches;
-      if (currentLeaderEl) currentLeaderEl.textContent = stats.overview.currentLeader?.name || 'N/A';
-      
-      // Update best performers
-      const bestEconomyEl = document.getElementById('best-economy');
-      const bestMilitaryEl = document.getElementById('best-military');
-      
-      if (bestEconomyEl && stats.bestPerformers.economy) {
-        bestEconomyEl.textContent = stats.bestPerformers.economy.categoryStats?.economy?.average?.toFixed(1) || 'N/A';
-      }
-      
-      if (bestMilitaryEl && stats.bestPerformers.military) {
-        bestMilitaryEl.textContent = stats.bestPerformers.military.categoryStats?.military?.average?.toFixed(1) || 'N/A';
-      }
-      
-    } else {
-      // Fallback to local calculation
-      updateStatsFromLocalData();
-    }
-  } catch (error) {
-    console.warn('Could not fetch stats from API, using local data:', error);
-    updateStatsFromLocalData();
-  }
-}
-
-function updateStatsFromLocalData() {
+function updateStats() {
   const totalPlayers = tournamentData.players.length;
-  const totalMatches = Math.floor(tournamentData.players.reduce((sum, player) => sum + player.matches, 0) / 2);
+  const totalMatches = tournamentData.players.reduce((sum, player) => sum + player.matches, 0) / 2;
   const leader = [...tournamentData.players].sort((a, b) => b.points - a.points)[0];
   
-  if (totalPlayersEl) totalPlayersEl.textContent = totalPlayers;
-  if (totalMatchesEl) totalMatchesEl.textContent = totalMatches;
-  if (currentLeaderEl) currentLeaderEl.textContent = leader?.name || 'N/A';
+  totalPlayersEl.textContent = totalPlayers;
+  totalMatchesEl.textContent = Math.floor(totalMatches);
+  currentLeaderEl.textContent = leader.name;
 }
 
 // Scroll effects
@@ -451,14 +265,12 @@ function initializeScrollEffects() {
   // Navbar background on scroll
   window.addEventListener('scroll', function() {
     const navbar = document.querySelector('.navbar');
-    if (navbar) {
-      if (window.scrollY > 50) {
-        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
-      } else {
-        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-        navbar.style.boxShadow = 'none';
-      }
+    if (window.scrollY > 50) {
+      navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+      navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+    } else {
+      navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+      navbar.style.boxShadow = 'none';
     }
   });
 
@@ -497,9 +309,6 @@ function debounce(func, wait) {
 
 // Add some interactive features
 document.addEventListener('DOMContentLoaded', function() {
-  // Initialize data loading
-  initializeDataFromAPI();
-  
   // Add click effects to cards
   document.querySelectorAll('.stats-card, .match-card, .player-card').forEach(card => {
     card.addEventListener('click', function() {
@@ -513,79 +322,58 @@ document.addEventListener('DOMContentLoaded', function() {
   // Add keyboard navigation support
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-      if (navMenu) navMenu.classList.remove('active');
-      if (navToggle) navToggle.classList.remove('active');
+      navMenu.classList.remove('active');
+      navToggle.classList.remove('active');
     }
   });
 });
 
-// Enhanced Tournament App API
+// Export functions for potential future use
 window.TournamentApp = {
-  // Update player data
   updatePlayerData: function(newData) {
     tournamentData.players = newData;
     renderTable(tournamentData.players);
     updateStats();
   },
   
-  // Add match via API
-  addMatch: async function(matchData) {
-    try {
-      const result = await window.tournamentAPI.createMatch(matchData);
-      if (result.success) {
-        console.log('✅ Match added successfully');
-        // Refresh data
-        await initializeDataFromAPI();
-        return result;
-      } else {
-        throw new Error(result.error || 'Failed to add match');
+  addMatch: function(player1, player2, winner, scores) {
+    // Find players and update their stats
+    const p1 = tournamentData.players.find(p => p.name === player1);
+    const p2 = tournamentData.players.find(p => p.name === player2);
+    
+    if (p1 && p2 && scores) {
+      p1.matches++;
+      p2.matches++;
+      
+      // Update category stats for both players
+      Object.keys(scores.player1).forEach(category => {
+        p1.categoryStats[category].total += scores.player1[category];
+        p1.categoryStats[category].matches++;
+        p1.categoryStats[category].average = p1.categoryStats[category].total / p1.categoryStats[category].matches;
+      });
+      
+      Object.keys(scores.player2).forEach(category => {
+        p2.categoryStats[category].total += scores.player2[category];
+        p2.categoryStats[category].matches++;
+        p2.categoryStats[category].average = p2.categoryStats[category].total / p2.categoryStats[category].matches;
+      });
+      
+      if (winner === player1) {
+        p1.wins++;
+        p1.points += 3;
+        p2.losses++;
+      } else if (winner === player2) {
+        p2.wins++;
+        p2.points += 3;
+        p1.losses++;
       }
-    } catch (error) {
-      console.error('❌ Error adding match:', error);
-      throw error;
+      
+      renderTable(tournamentData.players);
+      updateStats();
     }
   },
 
-  // Get player stats
-  getPlayerStats: async function(playerId) {
-    try {
-      const result = await window.tournamentAPI.getPlayerStats(playerId);
-      return result.success ? result.data : null;
-    } catch (error) {
-      console.error('❌ Error getting player stats:', error);
-      return tournamentData.players.find(p => p.id === playerId);
-    }
-  },
-
-  // Simulate match for testing
-  simulateMatch: async function(playerIds, mapName = 'Random Map') {
-    try {
-      const result = await window.tournamentAPI.simulateMatch(playerIds, mapName);
-      if (result.success) {
-        console.log('✅ Match simulated successfully');
-        // Refresh data
-        await initializeDataFromAPI();
-        return result;
-      } else {
-        throw new Error(result.error || 'Failed to simulate match');
-      }
-    } catch (error) {
-      console.error('❌ Error simulating match:', error);
-      throw error;
-    }
-  },
-
-  // Refresh all data
-  refreshData: async function() {
-    window.tournamentAPI.clearAllCaches();
-    await initializeDataFromAPI();
-  },
-
-  // Get API health status
-  getAPIStatus: async function() {
-    return await window.tournamentAPI.checkHealth();
+  getPlayerStats: function(playerId) {
+    return tournamentData.players.find(p => p.id === playerId);
   }
 };
-
-// Make functions globally available
-window.openPlayerProfileFromTable = openPlayerProfileFromTable;
