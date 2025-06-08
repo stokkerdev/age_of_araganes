@@ -8,7 +8,7 @@
       "wins": 0,
       "points": 0,
       "joinDate": "06-07-2025",
-      "favoriteStrategy": "rush",
+      "favoriteStrategy": "none",
       "favoriteCivilization": "none",
       "status": "active",
       "categoryStats": {
@@ -46,8 +46,8 @@
       "wins": 0,
       "points": 0,
       "joinDate": "06-07-2025",
-      "favoriteStrategy": "rush",
-      "favoriteCivilization": "Mayas",
+      "favoriteStrategy": "none",
+      "favoriteCivilization": "none",
       "status": "active",
       "categoryStats": {
         "military": { "total": 0, "average": 0, "matches": 0, "best": 0 },
@@ -65,8 +65,8 @@
       "wins": 0,
       "points": 0,
       "joinDate": "06-07-2025",
-      "favoriteStrategy": "rush",
-      "favoriteCivilization": "Mayas",
+      "favoriteStrategy": "none",
+      "favoriteCivilization": "none",
       "status": "active",
       "categoryStats": {
         "military": { "total": 0, "average": 0, "matches": 0, "best": 0 },
@@ -84,8 +84,8 @@
       "wins": 0,
       "points": 0,
       "joinDate": "06-07-2025",
-      "favoriteStrategy": "rush",
-      "favoriteCivilization": "Mayas",
+      "favoriteStrategy": "none",
+      "favoriteCivilization": "none",
       "status": "active",
       "categoryStats": {
         "military": { "total": 0, "average": 0, "matches": 0, "best": 0 },
@@ -103,8 +103,8 @@
       "wins": 0,
       "points": 0,
       "joinDate": "06-07-2025",
-      "favoriteStrategy": "rush",
-      "favoriteCivilization": "Mayas",
+      "favoriteStrategy": "none",
+      "favoriteCivilization": "none",
       "status": "active",
       "categoryStats": {
         "military": { "total": 0, "average": 0, "matches": 0, "best": 0 },
