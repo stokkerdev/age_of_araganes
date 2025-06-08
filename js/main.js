@@ -118,7 +118,6 @@ function initializeTable() {
           return b.wins - a.wins;
         case 'matches':
           return b.matches - a.matches;
- 
         default:
           return b.points - a.points;
       }
