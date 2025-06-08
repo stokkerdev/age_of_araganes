@@ -1,6 +1,6 @@
 let tournamentData = { players: [] };
 
-fetch('../data/data.json')
+fetch('/data/data.json')
   .then(response => response.json())
   .then(data => {
     tournamentData.players = data.players;
@@ -14,7 +14,7 @@ fetch('../data/data.json')
 
 async function cargarPartidas() {
   try {
-    const resp = await fetch('../data/matches.json');
+    const resp = await fetch('/data/matches.json');
     if (!resp.ok) throw new Error(`Error HTTP: ${resp.status}`);
     const partidas = await resp.json();
     
