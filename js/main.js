@@ -1,15 +1,6 @@
 let tournamentData = { players: [] };
 
-fetch('/data/data.json')
-  .then(response => response.json())
-  .then(data => {
-    tournamentData.players = data.players;
-    playersData.players = data.players;
 
-    // Iniciar la lógica después de que se hayan cargado los datos
-    if (window.initializeApp) initializeApp();
-    if (window.initializeProfiles) initializeProfiles();
-  });
 
 
 async function cargarPartidas() {
