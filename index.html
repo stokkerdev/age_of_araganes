@@ -42,7 +42,7 @@
           <div class="stat-label">Jugadores</div>
         </div>
         <div class="stat-card">
-          <div class="stat-number" id="total-matches">1</div>
+          <div class="stat-number" id="total-matches">0</div>
           <div class="stat-label">Partidas</div>
         </div>
         <div class="stat-card">
@@ -65,7 +65,6 @@
               <option value="points">Ordenar por Puntos</option>
               <option value="wins">Ordenar por Victorias</option>
               <option value="matches">Ordenar por Partidas</option>
-    
             </select>
           </div>
           <div class="table-wrapper">
@@ -115,39 +114,39 @@
             <div class="stats-icon">⚔️</div>
             <div class="stats-content">
               <h3>Partida más Larga</h3>
-              <p class="stats-value">null</p>
-              <p class="stats-detail">null</p>
+              <p class="stats-value" id="longest-match">--</p>
+              <p class="stats-detail" id="longest-match-detail">Cargando...</p>
             </div>
           </div>
           <div class="stats-card">
             <div class="stats-icon">🏃‍♂️</div>
             <div class="stats-content">
               <h3>Partida más Rápida</h3>
-              <p class="stats-value">null</p>
-              <p class="stats-detail">null</p>
+              <p class="stats-value" id="shortest-match">--</p>
+              <p class="stats-detail" id="shortest-match-detail">Cargando...</p>
             </div>
           </div>
           <div class="stats-card">
             <div class="stats-icon">👑</div>
             <div class="stats-content">
               <h3>Líder Actual</h3>
-              <p class="stats-value" id="current-leader">null</p>
-              <p class="stats-detail">null</p>
+              <p class="stats-value" id="current-leader">--</p>
+              <p class="stats-detail" id="leader-points">-- puntos</p>
             </div>
           </div>
           <div class="stats-card">
             <div class="stats-icon">🎯</div>
             <div class="stats-content">
               <h3>Mejor Ratio</h3>
-              <p class="stats-value">none%</p>
-              <p class="stats-detail">null</p>
+              <p class="stats-value" id="best-ratio">--%</p>
+              <p class="stats-detail" id="best-ratio-player">--</p>
             </div>
           </div>
           <div class="stats-card">
             <div class="stats-icon">💰</div>
             <div class="stats-content">
               <h3>Mejor Economía</h3>
-              <p class="stats-value" id="best-economy">85.2</p>
+              <p class="stats-value" id="best-economy">--</p>
               <p class="stats-detail">Promedio más alto</p>
             </div>
           </div>
@@ -155,7 +154,7 @@
             <div class="stats-icon">⚔️</div>
             <div class="stats-content">
               <h3>Mejor Militar</h3>
-              <p class="stats-value" id="best-military">92.1</p>
+              <p class="stats-value" id="best-military">--</p>
               <p class="stats-detail">Dominio en combate</p>
             </div>
           </div>
@@ -163,18 +162,13 @@
       </div>
     </section>
 
-
     <!-- Calendario de eventos -->
-
     <section class="section">
       <div class="container">
         <h2 class="section-title">Próximas Partidas</h2>
         <div class="matches-grid">
-
-
-
           <div class="match-card">
-            <div class="match-date">08-06-2025</div>
+            <div class="match-date">08-01-2025</div>
             <div class="match-players">
               <span class="player">Cairbus</span>
               <span class="vs">VS</span>
@@ -186,10 +180,6 @@
             </div>
             <div class="match-time">8:00 PM</div>
           </div>
-       
-
-
-     
         </div>
       </div>
     </section>
@@ -214,6 +204,9 @@
         <div class="footer-section">
           <h3>Age of Araganes</h3>
           <p>El torneo más aragan de Age of Empires II</p>
+          <p style="margin-top: 1rem; font-size: 0.9rem; color: #9ca3af;">
+            🌐 <span id="api-status">Conectando a la base de datos...</span>
+          </p>
         </div>
         <div class="footer-section">
           <h4>Enlaces</h4>
@@ -229,6 +222,18 @@
           <p>📧 stokkerma@gmail.com</p>
           <p>🎮 Discord: stokker_</p>
         </div>
+        <div class="footer-section">
+          <h4>Administración</h4>
+          <button onclick="showAdminPanel()" style="
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+          ">Panel de Admin</button>
+        </div>
       </div>
       <div class="footer-bottom">
         <p>&copy; 2025 Torneo Age of Araganes. Todos los derechos reservados.</p>
@@ -236,7 +241,123 @@
     </div>
   </footer>
 
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
   <script src="js/main.js"></script>
   <script src="js/players.js"></script>
+  
+  <!-- Admin Panel Script -->
+  <script>
+    // Simple admin panel for testing
+    function showAdminPanel() {
+      const panel = document.createElement('div');
+      panel.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        z-index: 10000;
+        max-width: 400px;
+        width: 90%;
+      `;
+      
+      panel.innerHTML = `
+        <h3 style="margin-bottom: 1rem;">Panel de Administración</h3>
+        <div style="margin-bottom: 1rem;">
+          <button onclick="simulateRandomMatch()" style="
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 0.5rem;
+          ">Simular Partida Aleatoria</button>
+          
+          <button onclick="checkAPIStatus()" style="
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 0.5rem;
+          ">Verificar Estado de API</button>
+          
+          <button onclick="refreshAllData()" style="
+            background: #f59e0b;
+            color: white;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 0.5rem;
+          ">Actualizar Todos los Datos</button>
+        </div>
+        
+        <button onclick="this.parentElement.remove()" style="
+          background: #ef4444;
+          color: white;
+          border: none;
+          padding: 0.5rem 1rem;
+          border-radius: 6px;
+          cursor: pointer;
+          width: 100%;
+        ">Cerrar</button>
+      `;
+      
+      document.body.appendChild(panel);
+    }
+    
+    async function simulateRandomMatch() {
+      try {
+        const players = ['stokker', 'kylecher', 'nicoz'];
+        const result = await window.TournamentApp.simulateMatch(players);
+        alert('✅ Partida simulada exitosamente!');
+      } catch (error) {
+        alert('❌ Error simulando partida: ' + error.message);
+      }
+    }
+    
+    async function checkAPIStatus() {
+      const isHealthy = await window.TournamentApp.getAPIStatus();
+      alert(isHealthy ? '✅ API funcionando correctamente' : '❌ API no disponible');
+    }
+    
+    async function refreshAllData() {
+      try {
+        await window.TournamentApp.refreshData();
+        alert('✅ Datos actualizados exitosamente!');
+      } catch (error) {
+        alert('❌ Error actualizando datos: ' + error.message);
+      }
+    }
+    
+    // Update API status indicator
+    async function updateAPIStatus() {
+      const statusEl = document.getElementById('api-status');
+      if (statusEl) {
+        try {
+          const isHealthy = await window.tournamentAPI.checkHealth();
+          statusEl.textContent = isHealthy ? 'Conectado a la base de datos' : 'Modo offline';
+          statusEl.style.color = isHealthy ? '#10b981' : '#f59e0b';
+        } catch (error) {
+          statusEl.textContent =  'Modo offline';
+          statusEl.style.color = '#f59e0b';
+        }
+      }
+    }
+    
+    // Check API status periodically
+    setInterval(updateAPIStatus, 30000); // Every 30 seconds
+    setTimeout(updateAPIStatus, 2000); // Initial check after 2 seconds
+  </script>
 </body>
 </html>
