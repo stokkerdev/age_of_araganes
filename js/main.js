@@ -1,6 +1,6 @@
 let tournamentData = { players: [] };
 
-fetch('/src/data/data.json')
+fetch('/data/data.json')
   .then(response => response.json())
   .then(data => {
     tournamentData.players = data.players;
