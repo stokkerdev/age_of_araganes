@@ -1,14 +1,17 @@
 let tournamentData = { players: [] };
 
-fetch('/src/data/data.json')
-  .then(response => response.json())
+fetch('data/data.json')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+    }
+    return response.json();
+  })
   .then(data => {
-    tournamentData.players = data.players;
-    playersData.players = data.players;
-
-    // Iniciar la lógica después de que se hayan cargado los datos
-    if (window.initializeApp) initializeApp();
-    if (window.initializeProfiles) initializeProfiles();
+    console.log("Datos cargados correctamente:", data);
+  })
+  .catch(error => {
+    console.error("Error al cargar el JSON:", error);
   });
 
 
