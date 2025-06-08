@@ -1,6 +1,6 @@
 let tournamentData = { players: [] };
 
-fetch('data.json')
+fetch('../data/data.json')
   .then(response => response.json())
   .then(data => {
     tournamentData.players = data.players;
@@ -10,6 +10,71 @@ fetch('data.json')
     if (window.initializeApp) initializeApp();
     if (window.initializeProfiles) initializeProfiles();
   });
+
+
+async function cargarPartidas() {
+  try {
+    const resp = await fetch('../data/matches.json');
+    if (!resp.ok) throw new Error(`Error HTTP: ${resp.status}`);
+    const partidas = await resp.json();
+    
+    const grid = document.querySelector('.matches-grid');
+    grid.innerHTML = ''; // Limpia si ya había algo
+
+    partidas.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'match-card';
+
+      // Fecha
+      const dateDiv = document.createElement('div');
+      dateDiv.className = 'match-date';
+      dateDiv.textContent = formatearFecha(p.date);
+
+      // Jugadores
+      const playersDiv = document.createElement('div');
+      playersDiv.className = 'match-players';
+
+      p.players.forEach((player, index) => {
+        const span = document.createElement('span');
+        span.className = 'player';
+        span.textContent = player;
+        playersDiv.appendChild(span);
+        if (index < p.players.length - 1) {
+          const vs = document.createElement('span');
+          vs.className = 'vs';
+          vs.textContent = 'VS';
+          playersDiv.appendChild(vs);
+        }
+      });
+
+      // Hora
+      const timeDiv = document.createElement('div');
+      timeDiv.className = 'match-time';
+      timeDiv.textContent = formatearHora(p.time);
+
+      // Ensamblar tarjeta
+      card.appendChild(dateDiv);
+      card.appendChild(playersDiv);
+      card.appendChild(timeDiv);
+      grid.appendChild(card);
+    });
+
+  } catch (err) {
+    console.error('Error cargando partidas:', err);
+  }
+}
+
+function formatearFecha(fecha) {
+  const [a, m, d] = fecha.split('-');
+  return `${d}-${m}-${a}`;
+}
+
+function formatearHora(hora24) {
+  const [h, m] = hora24.split(':');
+  let h12 = +h % 12 || 12;
+  let ampm = +h >= 12 ? 'PM' : 'AM';
+  return `${h12}:${m} ${ampm}`;
+}
 
 
 // DOM Elements
@@ -32,6 +97,7 @@ const currentLeaderEl = document.getElementById('current-leader');
 
 
 window.initializeApp = function() {
+  cargarPartidas();
   initializeNavigation();
   initializeTable();
   updateStats();
