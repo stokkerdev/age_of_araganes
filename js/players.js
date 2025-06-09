@@ -241,9 +241,9 @@ class PlayerProfileManager {
             <div class="category-fill" style="width: ${percentage}%; background-color: ${category.color}"></div>
           </div>
           <div class="category-details">
-            <span>Total: ${stats.total}</span>
+            <span>Peor: ${stats.worst}</span>
             <span>Mejor: ${stats.best}</span>
-            <span>Partidas: ${stats.matches}</span>
+           
           </div>
         </div>
       `;
@@ -300,6 +300,7 @@ class PlayerProfileManager {
   }
 
   createPerformanceChart(player) {
+    console.log("Generando gráfico para:", player.name, player.categoryStats);
     const categories = ['military', 'economy', 'technology', 'society'];
     const maxValue = 100;
 

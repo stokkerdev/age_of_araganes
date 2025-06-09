@@ -12,10 +12,10 @@
       "favoriteCivilization": "none",
       "status": "active",
       "categoryStats": {
-        "military": { "total": 13791, "average": 13791, "matches": 1, "best": 13791 },
-        "economy": { "total": 17488, "average":17488 , "matches": 1, "best": 17488 },
-        "technology": { "total": 6040, "average": 6040, "matches": 1, "best": 6040 },
-        "society": { "total": 990, "average": 990, "matches": 1, "best": 990 }
+        "military": { "worst": 13791, "average": 13791, "best": 13791 },
+        "economy": { "worst": 17488, "average":17488 , "best": 17488 },
+        "technology": { "worst": 6040, "average": 6040, "best": 6040 },
+        "society": { "worst": 990, "average": 990, "best": 990 }
       },
       "matchHistory": []
     },
@@ -31,10 +31,10 @@
       "favoriteCivilization": "none",
       "status": "active",
       "categoryStats": {
-        "military": { "total": 12577, "average": 12577, "matches": 1, "best": 12577 },
-        "economy": { "total": 10201, "average": 10201, "matches": 1, "best": 10201 },
-        "technology": { "total": 6279, "average": 6279, "matches": 1, "best": 6279},
-        "society": { "total": 130, "average": 130, "matches": 1, "best":130 }
+        "military": { "worst": 12577, "average": 12577, "best": 12577 },
+        "economy": { "worst": 10201, "average": 10201, "best": 10201 },
+        "technology": { "worst": 6279, "average": 6279, "best": 6279},
+        "society": { "worst": 130, "average": 130, "best":130 }
       },
       "matchHistory": []
     },
@@ -50,10 +50,10 @@
       "favoriteCivilization": "none",
       "status": "active",
       "categoryStats": {
-        "military": { "total": 0, "average": 0, "matches": 0, "best": 0 },
-        "economy": { "total": 0, "average": 0, "matches": 0, "best": 0 },
-        "technology": { "total": 0, "average": 0, "matches": 0, "best": 0 },
-        "society": { "total": 0, "average": 0, "matches": 0, "best": 0 }
+        "military": { "worst": 0, "average": 0, "best": 0 },
+        "economy": { "worst": 0, "average": 0, "best": 0 },
+        "technology": { "worst": 0, "average": 0, "best": 0 },
+        "society": { "worst": 0, "average": 0, "best": 0 }
       },
       "matchHistory": []
     },
@@ -69,10 +69,10 @@
       "favoriteCivilization": "none",
       "status": "active",
       "categoryStats": {
-        "military": { "total": 7972, "average": 7972, "matches": 1, "best": 7972 },
-        "economy": { "total": 6285, "average": 6285, "matches": 1, "best": 6285 },
-        "technology": { "total": 5895, "average": 5895, "matches": 1, "best": 5895 },
-        "society": { "total": 130, "average": 130, "matches": 1, "best": 130 }
+        "military": { "worst": 7972, "average": 7972, "best": 7972 },
+        "economy": { "worst": 6285, "average": 6285, "best": 6285 },
+        "technology": { "worst": 5895, "average": 5895, "best": 5895 },
+        "society": { "worst": 130, "average": 130, "best": 130 }
       },
       "matchHistory": []
     },
@@ -88,10 +88,10 @@
       "favoriteCivilization": "none",
       "status": "active",
       "categoryStats": {
-        "military": { "total": 10250, "average": 10250, "matches": 1, "best": 10250 },
-        "economy": { "total": 8929, "average": 8929, "matches": 1, "best": 8929 },
-        "technology": { "total": 4290, "average": 4290, "matches": 1, "best": 4290 },
-        "society": { "total": 730, "average": 730, "matches": 1, "best": 730 }
+        "military": { "worst": 10250, "average": 10250, "best": 10250 },
+        "economy": { "worst": 8929, "average": 8929, "best": 8929 },
+        "technology": { "worst": 4290, "average": 4290, "best": 4290 },
+        "society": { "worst": 730, "average": 730, "best": 730 }
       },
       "matchHistory": []
     },
@@ -107,10 +107,10 @@
       "favoriteCivilization": "none",
       "status": "active",
       "categoryStats": {
-        "military": { "total": 1848, "average": 1848, "matches": 1, "best": 1848 },
-        "economy": { "total": 10131, "average": 10131, "matches": 1, "best": 10131 },
-        "technology": { "total": 3128, "average": 3128, "matches": 1, "best": 3128 },
-        "society": { "total": 860, "average": 860, "matches": 1, "best": 860 }
+        "military": { "worst": 1848, "average": 1848, "best": 1848 },
+        "economy": { "worst": 10131, "average": 10131, "best": 10131 },
+        "technology": { "worst": 3128, "average": 3128, "best": 3128 },
+        "society": { "worst": 860, "average": 860, "best": 860 }
       },
       "matchHistory": []
     }
