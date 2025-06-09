@@ -1,7 +1,5 @@
 let playersData = { players: [] };
 
-
-
 fetch('data/data.json')
   .then(response => {
     if (!response.ok) {
@@ -10,20 +8,18 @@ fetch('data/data.json')
     return response.json();
   })
   .then(data => {
-    playersData.players = data.players; // Aquí se guardan los datos
+    playersData.players = data.players;
     console.log("Datos cargados correctamente:", playersData.players);
-    initializeProfiles(); // Aquí se inicializa el sistema con los datos
+    initializeProfiles();
   })
   .catch(error => {
     console.error("Error al cargar el JSON:", error);
   });
 
-
 window.initializeProfiles = function () {
   window.playerProfileManager = new PlayerProfileManager();
   updateMainStatsWithPlayerData();
 };
-
 
 // Player profile functionality
 class PlayerProfileManager {
@@ -77,7 +73,7 @@ class PlayerProfileManager {
     card.className = 'player-card';
     card.innerHTML = `
       <div class="player-card-header">
-        <img src="${player.avatar}" alt="${player.name}" class="player-avatar">
+        <img src="${player.avatar || 'https://via.placeholder.com/60x60?text=' + player.name.charAt(0)}" alt="${player.name}" class="player-avatar" onerror="this.src='https://via.placeholder.com/60x60?text=${player.name.charAt(0)}'">
         <div class="player-basic-info">
           <h3 class="player-name">${player.name}</h3>
           <p class="player-status">${this.getStatusText(player.status)}</p>
@@ -102,26 +98,26 @@ class PlayerProfileManager {
         </div>
         <div class="stat-row">
           <span class="stat-label">Promedio:</span>
-          <span class="stat-value">${totalAverage.toFixed(1)}</span>
+          <span class="stat-value">${totalAverage.toFixed(0)}</span>
         </div>
       </div>
 
       <div class="player-card-categories">
         <div class="category-mini" title="Militar">
           <span class="category-icon">⚔️</span>
-          <span class="category-value">${player.categoryStats.military.average.toFixed(1)}</span>
+          <span class="category-value">${Math.round(player.categoryStats.military.average)}</span>
         </div>
         <div class="category-mini" title="Economía">
           <span class="category-icon">💰</span>
-          <span class="category-value">${player.categoryStats.economy.average.toFixed(1)}</span>
+          <span class="category-value">${Math.round(player.categoryStats.economy.average)}</span>
         </div>
         <div class="category-mini" title="Tecnología">
           <span class="category-icon">🔬</span>
-          <span class="category-value">${player.categoryStats.technology.average.toFixed(1)}</span>
+          <span class="category-value">${Math.round(player.categoryStats.technology.average)}</span>
         </div>
         <div class="category-mini" title="Sociedad">
           <span class="category-icon">👥</span>
-          <span class="category-value">${player.categoryStats.society.average.toFixed(1)}</span>
+          <span class="category-value">${Math.round(player.categoryStats.society.average)}</span>
         </div>
       </div>
 
@@ -153,7 +149,7 @@ class PlayerProfileManager {
 
     return `
       <div class="profile-header">
-        <img src="${player.avatar}" alt="${player.name}" class="profile-avatar">
+        <img src="${player.avatar || 'https://via.placeholder.com/100x100?text=' + player.name.charAt(0)}" alt="${player.name}" class="profile-avatar" onerror="this.src='https://via.placeholder.com/100x100?text=${player.name.charAt(0)}'">
         <div class="profile-info">
           <h3>${player.name}</h3>
           <p class="profile-rank">Posición #${this.getPlayerRank(player)} en el torneo</p>
@@ -169,7 +165,7 @@ class PlayerProfileManager {
             <span class="summary-label">Ratio V/D</span>
           </div>
           <div class="summary-stat">
-            <span class="summary-number">${totalAverage.toFixed(1)}</span>
+            <span class="summary-number">${Math.round(totalAverage)}</span>
             <span class="summary-label">Promedio</span>
           </div>
         </div>
@@ -202,16 +198,16 @@ class PlayerProfileManager {
         </div>
 
         <div class="detail-section">
-          <h4>Historial de Partidas</h4>
-          <div class="match-history">
-            ${this.createMatchHistory(player.matchHistory)}
+          <h4>Gráfico de Rendimiento</h4>
+          <div class="performance-chart">
+            ${this.createPerformanceChart(player)}
           </div>
         </div>
 
         <div class="detail-section">
-          <h4>Gráfico de Rendimiento</h4>
-          <div class="performance-chart">
-            ${this.createPerformanceChart(player)}
+          <h4>Historial de Partidas</h4>
+          <div class="match-history">
+            ${this.createMatchHistory(player.matchHistory)}
           </div>
         </div>
       </div>
@@ -221,21 +217,22 @@ class PlayerProfileManager {
   createCategoryStats(categoryStats) {
     const categories = [
       { key: 'military', name: 'Militar', icon: '⚔️', color: '#ef4444' },
-      { key: 'economy', name: 'Economía', icon: '🏛️', color: '#f59e0b' },
+      { key: 'economy', name: 'Economía', icon: '💰', color: '#f59e0b' },
       { key: 'technology', name: 'Tecnología', icon: '🔬', color: '#3b82f6' },
       { key: 'society', name: 'Sociedad', icon: '👥', color: '#10b981' }
     ];
 
     return categories.map(category => {
       const stats = categoryStats[category.key];
-      const percentage = (stats.average / 100) * 100;
+      const maxPossible = 20000; // Valor máximo estimado para calcular porcentaje
+      const percentage = Math.min((stats.average / maxPossible) * 100, 100);
 
       return `
         <div class="category-stat">
           <div class="category-header">
             <span class="category-icon">${category.icon}</span>
             <span class="category-name">${category.name}</span>
-            <span class="category-average">${stats.average.toFixed(1)}</span>
+            <span class="category-average">${Math.round(stats.average)}</span>
           </div>
           <div class="category-bar">
             <div class="category-fill" style="width: ${percentage}%; background-color: ${category.color}"></div>
@@ -243,7 +240,6 @@ class PlayerProfileManager {
           <div class="category-details">
             <span>Peor: ${stats.worst}</span>
             <span>Mejor: ${stats.best}</span>
-           
           </div>
         </div>
       `;
@@ -255,43 +251,44 @@ class PlayerProfileManager {
       return '<p class="no-matches">No hay partidas registradas</p>';
     }
 
-    return matchHistory.map(match => {
-      const resultClass = match.result === 'win' ? 'match-win' : 'match-loss';
-      const resultText = match.result === 'win' ? 'Victoria' : 'Derrota';
-      const totalScore = match.scores.military + match.scores.economy + match.scores.technology + match.scores.society;
+    return matchHistory.slice(0, 10).map(match => { // Mostrar solo las últimas 10 partidas
+      const isWin = match.position === 1;
+      const resultClass = isWin ? 'match-win' : 'match-loss';
+      const resultText = isWin ? 'Victoria' : `${match.position}º lugar`;
 
       return `
         <div class="match-item ${resultClass}">
           <div class="match-main">
             <div class="match-opponent">
-              <span class="match-vs">vs ${match.opponent}</span>
+              <span class="match-vs">Partida ${match.totalPlayers} jugadores</span>
               <span class="match-result">${resultText}</span>
             </div>
             <div class="match-meta">
               <span class="match-date">${this.formatDate(match.date)}</span>
               <span class="match-duration">${match.duration}</span>
+              <span class="match-map">📍 ${match.map}</span>
             </div>
           </div>
           <div class="match-scores">
             <div class="score-item">
               <span class="score-icon">⚔️</span>
-              <span class="score-value">${match.scores.military}</span>
+              <span class="score-value">${match.scores.military.toLocaleString()}</span>
             </div>
             <div class="score-item">
-              <span class="score-icon">🏛️</span>
-              <span class="score-value">${match.scores.economy}</span>
+              <span class="score-icon">💰</span>
+              <span class="score-value">${match.scores.economy.toLocaleString()}</span>
             </div>
             <div class="score-item">
               <span class="score-icon">🔬</span>
-              <span class="score-value">${match.scores.technology}</span>
+              <span class="score-value">${match.scores.technology.toLocaleString()}</span>
             </div>
             <div class="score-item">
               <span class="score-icon">👥</span>
-              <span class="score-value">${match.scores.society}</span>
+              <span class="score-value">${match.scores.society.toLocaleString()}</span>
             </div>
             <div class="score-total">
               <span class="score-label">Total:</span>
-              <span class="score-value">${totalScore}</span>
+              <span class="score-value">${match.totalScore.toLocaleString()}</span>
             </div>
           </div>
         </div>
@@ -300,70 +297,95 @@ class PlayerProfileManager {
   }
 
   createPerformanceChart(player) {
-    console.log("Generando gráfico para:", player.name, player.categoryStats);
     const categories = ['military', 'economy', 'technology', 'society'];
-    const maxValue = 100;
+    const categoryLabels = ['Militar', 'Economía', 'Tecnología', 'Sociedad'];
+    
+    // Normalizar valores para el gráfico (0-100)
+    const maxValues = {
+      military: 20000,
+      economy: 20000,
+      technology: 10000,
+      society: 2000
+    };
+
+    const normalizedValues = categories.map(category => {
+      const value = player.categoryStats[category].average;
+      const maxValue = maxValues[category];
+      return Math.min((value / maxValue) * 100, 100);
+    });
+
+    // Crear puntos del polígono
+    const centerX = 150;
+    const centerY = 150;
+    const radius = 100;
+    
+    const points = normalizedValues.map((value, index) => {
+      const angle = (index * 90 - 90) * Math.PI / 180; // 90 grados entre cada punto
+      const r = (value / 100) * radius;
+      const x = centerX + r * Math.cos(angle);
+      const y = centerY + r * Math.sin(angle);
+      return `${x},${y}`;
+    }).join(' ');
+
+    // Crear líneas de la grilla
+    const gridLines = [20, 40, 60, 80, 100].map(percentage => {
+      const r = (percentage / 100) * radius;
+      const gridPoints = categories.map((_, index) => {
+        const angle = (index * 90 - 90) * Math.PI / 180;
+        const x = centerX + r * Math.cos(angle);
+        const y = centerY + r * Math.sin(angle);
+        return `${x},${y}`;
+      }).join(' ');
+      return `<polygon points="${gridPoints}" fill="none" stroke="#e5e7eb" stroke-width="1"/>`;
+    }).join('');
+
+    // Crear líneas de los ejes
+    const axisLines = categories.map((_, index) => {
+      const angle = (index * 90 - 90) * Math.PI / 180;
+      const x = centerX + radius * Math.cos(angle);
+      const y = centerY + radius * Math.sin(angle);
+      return `<line x1="${centerX}" y1="${centerY}" x2="${x}" y2="${y}" stroke="#e5e7eb" stroke-width="1"/>`;
+    }).join('');
+
+    // Crear etiquetas
+    const labels = categoryLabels.map((label, index) => {
+      const angle = (index * 90 - 90) * Math.PI / 180;
+      const x = centerX + (radius + 20) * Math.cos(angle);
+      const y = centerY + (radius + 20) * Math.sin(angle);
+      return `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" class="radar-label" style="font-size: 12px; fill: #6b7280; font-weight: 600;">${label}</text>`;
+    }).join('');
 
     return `
-      <div class="radar-chart">
-        <svg viewBox="0 0 200 200" class="radar-svg">
-          <!-- Grid lines -->
-          <g class="radar-grid">
-            ${[20, 40, 60, 80, 100].map(value => {
-      const radius = (value / 100) * 80;
-      return `<circle cx="100" cy="100" r="${radius}" fill="none" stroke="#e5e7eb" stroke-width="1"/>`;
-    }).join('')}
-            
-            <!-- Axis lines -->
-            ${categories.map((_, index) => {
-      const angle = (index * 90 - 90) * Math.PI / 180;
-      const x = 100 + 80 * Math.cos(angle);
-      const y = 100 + 80 * Math.sin(angle);
-      return `<line x1="100" y1="100" x2="${x}" y2="${y}" stroke="#e5e7eb" stroke-width="1"/>`;
-    }).join('')}
-          </g>
+      <div class="radar-chart" style="display: flex; justify-content: center;">
+        <svg viewBox="0 0 300 300" style="width: 300px; height: 300px;">
+          <!-- Grid -->
+          ${gridLines}
+          ${axisLines}
           
           <!-- Data polygon -->
           <polygon
-            points="${categories.map((category, index) => {
-      const value = player.categoryStats[category].average;
-      const angle = (index * 90 - 90) * Math.PI / 180;
-      const radius = (value / 100) * 80;
-      const x = 100 + radius * Math.cos(angle);
-      const y = 100 + radius * Math.sin(angle);
-      return `${x},${y}`;
-    }).join(' ')}"
+            points="${points}"
             fill="rgba(37, 99, 235, 0.2)"
             stroke="#2563eb"
             stroke-width="2"
           />
           
           <!-- Data points -->
-          ${categories.map((category, index) => {
-      const value = player.categoryStats[category].average;
-      const angle = (index * 90 - 90) * Math.PI / 180;
-      const radius = (value / 100) * 80;
-      const x = 100 + radius * Math.cos(angle);
-      const y = 100 + radius * Math.sin(angle);
-      return `<circle cx="${x}" cy="${y}" r="3" fill="#2563eb"/>`;
-    }).join('')}
+          ${normalizedValues.map((value, index) => {
+            const angle = (index * 90 - 90) * Math.PI / 180;
+            const r = (value / 100) * radius;
+            const x = centerX + r * Math.cos(angle);
+            const y = centerY + r * Math.sin(angle);
+            return `<circle cx="${x}" cy="${y}" r="4" fill="#2563eb"/>`;
+          }).join('')}
           
           <!-- Labels -->
-          ${categories.map((category, index) => {
-      const angle = (index * 90 - 90) * Math.PI / 180;
-      const x = 100 + 95 * Math.cos(angle);
-      const y = 100 + 95 * Math.sin(angle);
-      const labels = { military: 'Mil', economy: 'Eco', technology: 'Tec', society: 'Soc' };
-      return `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" class="radar-label">${labels[category]}</text>`;
-    }).join('')}
+          ${labels}
         </svg>
-        
-        <div class="chart-legend">
-          <div class="legend-item">
-            <span class="legend-color" style="background-color: #2563eb;"></span>
-            <span class="legend-text">Promedio del jugador</span>
-          </div>
-        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: #6b7280;">
+        Promedio de puntuaciones por categoría
       </div>
     `;
   }
@@ -379,28 +401,26 @@ class PlayerProfileManager {
 
     let filteredPlayers = this.players;
 
-    // Buscar por nombre
     if (searchTerm) {
       filteredPlayers = filteredPlayers.filter(player =>
         player.name.toLowerCase().includes(searchTerm)
       );
     }
 
-    // Filtrar por estado si hay filtro seleccionado
     if (filterValue !== 'all') {
-      filteredPlayers = filteredPlayers.filter(player =>
-        player.status === filterValue
-      );
+      if (filterValue === 'top') {
+        filteredPlayers = filteredPlayers.filter(player => player.points > 0);
+      } else {
+        filteredPlayers = filteredPlayers.filter(player => player.status === filterValue);
+      }
     }
 
-    // Renderizar resultados filtrados
     this.playersGrid.innerHTML = '';
     filteredPlayers.forEach(player => {
       const playerCard = this.createPlayerCard(player);
       this.playersGrid.appendChild(playerCard);
     });
   }
-
 
   // Utility methods
   calculateTotalAverage(player) {
@@ -429,25 +449,13 @@ class PlayerProfileManager {
   }
 
   formatDate(dateString) {
+    if (!dateString) return 'No disponible';
     const date = new Date(dateString);
     return date.toLocaleDateString('es-ES', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
     });
-  }
-
-  // Public methods for external access
-  getPlayerData(playerId) {
-    return this.players.find(p => p.id === playerId);
-  }
-
-  updatePlayerStats(playerId, newStats) {
-    const player = this.players.find(p => p.id === playerId);
-    if (player) {
-      Object.assign(player, newStats);
-      this.renderPlayersGrid();
-    }
   }
 
   getBestPlayerInCategory(category) {
@@ -461,25 +469,27 @@ class PlayerProfileManager {
 
 // Initialize player profile manager when DOM is loaded
 document.addEventListener('DOMContentLoaded', function () {
-  window.playerProfileManager = new PlayerProfileManager();
-
-  // Update main stats with player data
-  updateMainStatsWithPlayerData();
+  if (playersData.players.length > 0) {
+    window.playerProfileManager = new PlayerProfileManager();
+    updateMainStatsWithPlayerData();
+  }
 });
 
 function updateMainStatsWithPlayerData() {
-  const bestEconomy = playerProfileManager.getBestPlayerInCategory('economy');
-  const bestMilitary = playerProfileManager.getBestPlayerInCategory('military');
-  const bestTecnology = playerProfileManager.getBestPlayerInCategory('technology');
-  const bestSociety = playerProfileManager.getBestPlayerInCategory('society');
+  if (!window.playerProfileManager || !window.playerProfileManager.players.length) return;
 
-  const bestTecnologyEl = document.getElementById('best-tecno');
-  const bestSocietyEl = document.getElementById('best-society');
-  const bestEconomyEl = document.getElementById('best-economy');
-  const bestMilitaryEl = document.getElementById('best-military');
+  try {
+    const bestEconomy = playerProfileManager.getBestPlayerInCategory('economy');
+    const bestMilitary = playerProfileManager.getBestPlayerInCategory('military');
+    const bestTechnology = playerProfileManager.getBestPlayerInCategory('technology');
+    const bestSociety = playerProfileManager.getBestPlayerInCategory('society');
 
-  if (bestTecnologyEl) bestTecnologyEl.textContent = `${bestTecnology.categoryStats.technology.best.toFixed(1)} - ${bestTecnology.name}`;
-  if (bestSocietyEl) bestSocietyEl.textContent = `${bestSociety.categoryStats.society.best.toFixed(1)} - ${bestSociety.name}`;
-  if (bestEconomyEl) bestEconomyEl.textContent = `${bestEconomy.categoryStats.economy.best.toFixed(1)} - ${bestEconomy.name}`;
-  if (bestMilitaryEl) bestMilitaryEl.textContent =`${ bestMilitary.categoryStats.military.best.toFixed(1)} - ${bestMilitary.name}`;
+    const bestEconomyEl = document.getElementById('best-economy');
+    const bestMilitaryEl = document.getElementById('best-military');
+
+    if (bestEconomyEl) bestEconomyEl.textContent = `${Math.round(bestEconomy.categoryStats.economy.best)} - ${bestEconomy.name}`;
+    if (bestMilitaryEl) bestMilitaryEl.textContent = `${Math.round(bestMilitary.categoryStats.military.best)} - ${bestMilitary.name}`;
+  } catch (error) {
+    console.error('Error actualizando estadísticas principales:', error);
+  }
 }
