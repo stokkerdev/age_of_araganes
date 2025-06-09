@@ -22,15 +22,18 @@ fetch('data/data.json')
 
 async function cargarPartidas() {
   try {
-    const resp = await fetch('/data/matches.json');
+    const resp = await fetch('data/matches.json');
+    console.log(resp);
     if (!resp.ok) throw new Error(`Error HTTP: ${resp.status}`);
+
     const partidas = await resp.json();
-    
+    console.log('Partidas cargadas:', partidas);
     const grid = document.querySelector('.matches-grid');
     grid.innerHTML = ''; // Limpia si ya había algo
 
     partidas.forEach(p => {
       const card = document.createElement('div');
+      
       card.className = 'match-card';
 
       // Fecha
@@ -96,22 +99,23 @@ const totalMatchesEl = document.getElementById('total-matches');
 const currentLeaderEl = document.getElementById('current-leader');
 
 // Initialize the application
-/* document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
+  cargarPartidas();
   initializeNavigation();
   initializeTable();
   updateStats();
   initializeScrollEffects();
-}); */
+});
 
 
-window.initializeApp = function() {
+/* window.initializeApp = function() {
   cargarPartidas();
   initializeNavigation();
   initializeTable();
   updateStats();
   initializeScrollEffects();
 };
-
+ */
 
 // Navigation functionality
 function initializeNavigation() {
