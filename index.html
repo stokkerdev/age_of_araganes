@@ -245,6 +245,7 @@
   </footer>
 
   <!-- Scripts -->
+  <script src="js/dataManager.js"></script>
   <script src="js/main.js"></script>
   <script src="js/players.js"></script>
   <script src="js/matchManager.js"></script>
@@ -437,6 +438,12 @@
       font-weight: 500;
     }
 
+    .player-total {
+      font-weight: 600;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
     .drag-handle {
       color: var(--text-secondary);
       cursor: grab;
@@ -451,6 +458,10 @@
       gap: 1rem;
       justify-content: flex-end;
       margin-top: 2rem;
+    }
+
+    .btn-loading {
+      display: none;
     }
 
     @keyframes slideInRight {

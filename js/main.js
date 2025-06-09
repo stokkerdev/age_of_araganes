@@ -1,39 +1,56 @@
 let tournamentData = { players: [] };
 
-fetch('data/data.json')
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+// Inicializar el sistema cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', async function() {
+  try {
+    // Cargar datos usando el DataManager
+    if (!window.dataManager.isLoaded) {
+      const data = await window.dataManager.loadAllData();
+      tournamentData.players = data.players;
+    } else {
+      tournamentData.players = window.dataManager.getPlayers();
     }
-    return response.json();
-  })
-  .then(data => {
-    console.log("Datos cargados correctamente:", data);
-    tournamentData.players = data.players; // 👈 Asignar los jugadores al estado global
-    initializeTable(); // 👈 Renderizar la tabla con los datos cargados
-    updateStats();     // 👈 Actualizar estadísticas
-  })
-  .catch(error => {
-    console.error("Error al cargar el JSON:", error);
-  });
-
-
-
+    
+    console.log("Datos cargados correctamente:", tournamentData.players);
+    
+    // Inicializar componentes
+    initializeNavigation();
+    initializeTable();
+    updateStats();
+    initializeScrollEffects();
+    cargarPartidas();
+    
+    // Escuchar actualizaciones de datos
+    window.addEventListener('tournamentDataUpdated', (event) => {
+      tournamentData.players = event.detail.players;
+      renderTable(tournamentData.players);
+      updateStats();
+    });
+    
+  } catch (error) {
+    console.error("Error al cargar el sistema:", error);
+  }
+});
 
 async function cargarPartidas() {
   try {
     const resp = await fetch('data/matches.json');
-    console.log(resp);
     if (!resp.ok) throw new Error(`Error HTTP: ${resp.status}`);
 
     const partidas = await resp.json();
-    console.log('Partidas cargadas:', partidas);
+    console.log('Partidas programadas cargadas:', partidas);
     const grid = document.querySelector('.matches-grid');
-    grid.innerHTML = ''; // Limpia si ya había algo
+    
+    // Limpiar contenido existente
+    grid.innerHTML = '';
+
+    if (partidas.length === 0) {
+      grid.innerHTML = '<p style="text-align: center; color: var(--text-secondary); font-style: italic;">No hay partidas programadas</p>';
+      return;
+    }
 
     partidas.forEach(p => {
       const card = document.createElement('div');
-      
       card.className = 'match-card';
 
       // Fecha
@@ -71,7 +88,9 @@ async function cargarPartidas() {
     });
 
   } catch (err) {
-    console.error('Error cargando partidas:', err);
+    console.error('Error cargando partidas programadas:', err);
+    const grid = document.querySelector('.matches-grid');
+    grid.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Error cargando partidas programadas</p>';
   }
 }
 
@@ -87,52 +106,30 @@ function formatearHora(hora24) {
   return `${h12}:${m} ${ampm}`;
 }
 
-
 // DOM Elements
 const navToggle = document.getElementById('nav-toggle');
 const navMenu = document.getElementById('nav-menu');
 const searchInput = document.getElementById('search-player');
 const sortSelect = document.getElementById('sort-by');
 const tableBody = document.getElementById('table-body');
-const totalPlayersEl = document.getElementById('total-players');
-const totalMatchesEl = document.getElementById('total-matches');
-const currentLeaderEl = document.getElementById('current-leader');
-const bestRatio = document.getElementById('best-ratio');
-
-// Initialize the application
-document.addEventListener('DOMContentLoaded', function() {
-  cargarPartidas();
-  initializeNavigation();
-  initializeTable();
-  updateStats();
-  initializeScrollEffects();
-});
-
-
-/* window.initializeApp = function() {
-  cargarPartidas();
-  initializeNavigation();
-  initializeTable();
-  updateStats();
-  initializeScrollEffects();
-};
- */
 
 // Navigation functionality
 function initializeNavigation() {
   // Mobile menu toggle
-  navToggle.addEventListener('click', function() {
-    navMenu.classList.toggle('active');
-    navToggle.classList.toggle('active');
-  });
-
-  // Close mobile menu when clicking on a link
-  document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', function() {
-      navMenu.classList.remove('active');
-      navToggle.classList.remove('active');
+  if (navToggle && navMenu) {
+    navToggle.addEventListener('click', function() {
+      navMenu.classList.toggle('active');
+      navToggle.classList.toggle('active');
     });
-  });
+
+    // Close mobile menu when clicking on a link
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function() {
+        navMenu.classList.remove('active');
+        navToggle.classList.remove('active');
+      });
+    });
+  }
 
   // Smooth scrolling for navigation links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -175,37 +172,45 @@ function updateActiveNavLink() {
 
 // Table functionality
 function initializeTable() {
+  if (!tournamentData.players.length) return;
+  
   renderTable(tournamentData.players);
   
   // Search functionality
-  searchInput.addEventListener('input', function() {
-    const searchTerm = this.value.toLowerCase();
-    const filteredPlayers = tournamentData.players.filter(player =>
-      player.name.toLowerCase().includes(searchTerm)
-    );
-    renderTable(filteredPlayers);
-  });
+  if (searchInput) {
+    searchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      const filteredPlayers = tournamentData.players.filter(player =>
+        player.name.toLowerCase().includes(searchTerm)
+      );
+      renderTable(filteredPlayers);
+    });
+  }
 
   // Sort functionality
-  sortSelect.addEventListener('change', function() {
-    const sortBy = this.value;
-    const sortedPlayers = [...tournamentData.players].sort((a, b) => {
-      switch (sortBy) {
-        case 'points':
-          return b.points - a.points;
-        case 'wins':
-          return b.wins - a.wins;
-        case 'matches':
-          return b.matches - a.matches;
-        default:
-          return b.points - a.points;
-      }
+  if (sortSelect) {
+    sortSelect.addEventListener('change', function() {
+      const sortBy = this.value;
+      const sortedPlayers = [...tournamentData.players].sort((a, b) => {
+        switch (sortBy) {
+          case 'points':
+            return b.points - a.points;
+          case 'wins':
+            return b.wins - a.wins;
+          case 'matches':
+            return b.matches - a.matches;
+          default:
+            return b.points - a.points;
+        }
+      });
+      renderTable(sortedPlayers);
     });
-    renderTable(sortedPlayers);
-  });
+  }
 }
 
 function renderTable(players) {
+  if (!tableBody) return;
+  
   // Sort players by points for position calculation
   const sortedPlayers = [...players].sort((a, b) => b.points - a.points);
   
@@ -237,8 +242,6 @@ function renderTable(players) {
   });
 }
 
-
-
 function getRatioClass(ratio) {
   if (ratio >= 70) return 'ratio-good';
   if (ratio >= 40) return 'ratio-average';
@@ -256,7 +259,6 @@ function getPositionClass(position) {
 
 // Function to open player profile from table
 function openPlayerProfileFromTable(playerId) {
-  // This will be called by the player profile manager
   if (window.playerProfileManager) {
     window.playerProfileManager.openPlayerProfile(playerId);
   }
@@ -264,14 +266,57 @@ function openPlayerProfileFromTable(playerId) {
 
 // Statistics update
 function updateStats() {
-  const totalPlayers = tournamentData.players.length;
-  const totalMatches = tournamentData.players.reduce((sum, player) => sum + player.matches, 0) / 2;
-  const leader = [...tournamentData.players].sort((a, b) => b.points - a.points)[0];
+  if (!tournamentData.players.length) return;
   
-  totalPlayersEl.textContent = totalPlayers;
-  totalMatchesEl.textContent = Math.floor(totalMatches)-1;
-  currentLeaderEl.textContent = leader.name;
-  bestRatio.textContent = `${(leader.wins / leader.matches * 100).toFixed(1)}% - ${leader.name}`;
+  try {
+    const stats = window.dataManager ? window.dataManager.getTournamentStats() : getBasicStats();
+    
+    // Actualizar elementos del DOM
+    const elements = {
+      'total-players': stats.totalPlayers,
+      'total-matches': stats.totalMatches,
+      'current-leader': stats.leader ? stats.leader.name : '--',
+      'leader-points': stats.leader ? `${stats.leader.points} puntos` : '-- puntos'
+    };
+
+    Object.entries(elements).forEach(([id, value]) => {
+      const element = document.getElementById(id);
+      if (element) element.textContent = value;
+    });
+
+    // Actualizar ratio si hay datos
+    if (stats.bestRatio && stats.bestRatio.matches > 0) {
+      const ratio = ((stats.bestRatio.wins / stats.bestRatio.matches) * 100).toFixed(1);
+      const bestRatioEl = document.getElementById('best-ratio');
+      const bestRatioPlayerEl = document.getElementById('best-ratio-player');
+      
+      if (bestRatioEl) bestRatioEl.textContent = `${ratio}%`;
+      if (bestRatioPlayerEl) bestRatioPlayerEl.textContent = stats.bestRatio.name;
+    }
+
+  } catch (error) {
+    console.error('Error actualizando estadísticas:', error);
+  }
+}
+
+function getBasicStats() {
+  const totalPlayers = tournamentData.players.length;
+  const totalMatches = Math.floor(tournamentData.players.reduce((sum, player) => sum + player.matches, 0) / 2);
+  const leader = [...tournamentData.players].sort((a, b) => b.points - a.points)[0];
+  const bestRatio = tournamentData.players
+    .filter(p => p.matches > 0)
+    .reduce((best, player) => {
+      const ratio = (player.wins / player.matches) * 100;
+      const bestRatio = best.matches > 0 ? (best.wins / best.matches) * 100 : 0;
+      return ratio > bestRatio ? player : best;
+    }, { matches: 0 });
+
+  return {
+    totalPlayers,
+    totalMatches,
+    leader,
+    bestRatio: bestRatio.matches > 0 ? bestRatio : null
+  };
 }
 
 // Scroll effects
@@ -279,12 +324,14 @@ function initializeScrollEffects() {
   // Navbar background on scroll
   window.addEventListener('scroll', function() {
     const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-      navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-      navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
-    } else {
-      navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-      navbar.style.boxShadow = 'none';
+    if (navbar) {
+      if (window.scrollY > 50) {
+        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+      } else {
+        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+        navbar.style.boxShadow = 'none';
+      }
     }
   });
 
@@ -308,19 +355,6 @@ function initializeScrollEffects() {
   });
 }
 
-// Utility functions
-function debounce(func, wait) {
-  let timeout;
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
-    };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
-}
-
 // Add some interactive features
 document.addEventListener('DOMContentLoaded', function() {
   // Add click effects to cards
@@ -336,8 +370,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // Add keyboard navigation support
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-      navMenu.classList.remove('active');
-      navToggle.classList.remove('active');
+      if (navMenu) navMenu.classList.remove('active');
+      if (navToggle) navToggle.classList.remove('active');
     }
   });
 });
@@ -350,44 +384,19 @@ window.TournamentApp = {
     updateStats();
   },
   
-  addMatch: function(player1, player2, winner, scores) {
-    // Find players and update their stats
-    const p1 = tournamentData.players.find(p => p.name === player1);
-    const p2 = tournamentData.players.find(p => p.name === player2);
-    
-    if (p1 && p2 && scores) {
-      p1.matches++;
-      p2.matches++;
-      
-      // Update category stats for both players
-      Object.keys(scores.player1).forEach(category => {
-        p1.categoryStats[category].total += scores.player1[category];
-        p1.categoryStats[category].matches++;
-        p1.categoryStats[category].average = p1.categoryStats[category].total / p1.categoryStats[category].matches;
-      });
-      
-      Object.keys(scores.player2).forEach(category => {
-        p2.categoryStats[category].total += scores.player2[category];
-        p2.categoryStats[category].matches++;
-        p2.categoryStats[category].average = p2.categoryStats[category].total / p2.categoryStats[category].matches;
-      });
-      
-      if (winner === player1) {
-        p1.wins++;
-        p1.points += 3;
-        p2.losses++;
-      } else if (winner === player2) {
-        p2.wins++;
-        p2.points += 3;
-        p1.losses++;
-      }
-      
-      renderTable(tournamentData.players);
-      updateStats();
-    }
-  },
-
   getPlayerStats: function(playerId) {
     return tournamentData.players.find(p => p.id === playerId);
+  },
+
+  refreshData: async function() {
+    try {
+      const data = await window.dataManager.loadAllData();
+      tournamentData.players = data.players;
+      renderTable(tournamentData.players);
+      updateStats();
+      console.log('Datos actualizados desde el servidor');
+    } catch (error) {
+      console.error('Error actualizando datos:', error);
+    }
   }
 };

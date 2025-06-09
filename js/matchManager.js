@@ -2,27 +2,30 @@ class MatchManager {
   constructor() {
     this.players = [];
     this.matches = [];
+    this.dataManager = window.dataManager;
     this.init();
   }
 
   async init() {
-    await this.loadData();
-    this.setupEventListeners();
-  }
-
-  async loadData() {
     try {
-      const response = await fetch('data/data.json');
-      const data = await response.json();
-      this.players = data.players;
-      console.log('Datos de jugadores cargados:', this.players);
+      // Esperar a que el dataManager esté listo
+      if (!this.dataManager.isLoaded) {
+        const data = await this.dataManager.loadAllData();
+        this.players = data.players;
+        this.matches = data.matches;
+      } else {
+        this.players = this.dataManager.getPlayers();
+        this.matches = this.dataManager.getMatches();
+      }
+      
+      this.setupEventListeners();
+      console.log('MatchManager inicializado con', this.players.length, 'jugadores y', this.matches.length, 'partidas');
     } catch (error) {
-      console.error('Error cargando datos:', error);
+      console.error('Error inicializando MatchManager:', error);
     }
   }
 
   setupEventListeners() {
-    // Event listener para el botón de agregar partida
     const addMatchBtn = document.getElementById('add-match-btn');
     if (addMatchBtn) {
       addMatchBtn.addEventListener('click', () => this.showAddMatchModal());
@@ -75,6 +78,8 @@ class MatchManager {
                   <option value="Mediterranean">Mediterranean</option>
                   <option value="Baltic">Baltic</option>
                   <option value="Fortress">Fortress</option>
+                  <option value="Hideout">Hideout</option>
+                  <option value="Gold Rush">Gold Rush</option>
                 </select>
               </div>
             </div>
@@ -97,6 +102,7 @@ class MatchManager {
 
             <div class="form-section" id="scores-section" style="display: none;">
               <h3>Puntuaciones por Jugador</h3>
+              <p class="form-note">Ingresa las puntuaciones finales de cada categoría</p>
               <div id="player-scores">
                 <!-- Se generará dinámicamente -->
               </div>
@@ -104,7 +110,12 @@ class MatchManager {
 
             <div class="form-section" id="ranking-section" style="display: none;">
               <h3>Posiciones Finales</h3>
-              <p class="form-note">Arrastra para ordenar del 1º al último puesto</p>
+              <p class="form-note">Arrastra para ordenar del 1º al último puesto (o se ordenará automáticamente por puntuación total)</p>
+              <div class="form-group">
+                <label>
+                  <input type="checkbox" id="auto-rank" checked> Ordenar automáticamente por puntuación total
+                </label>
+              </div>
               <div id="final-ranking" class="ranking-list">
                 <!-- Se generará dinámicamente -->
               </div>
@@ -114,8 +125,9 @@ class MatchManager {
               <button type="button" onclick="this.closest('.modal-overlay').remove(); document.body.style.overflow = '';" class="btn-secondary">
                 Cancelar
               </button>
-              <button type="submit" class="btn-primary">
-                Guardar Partida
+              <button type="submit" class="btn-primary" id="save-match-btn">
+                <span class="btn-text">Guardar Partida</span>
+                <span class="btn-loading" style="display: none;">Guardando...</span>
               </button>
             </div>
           </form>
@@ -123,9 +135,7 @@ class MatchManager {
       </div>
     `;
 
-    // Event listeners para el modal
     this.setupModalEventListeners(modal);
-    
     return modal;
   }
 
@@ -137,6 +147,7 @@ class MatchManager {
     const playerScores = modal.querySelector('#player-scores');
     const finalRanking = modal.querySelector('#final-ranking');
     const selectionError = modal.querySelector('#selection-error');
+    const autoRankCheckbox = modal.querySelector('#auto-rank');
 
     // Listener para cambios en selección de jugadores
     playerCheckboxes.forEach(checkbox => {
@@ -163,6 +174,13 @@ class MatchManager {
       });
     });
 
+    // Listener para auto-ranking
+    autoRankCheckbox.addEventListener('change', () => {
+      if (autoRankCheckbox.checked) {
+        this.updateRankingByScores(playerScores, finalRanking);
+      }
+    });
+
     // Listener para envío del formulario
     form.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -179,19 +197,19 @@ class MatchManager {
           <div class="score-inputs">
             <div class="score-input-group">
               <label>⚔️ Militar:</label>
-              <input type="number" id="military-${playerId}" min="0" max="50000" required placeholder="0">
+              <input type="number" id="military-${playerId}" min="0" max="50000" required placeholder="0" class="score-input">
             </div>
             <div class="score-input-group">
               <label>💰 Economía:</label>
-              <input type="number" id="economy-${playerId}" min="0" max="50000" required placeholder="0">
+              <input type="number" id="economy-${playerId}" min="0" max="50000" required placeholder="0" class="score-input">
             </div>
             <div class="score-input-group">
               <label>🔬 Tecnología:</label>
-              <input type="number" id="technology-${playerId}" min="0" max="50000" required placeholder="0">
+              <input type="number" id="technology-${playerId}" min="0" max="50000" required placeholder="0" class="score-input">
             </div>
             <div class="score-input-group">
               <label>👥 Sociedad:</label>
-              <input type="number" id="society-${playerId}" min="0" max="50000" required placeholder="0">
+              <input type="number" id="society-${playerId}" min="0" max="50000" required placeholder="0" class="score-input">
             </div>
           </div>
           <div class="total-score">
@@ -207,6 +225,13 @@ class MatchManager {
         const input = container.querySelector(`#${category}-${playerId}`);
         input.addEventListener('input', () => {
           this.updatePlayerTotal(playerId, container);
+          
+          // Si auto-rank está activado, actualizar ranking
+          const autoRankCheckbox = document.querySelector('#auto-rank');
+          if (autoRankCheckbox && autoRankCheckbox.checked) {
+            const finalRanking = document.querySelector('#final-ranking');
+            this.updateRankingByScores(container, finalRanking);
+          }
         });
       });
     });
@@ -226,6 +251,40 @@ class MatchManager {
     totalSpan.textContent = total.toLocaleString();
   }
 
+  updateRankingByScores(scoresContainer, rankingContainer) {
+    const playerTotals = [];
+    
+    // Recoger totales de todos los jugadores
+    const playerCards = scoresContainer.querySelectorAll('.player-score-card');
+    playerCards.forEach(card => {
+      const playerName = card.querySelector('h4').textContent;
+      const totalSpan = card.querySelector('[id^="total-"]');
+      const total = parseInt(totalSpan.textContent.replace(/,/g, '')) || 0;
+      const playerId = totalSpan.id.replace('total-', '');
+      
+      playerTotals.push({ playerId, playerName, total });
+    });
+
+    // Ordenar por total descendente
+    playerTotals.sort((a, b) => b.total - a.total);
+
+    // Actualizar el ranking
+    rankingContainer.innerHTML = playerTotals.map((player, index) => `
+      <div class="ranking-item" data-player-id="${player.playerId}">
+        <span class="position">${index + 1}º</span>
+        <span class="player-name">${player.playerName}</span>
+        <span class="player-total">${player.total.toLocaleString()}</span>
+        <span class="drag-handle">⋮⋮</span>
+      </div>
+    `).join('');
+
+    // Reactivar sorteable si no es auto-rank
+    const autoRankCheckbox = document.querySelector('#auto-rank');
+    if (!autoRankCheckbox || !autoRankCheckbox.checked) {
+      this.makeSortable(rankingContainer);
+    }
+  }
+
   generateRankingList(selectedPlayerIds, container) {
     container.innerHTML = selectedPlayerIds.map((playerId, index) => {
       const player = this.players.find(p => p.id === playerId);
@@ -233,12 +292,12 @@ class MatchManager {
         <div class="ranking-item" data-player-id="${playerId}">
           <span class="position">${index + 1}º</span>
           <span class="player-name">${player.name}</span>
+          <span class="player-total">0</span>
           <span class="drag-handle">⋮⋮</span>
         </div>
       `;
     }).join('');
 
-    // Hacer la lista sorteable
     this.makeSortable(container);
   }
 
@@ -293,18 +352,28 @@ class MatchManager {
   }
 
   async handleMatchSubmission(modal) {
+    const saveBtn = modal.querySelector('#save-match-btn');
+    const btnText = saveBtn.querySelector('.btn-text');
+    const btnLoading = saveBtn.querySelector('.btn-loading');
+    
     try {
+      // Mostrar estado de carga
+      saveBtn.disabled = true;
+      btnText.style.display = 'none';
+      btnLoading.style.display = 'inline';
+
       const formData = this.collectFormData(modal);
       
       if (!this.validateMatchData(formData)) {
         return;
       }
 
-      // Actualizar datos de jugadores
-      this.updatePlayersData(formData);
+      // Guardar partida usando el DataManager
+      const savedMatch = await this.dataManager.saveMatch(formData);
       
-      // Simular guardado (en una implementación real, aquí harías la petición al servidor)
-      await this.saveMatchData(formData);
+      // Actualizar datos locales
+      this.players = this.dataManager.getPlayers();
+      this.matches = this.dataManager.getMatches();
       
       // Actualizar la interfaz
       this.refreshInterface();
@@ -314,11 +383,16 @@ class MatchManager {
       document.body.style.overflow = '';
       
       // Mostrar mensaje de éxito
-      this.showSuccessMessage('Partida agregada exitosamente');
+      this.showSuccessMessage(`Partida guardada exitosamente (ID: ${savedMatch.id.slice(-8)})`);
       
     } catch (error) {
       console.error('Error guardando partida:', error);
-      this.showErrorMessage('Error al guardar la partida');
+      this.showErrorMessage('Error al guardar la partida. Inténtalo de nuevo.');
+    } finally {
+      // Restaurar botón
+      saveBtn.disabled = false;
+      btnText.style.display = 'inline';
+      btnLoading.style.display = 'none';
     }
   }
 
@@ -381,84 +455,6 @@ class MatchManager {
     return true;
   }
 
-  updatePlayersData(matchData) {
-    const totalPlayers = matchData.players.length;
-    
-    matchData.players.forEach(playerData => {
-      const player = this.players.find(p => p.id === playerData.id);
-      if (!player) return;
-
-      // Incrementar partidas jugadas
-      player.matches++;
-
-      // Actualizar estadísticas por categoría
-      Object.keys(playerData.scores).forEach(category => {
-        const score = playerData.scores[category];
-        const categoryStats = player.categoryStats[category];
-        
-        // Actualizar peor, mejor y promedio
-        if (categoryStats.worst === 0 || score < categoryStats.worst) {
-          categoryStats.worst = score;
-        }
-        if (score > categoryStats.best) {
-          categoryStats.best = score;
-        }
-        
-        // Calcular nuevo promedio
-        const currentTotal = categoryStats.average * (player.matches - 1);
-        categoryStats.average = (currentTotal + score) / player.matches;
-      });
-
-      // Actualizar puntos según posición
-      const playerRanking = matchData.finalRanking.find(r => r.playerId === playerData.id);
-      if (playerRanking) {
-        const points = totalPlayers - playerRanking.position;
-        player.points += points;
-        
-        // Si ganó (posición 1), incrementar victorias
-        if (playerRanking.position === 1) {
-          player.wins++;
-        }
-      }
-
-      // Agregar partida al historial
-      if (!player.matchHistory) {
-        player.matchHistory = [];
-      }
-
-      const matchHistoryEntry = {
-        date: matchData.date,
-        map: matchData.map,
-        duration: `${matchData.duration} min`,
-        position: matchData.finalRanking.find(r => r.playerId === playerData.id).position,
-        totalPlayers: totalPlayers,
-        scores: playerData.scores,
-        totalScore: playerData.totalScore,
-        opponents: matchData.players
-          .filter(p => p.id !== playerData.id)
-          .map(p => this.getPlayerName(p.id))
-      };
-
-      player.matchHistory.unshift(matchHistoryEntry); // Agregar al inicio
-    });
-  }
-
-  async saveMatchData(matchData) {
-    // En una implementación real, aquí harías una petición POST al servidor
-    // Por ahora, simulamos el guardado actualizando el localStorage
-    
-    const currentData = {
-      players: this.players,
-      lastMatch: matchData,
-      lastUpdate: new Date().toISOString()
-    };
-    
-    localStorage.setItem('tournamentData', JSON.stringify(currentData));
-    
-    // Simular delay de red
-    await new Promise(resolve => setTimeout(resolve, 500));
-  }
-
   refreshInterface() {
     // Actualizar tabla principal
     if (window.TournamentApp && window.TournamentApp.updatePlayerData) {
@@ -471,10 +467,58 @@ class MatchManager {
       window.playerProfileManager.renderPlayersGrid();
     }
 
-    // Actualizar estadísticas
-    if (window.updateMainStatsWithPlayerData) {
-      window.updateMainStatsWithPlayerData();
+    // Actualizar estadísticas principales
+    this.updateMainStats();
+
+    // Disparar evento personalizado para notificar cambios
+    window.dispatchEvent(new CustomEvent('tournamentDataUpdated', {
+      detail: { players: this.players, matches: this.matches }
+    }));
+  }
+
+  updateMainStats() {
+    const stats = this.dataManager.getTournamentStats();
+    
+    // Actualizar contadores principales
+    const totalPlayersEl = document.getElementById('total-players');
+    const totalMatchesEl = document.getElementById('total-matches');
+    const currentLeaderEl = document.getElementById('current-leader');
+    const leaderPointsEl = document.getElementById('leader-points');
+    const bestRatioEl = document.getElementById('best-ratio');
+    const bestRatioPlayerEl = document.getElementById('best-ratio-player');
+    const longestMatchEl = document.getElementById('longest-match');
+    const longestMatchDetailEl = document.getElementById('longest-match-detail');
+    const shortestMatchEl = document.getElementById('shortest-match');
+    const shortestMatchDetailEl = document.getElementById('shortest-match-detail');
+    const bestEconomyEl = document.getElementById('best-economy');
+    const bestMilitaryEl = document.getElementById('best-military');
+
+    if (totalPlayersEl) totalPlayersEl.textContent = stats.totalPlayers;
+    if (totalMatchesEl) totalMatchesEl.textContent = stats.totalMatches;
+    
+    if (stats.leader) {
+      if (currentLeaderEl) currentLeaderEl.textContent = stats.leader.name;
+      if (leaderPointsEl) leaderPointsEl.textContent = `${stats.leader.points} puntos`;
     }
+
+    if (stats.bestRatio && stats.bestRatio.matches > 0) {
+      const ratio = ((stats.bestRatio.wins / stats.bestRatio.matches) * 100).toFixed(1);
+      if (bestRatioEl) bestRatioEl.textContent = `${ratio}%`;
+      if (bestRatioPlayerEl) bestRatioPlayerEl.textContent = stats.bestRatio.name;
+    }
+
+    if (stats.longestMatch) {
+      if (longestMatchEl) longestMatchEl.textContent = `${stats.longestMatch.duration} min`;
+      if (longestMatchDetailEl) longestMatchDetailEl.textContent = `${stats.longestMatch.map} - ${new Date(stats.longestMatch.date).toLocaleDateString()}`;
+    }
+
+    if (stats.shortestMatch) {
+      if (shortestMatchEl) shortestMatchEl.textContent = `${stats.shortestMatch.duration} min`;
+      if (shortestMatchDetailEl) shortestMatchDetailEl.textContent = `${stats.shortestMatch.map} - ${new Date(stats.shortestMatch.date).toLocaleDateString()}`;
+    }
+
+    if (bestEconomyEl) bestEconomyEl.textContent = `${Math.round(stats.bestInCategories.economy.categoryStats.economy.best)} - ${stats.bestInCategories.economy.name}`;
+    if (bestMilitaryEl) bestMilitaryEl.textContent = `${Math.round(stats.bestInCategories.military.categoryStats.military.best)} - ${stats.bestInCategories.military.name}`;
   }
 
   getPlayerName(playerId) {
@@ -505,6 +549,7 @@ class MatchManager {
       z-index: 10000;
       animation: slideInRight 0.3s ease;
       background: ${type === 'success' ? '#10b981' : '#ef4444'};
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     `;
 
     document.body.appendChild(messageEl);
@@ -512,13 +557,35 @@ class MatchManager {
     setTimeout(() => {
       messageEl.style.animation = 'slideOutRight 0.3s ease';
       setTimeout(() => messageEl.remove(), 300);
-    }, 3000);
+    }, 4000);
+  }
+
+  // Método para exportar datos de partidas
+  exportMatchesData() {
+    const data = this.dataManager.exportData();
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `torneo-backup-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
   }
 }
 
-// Inicializar el gestor de partidas
-document.addEventListener('DOMContentLoaded', function() {
-  window.matchManager = new MatchManager();
+// Inicializar el gestor de partidas cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', async function() {
+  try {
+    // Asegurar que el dataManager esté inicializado
+    if (!window.dataManager.isLoaded) {
+      await window.dataManager.loadAllData();
+    }
+    
+    window.matchManager = new MatchManager();
+    console.log('MatchManager inicializado correctamente');
+  } catch (error) {
+    console.error('Error inicializando MatchManager:', error);
+  }
 });
 
 // Exportar para uso global
