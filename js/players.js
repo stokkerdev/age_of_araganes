@@ -478,8 +478,8 @@ function updateMainStatsWithPlayerData() {
   const bestEconomyEl = document.getElementById('best-economy');
   const bestMilitaryEl = document.getElementById('best-military');
 
-  if (bestTecnologyEl) bestTecnologyEl.textContent = `${bestTecnology.categoryStats.technology.average.toFixed(1)} - ${bestTecnology.name}`;
-  if (bestSocietyEl) bestSocietyEl.textContent = `${bestSociety.categoryStats.society.average.toFixed(1)} - ${bestSociety.name}`;
-  if (bestEconomyEl) bestEconomyEl.textContent = `${bestEconomy.categoryStats.economy.average.toFixed(1)} - ${bestEconomy.name}`;
-  if (bestMilitaryEl) bestMilitaryEl.textContent =`${ bestMilitary.categoryStats.military.average.toFixed(1)} - ${bestMilitary.name}`;
+  if (bestTecnologyEl) bestTecnologyEl.textContent = `${bestTecnology.categoryStats.technology.best.toFixed(1)} - ${bestTecnology.name}`;
+  if (bestSocietyEl) bestSocietyEl.textContent = `${bestSociety.categoryStats.society.best.toFixed(1)} - ${bestSociety.name}`;
+  if (bestEconomyEl) bestEconomyEl.textContent = `${bestEconomy.categoryStats.economy.best.toFixed(1)} - ${bestEconomy.name}`;
+  if (bestMilitaryEl) bestMilitaryEl.textContent =`${ bestMilitary.categoryStats.military.best.toFixed(1)} - ${bestMilitary.name}`;
 }
