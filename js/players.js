@@ -470,10 +470,16 @@ document.addEventListener('DOMContentLoaded', function () {
 function updateMainStatsWithPlayerData() {
   const bestEconomy = playerProfileManager.getBestPlayerInCategory('economy');
   const bestMilitary = playerProfileManager.getBestPlayerInCategory('military');
+  const bestTecnology = playerProfileManager.getBestPlayerInCategory('technology');
+  const bestSociety = playerProfileManager.getBestPlayerInCategory('society');
 
+  const bestTecnologyEl = document.getElementById('best-tecno');
+  const bestSocietyEl = document.getElementById('best-society');
   const bestEconomyEl = document.getElementById('best-economy');
   const bestMilitaryEl = document.getElementById('best-military');
 
-  if (bestEconomyEl) bestEconomyEl.textContent = bestEconomy.categoryStats.economy.average.toFixed(1);
-  if (bestMilitaryEl) bestMilitaryEl.textContent = bestMilitary.categoryStats.military.average.toFixed(1);
+  if (bestTecnologyEl) bestTecnologyEl.textContent = `${bestTecnology.categoryStats.technology.average.toFixed(1)} - ${bestTecnology.name}`;
+  if (bestSocietyEl) bestSocietyEl.textContent = `${bestSociety.categoryStats.society.average.toFixed(1)} - ${bestSociety.name}`;
+  if (bestEconomyEl) bestEconomyEl.textContent = `${bestEconomy.categoryStats.economy.average.toFixed(1)} - ${bestEconomy.name}`;
+  if (bestMilitaryEl) bestMilitaryEl.textContent =`${ bestMilitary.categoryStats.military.average.toFixed(1)} - ${bestMilitary.name}`;
 }
