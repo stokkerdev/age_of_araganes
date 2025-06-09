@@ -268,7 +268,7 @@ function updateStats() {
   const leader = [...tournamentData.players].sort((a, b) => b.points - a.points)[0];
   
   totalPlayersEl.textContent = totalPlayers;
-  totalMatchesEl.textContent = Math.floor(totalMatches);
+  totalMatchesEl.textContent = Math.floor(totalMatches)-1;
   currentLeaderEl.textContent = leader.name;
 }
 
