@@ -22,7 +22,7 @@
     {
       "id": "kylecher",
       "name": "Kylecher",
-      "avatar": "",
+      "avatar": "src/pics/kylecher.jpg",
       "matches": 0,
       "wins": 0,
       "points": 0,
@@ -60,7 +60,7 @@
     {
       "id": "gato_alado",
       "name": "Gato Alado",
-      "avatar": "",
+      "avatar": "src/pics/gato_alado.jpg",
       "matches": 0,
       "wins": 0,
       "points": 0,
@@ -79,7 +79,7 @@
     {
       "id": "cairbus",
       "name": "Cairbus",
-      "avatar": "",
+      "avatar": "src/pics/caribus.jpg",
       "matches": 0,
       "wins": 0,
       "points": 0,
@@ -98,7 +98,7 @@
     {
       "id": "artibool",
       "name": "Artibool",
-      "avatar": "",
+      "avatar": "src/pics/artibool.jpg",
       "matches": 0,
       "wins": 0,
       "points": 0,
