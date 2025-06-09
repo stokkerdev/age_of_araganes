@@ -97,6 +97,7 @@ const tableBody = document.getElementById('table-body');
 const totalPlayersEl = document.getElementById('total-players');
 const totalMatchesEl = document.getElementById('total-matches');
 const currentLeaderEl = document.getElementById('current-leader');
+const bestRatio = document.getElementById('best-ratio');
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
@@ -270,6 +271,7 @@ function updateStats() {
   totalPlayersEl.textContent = totalPlayers;
   totalMatchesEl.textContent = Math.floor(totalMatches)-1;
   currentLeaderEl.textContent = leader.name;
+  bestRatio.textContent = `${(leader.wins / leader.matches * 100).toFixed(1)}% - ${leader.name}`;
 }
 
 // Scroll effects
