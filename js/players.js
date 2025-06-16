@@ -73,7 +73,7 @@ class PlayerProfileManager {
     card.className = 'player-card';
     card.innerHTML = `
       <div class="player-card-header">
-        <img src="${player.avatar}'">
+        <img src="${player.avatar}" alt="${player.name} Avatar" class="player-avatar">      
         <div class="player-basic-info">
           <h3 class="player-name">${player.name}</h3>
           <p class="player-status">${this.getStatusText(player.status)}</p>
@@ -146,14 +146,13 @@ class PlayerProfileManager {
   createPlayerProfileContent(player) {
     const totalAverage = this.calculateTotalAverage(player);
     const winRate = player.matches > 0 ? ((player.wins / player.matches) * 100).toFixed(1) : '0.0';
-       
-       
-       
-       //<img src="${player.avatar || 'https://via.placeholder.com/100x100?text=' + player.name.charAt(0)}" alt="${player.name}" class="profile-avatar" onerror="this.src='https://via.placeholder.com/100x100?text=${player.name.charAt(0)}'">
+
+
+
 
     return `
       <div class="profile-header">
-        <img src="${player.avatar }'">
+        <img src="${player.avatar} " alt="${player.name} Avatar" class="profile-avatar">
         
         <div class="profile-info">
           <h3>${player.name}</h3>
@@ -304,7 +303,7 @@ class PlayerProfileManager {
   createPerformanceChart(player) {
     const categories = ['military', 'economy', 'technology', 'society'];
     const categoryLabels = ['Militar', 'Economía', 'Tecnología', 'Sociedad'];
-    
+
     // Normalizar valores para el gráfico (0-100)
     const maxValues = {
       military: 20000,
@@ -323,7 +322,7 @@ class PlayerProfileManager {
     const centerX = 150;
     const centerY = 150;
     const radius = 100;
-    
+
     const points = normalizedValues.map((value, index) => {
       const angle = (index * 90 - 90) * Math.PI / 180; // 90 grados entre cada punto
       const r = (value / 100) * radius;
@@ -377,12 +376,12 @@ class PlayerProfileManager {
           
           <!-- Data points -->
           ${normalizedValues.map((value, index) => {
-            const angle = (index * 90 - 90) * Math.PI / 180;
-            const r = (value / 100) * radius;
-            const x = centerX + r * Math.cos(angle);
-            const y = centerY + r * Math.sin(angle);
-            return `<circle cx="${x}" cy="${y}" r="4" fill="#2563eb"/>`;
-          }).join('')}
+      const angle = (index * 90 - 90) * Math.PI / 180;
+      const r = (value / 100) * radius;
+      const x = centerX + r * Math.cos(angle);
+      const y = centerY + r * Math.sin(angle);
+      return `<circle cx="${x}" cy="${y}" r="4" fill="#2563eb"/>`;
+    }).join('')}
           
           <!-- Labels -->
           ${labels}
@@ -491,7 +490,11 @@ function updateMainStatsWithPlayerData() {
 
     const bestEconomyEl = document.getElementById('best-economy');
     const bestMilitaryEl = document.getElementById('best-military');
+    const bestTechnologyEl = document.getElementById('best-tecno');
+    const bestSocietyEl = document.getElementById('best-soc');
 
+    if (bestSocietyEl) bestSocietyEl.textContent = `${Math.round(bestSociety.categoryStats.society.best)} - ${bestSociety.name}`;
+    if (bestTechnologyEl) bestTechnologyEl.textContent = `${Math.round(bestTechnology.categoryStats.technology.best)} - ${bestTechnology.name}`;
     if (bestEconomyEl) bestEconomyEl.textContent = `${Math.round(bestEconomy.categoryStats.economy.best)} - ${bestEconomy.name}`;
     if (bestMilitaryEl) bestMilitaryEl.textContent = `${Math.round(bestMilitary.categoryStats.military.best)} - ${bestMilitary.name}`;
   } catch (error) {

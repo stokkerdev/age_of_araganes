@@ -486,39 +486,16 @@ class MatchManager {
     const leaderPointsEl = document.getElementById('leader-points');
     const bestRatioEl = document.getElementById('best-ratio');
     const bestRatioPlayerEl = document.getElementById('best-ratio-player');
-    const longestMatchEl = document.getElementById('longest-match');
-    const longestMatchDetailEl = document.getElementById('longest-match-detail');
-    const shortestMatchEl = document.getElementById('shortest-match');
-    const shortestMatchDetailEl = document.getElementById('shortest-match-detail');
-    const bestEconomyEl = document.getElementById('best-economy');
-    const bestMilitaryEl = document.getElementById('best-military');
-
-    if (totalPlayersEl) totalPlayersEl.textContent = stats.totalPlayers;
-    if (totalMatchesEl) totalMatchesEl.textContent = stats.totalMatches;
+    const besttecnoEl = document.getElementById('best-tecno');
     
-    if (stats.leader) {
-      if (currentLeaderEl) currentLeaderEl.textContent = stats.leader.name;
-      if (leaderPointsEl) leaderPointsEl.textContent = `${stats.leader.points} puntos`;
-    }
+    const bestsocEl = document.getElementById('best-soc');
+    
+    
 
-    if (stats.bestRatio && stats.bestRatio.matches > 0) {
-      const ratio = ((stats.bestRatio.wins / stats.bestRatio.matches) * 100).toFixed(1);
-      if (bestRatioEl) bestRatioEl.textContent = `${ratio}%`;
-      if (bestRatioPlayerEl) bestRatioPlayerEl.textContent = stats.bestRatio.name;
-    }
+  
 
-    if (stats.longestMatch) {
-      if (longestMatchEl) longestMatchEl.textContent = `${stats.longestMatch.duration} min`;
-      if (longestMatchDetailEl) longestMatchDetailEl.textContent = `${stats.longestMatch.map} - ${new Date(stats.longestMatch.date).toLocaleDateString()}`;
-    }
-
-    if (stats.shortestMatch) {
-      if (shortestMatchEl) shortestMatchEl.textContent = `${stats.shortestMatch.duration} min`;
-      if (shortestMatchDetailEl) shortestMatchDetailEl.textContent = `${stats.shortestMatch.map} - ${new Date(stats.shortestMatch.date).toLocaleDateString()}`;
-    }
-
-    if (bestEconomyEl) bestEconomyEl.textContent = `${Math.round(stats.bestInCategories.economy.categoryStats.economy.best)} - ${stats.bestInCategories.economy.name}`;
-    if (bestMilitaryEl) bestMilitaryEl.textContent = `${Math.round(stats.bestInCategories.military.categoryStats.military.best)} - ${stats.bestInCategories.military.name}`;
+   
+ 
   }
 
   getPlayerName(playerId) {

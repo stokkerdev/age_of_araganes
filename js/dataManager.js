@@ -183,11 +183,8 @@ class DataManager {
       totalPlayers: players.length,
       totalMatches: Math.max(...players.map(p => p.matches)),
 
-      totalGames: players.reduce((sum, p) => sum + p.matches, 0) / 2,
       leader: this.getLeaderboard()[0],
       bestRatio: this.getBestRatioPlayer(),
-      longestMatch: this.getLongestMatch(),
-      shortestMatch: this.getShortestMatch(),
       bestInCategories: {
         military: this.getBestInCategory('military'),
         economy: this.getBestInCategory('economy'),
