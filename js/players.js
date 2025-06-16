@@ -73,7 +73,7 @@ class PlayerProfileManager {
     card.className = 'player-card';
     card.innerHTML = `
       <div class="player-card-header">
-        <img src="${player.avatar || 'https://via.placeholder.com/60x60?text=' + player.name.charAt(0)}" alt="${player.name}" class="player-avatar" onerror="this.src='https://via.placeholder.com/60x60?text=${player.name.charAt(0)}'">
+        <img src="${player.avatar}'">
         <div class="player-basic-info">
           <h3 class="player-name">${player.name}</h3>
           <p class="player-status">${this.getStatusText(player.status)}</p>
@@ -146,10 +146,15 @@ class PlayerProfileManager {
   createPlayerProfileContent(player) {
     const totalAverage = this.calculateTotalAverage(player);
     const winRate = player.matches > 0 ? ((player.wins / player.matches) * 100).toFixed(1) : '0.0';
+       
+       
+       
+       //<img src="${player.avatar || 'https://via.placeholder.com/100x100?text=' + player.name.charAt(0)}" alt="${player.name}" class="profile-avatar" onerror="this.src='https://via.placeholder.com/100x100?text=${player.name.charAt(0)}'">
 
     return `
       <div class="profile-header">
-        <img src="${player.avatar || 'https://via.placeholder.com/100x100?text=' + player.name.charAt(0)}" alt="${player.name}" class="profile-avatar" onerror="this.src='https://via.placeholder.com/100x100?text=${player.name.charAt(0)}'">
+        <img src="${player.avatar }'">
+        
         <div class="profile-info">
           <h3>${player.name}</h3>
           <p class="profile-rank">Posición #${this.getPlayerRank(player)} en el torneo</p>

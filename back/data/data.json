@@ -1,0 +1,119 @@
+{
+  "players": [
+    {
+      "id": "stokker",
+      "name": "Stokker",
+      "avatar": "src/pics/stokker.jpg",
+      "matches": 1,
+      "wins": 0,
+      "points": 3,
+      "joinDate": "06-07-2025",
+      "favoriteStrategy": "none",
+      "favoriteCivilization": "none",
+      "status": "active",
+      "categoryStats": {
+        "military": { "worst": 13791, "average": 13791, "best": 13791 },
+        "economy": { "worst": 17488, "average":17488 , "best": 17488 },
+        "technology": { "worst": 6040, "average": 6040, "best": 6040 },
+        "society": { "worst": 990, "average": 990, "best": 990 }
+      },
+      "matchHistory": []
+    },
+    {
+      "id": "kylecher",
+      "name": "Kylecher",
+      "avatar": "src/pics/kylecher.jpg",
+      "matches": 2,
+      "wins": 0,
+      "points": 4,
+      "joinDate": "06-07-2025",
+      "favoriteStrategy": "none",
+      "favoriteCivilization": "none",
+      "status": "active",
+      "categoryStats": {
+        "military": { "worst": 9935, "average": 11256, "best": 12577 },
+        "economy": { "worst": 7959, "average": 9080, "best": 10201 },
+        "technology": { "worst": 6279, "average": 6934, "best": 7589},
+        "society": { "worst": 130, "average": 175, "best":221 }
+      },
+      "matchHistory": []
+    },
+    {
+      "id": "nicoz",
+      "name": "NicoZ",
+      "avatar": "",
+      "matches": 0,
+      "wins": 0,
+      "points": 0,
+      "joinDate": "06-07-2025",
+      "favoriteStrategy": "none",
+      "favoriteCivilization": "none",
+      "status": "active",
+      "categoryStats": {
+        "military": { "worst": 0, "average": 0, "best": 0 },
+        "economy": { "worst": 0, "average": 0, "best": 0 },
+        "technology": { "worst": 0, "average": 0, "best": 0 },
+        "society": { "worst": 0, "average": 0, "best": 0 }
+      },
+      "matchHistory": []
+    },
+    {
+      "id": "gato_alado",
+      "name": "Gato Alado",
+      "avatar": "src/pics/gato_alado.jpg",
+      "matches": 2,
+      "wins": 1,
+      "points": 4,
+      "joinDate": "06-07-2025",
+      "favoriteStrategy": "none",
+      "favoriteCivilization": "none",
+      "status": "active",
+      "categoryStats": {
+        "military": { "worst": 4821, "average": 6396, "best": 7972 },
+        "economy": { "worst": 6285, "average": 6389, "best": 6493 },
+        "technology": { "worst": 3495, "average":4678, "best": 5895 },
+        "society": { "worst": 130, "average": 365, "best": 600 }
+      },
+      "matchHistory": []
+    },
+    {
+      "id": "cairbus",
+      "name": "Cairbus",
+      "avatar": "src/pics/caribus.jpg",
+      "matches": 2,
+      "wins": 1,
+      "points": 1,
+      "joinDate": "06-07-2025",
+      "favoriteStrategy": "Maravilla",
+      "favoriteCivilization": "none",
+      "status": "active",
+      "categoryStats": {
+        "military": { "worst": 7921, "average": 9085, "best": 10250 },
+        "economy": { "worst": 8929, "average": 9115, "best": 9301 },
+        "technology": { "worst": 3495, "average": 3892, "best": 4290 },
+        "society": { "worst": 130, "average": 430, "best": 730 }
+      },
+      "matchHistory": []
+    },
+    {
+      "id": "artibool",
+      "name": "Artibool",
+      "avatar": "src/pics/artibool.jpg",
+      "matches": 2,
+      "wins": 0,
+      "points": 0,
+      "joinDate": "06-07-2025",
+      "favoriteStrategy": "none",
+      "favoriteCivilization": "none",
+      "status": "active",
+      "categoryStats": {
+        "military": { "worst": 1848, "average": 2049, "best": 2250 },
+        "economy": { "worst": 5169, "average": 7650, "best": 10131 },
+        "technology": { "worst": 3128, "average": 3541, "best": 3954 },
+        "society": { "worst": 0, "average": 430, "best": 860 }
+      },
+      "matchHistory": []
+    }
+   
+  ]
+}

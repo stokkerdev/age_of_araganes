@@ -178,11 +178,11 @@ class DataManager {
 
   getTournamentStats() {
     const players = this.playersData.players;
-    const matches = this.matchesHistory;
     
     return {
       totalPlayers: players.length,
-      totalMatches: matches.length,
+      totalMatches: Math.max(...players.map(p => p.matches)),
+
       totalGames: players.reduce((sum, p) => sum + p.matches, 0) / 2,
       leader: this.getLeaderboard()[0],
       bestRatio: this.getBestRatioPlayer(),

@@ -1,7 +1,7 @@
 let tournamentData = { players: [] };
 
 // Inicializar el sistema cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener('DOMContentLoaded', async function () {
   try {
     // Cargar datos usando el DataManager
     if (!window.dataManager.isLoaded) {
@@ -10,23 +10,23 @@ document.addEventListener('DOMContentLoaded', async function() {
     } else {
       tournamentData.players = window.dataManager.getPlayers();
     }
-    
+
     console.log("Datos cargados correctamente:", tournamentData.players);
-    
+
     // Inicializar componentes
     initializeNavigation();
     initializeTable();
     updateStats();
     initializeScrollEffects();
     cargarPartidas();
-    
+
     // Escuchar actualizaciones de datos
     window.addEventListener('tournamentDataUpdated', (event) => {
       tournamentData.players = event.detail.players;
       renderTable(tournamentData.players);
       updateStats();
     });
-    
+
   } catch (error) {
     console.error("Error al cargar el sistema:", error);
   }
@@ -40,7 +40,7 @@ async function cargarPartidas() {
     const partidas = await resp.json();
     console.log('Partidas programadas cargadas:', partidas);
     const grid = document.querySelector('.matches-grid');
-    
+
     // Limpiar contenido existente
     grid.innerHTML = '';
 
@@ -117,14 +117,14 @@ const tableBody = document.getElementById('table-body');
 function initializeNavigation() {
   // Mobile menu toggle
   if (navToggle && navMenu) {
-    navToggle.addEventListener('click', function() {
+    navToggle.addEventListener('click', function () {
       navMenu.classList.toggle('active');
       navToggle.classList.toggle('active');
     });
 
     // Close mobile menu when clicking on a link
     document.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', function() {
+      link.addEventListener('click', function () {
         navMenu.classList.remove('active');
         navToggle.classList.remove('active');
       });
@@ -133,7 +133,7 @@ function initializeNavigation() {
 
   // Smooth scrolling for navigation links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
+    anchor.addEventListener('click', function (e) {
       e.preventDefault();
       const target = document.querySelector(this.getAttribute('href'));
       if (target) {
@@ -153,7 +153,7 @@ function initializeNavigation() {
 function updateActiveNavLink() {
   const sections = document.querySelectorAll('section[id], header[id]');
   const navLinks = document.querySelectorAll('.nav-link');
-  
+
   let current = '';
   sections.forEach(section => {
     const sectionTop = section.offsetTop - 100;
@@ -173,12 +173,12 @@ function updateActiveNavLink() {
 // Table functionality
 function initializeTable() {
   if (!tournamentData.players.length) return;
-  
+
   renderTable(tournamentData.players);
-  
+
   // Search functionality
   if (searchInput) {
-    searchInput.addEventListener('input', function() {
+    searchInput.addEventListener('input', function () {
       const searchTerm = this.value.toLowerCase();
       const filteredPlayers = tournamentData.players.filter(player =>
         player.name.toLowerCase().includes(searchTerm)
@@ -189,7 +189,7 @@ function initializeTable() {
 
   // Sort functionality
   if (sortSelect) {
-    sortSelect.addEventListener('change', function() {
+    sortSelect.addEventListener('change', function () {
       const sortBy = this.value;
       const sortedPlayers = [...tournamentData.players].sort((a, b) => {
         switch (sortBy) {
@@ -210,18 +210,18 @@ function initializeTable() {
 
 function renderTable(players) {
   if (!tableBody) return;
-  
+
   // Sort players by points for position calculation
   const sortedPlayers = [...players].sort((a, b) => b.points - a.points);
-  
+
   tableBody.innerHTML = '';
-  
+
   sortedPlayers.forEach((player, index) => {
     const position = index + 1;
     const ratio = player.matches > 0 ? (player.wins / player.matches * 100).toFixed(1) : '0.0';
     const ratioClass = getRatioClass(parseFloat(ratio));
     const positionClass = getPositionClass(position);
-    
+
     const row = document.createElement('tr');
     row.className = positionClass;
     row.innerHTML = `
@@ -237,7 +237,7 @@ function renderTable(players) {
         </button>
       </td>
     `;
-    
+
     tableBody.appendChild(row);
   });
 }
@@ -267,10 +267,10 @@ function openPlayerProfileFromTable(playerId) {
 // Statistics update
 function updateStats() {
   if (!tournamentData.players.length) return;
-  
+
   try {
     const stats = window.dataManager ? window.dataManager.getTournamentStats() : getBasicStats();
-    
+
     // Actualizar elementos del DOM
     const elements = {
       'total-players': stats.totalPlayers,
@@ -289,7 +289,7 @@ function updateStats() {
       const ratio = ((stats.bestRatio.wins / stats.bestRatio.matches) * 100).toFixed(1);
       const bestRatioEl = document.getElementById('best-ratio');
       const bestRatioPlayerEl = document.getElementById('best-ratio-player');
-      
+
       if (bestRatioEl) bestRatioEl.textContent = `${ratio}%`;
       if (bestRatioPlayerEl) bestRatioPlayerEl.textContent = stats.bestRatio.name;
     }
@@ -301,7 +301,11 @@ function updateStats() {
 
 function getBasicStats() {
   const totalPlayers = tournamentData.players.length;
-  const totalMatches = Math.floor(tournamentData.players.reduce((sum, player) => sum + player.matches, 0) / 2);
+  console.log('total players: ' , totalPlayers);
+  const maxMatches = Math.max(...tournamentData.players.map(p => p.matches));
+  console.log("Máximo número de partidas:", maxMatches);
+
+
   const leader = [...tournamentData.players].sort((a, b) => b.points - a.points)[0];
   const bestRatio = tournamentData.players
     .filter(p => p.matches > 0)
@@ -322,7 +326,7 @@ function getBasicStats() {
 // Scroll effects
 function initializeScrollEffects() {
   // Navbar background on scroll
-  window.addEventListener('scroll', function() {
+  window.addEventListener('scroll', function () {
     const navbar = document.querySelector('.navbar');
     if (navbar) {
       if (window.scrollY > 50) {
@@ -341,7 +345,7 @@ function initializeScrollEffects() {
     rootMargin: '0px 0px -50px 0px'
   };
 
-  const observer = new IntersectionObserver(function(entries) {
+  const observer = new IntersectionObserver(function (entries) {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('fade-in-up');
@@ -356,10 +360,10 @@ function initializeScrollEffects() {
 }
 
 // Add some interactive features
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   // Add click effects to cards
   document.querySelectorAll('.stats-card, .match-card, .player-card').forEach(card => {
-    card.addEventListener('click', function() {
+    card.addEventListener('click', function () {
       this.style.transform = 'scale(0.98)';
       setTimeout(() => {
         this.style.transform = '';
@@ -368,7 +372,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Add keyboard navigation support
-  document.addEventListener('keydown', function(e) {
+  document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
       if (navMenu) navMenu.classList.remove('active');
       if (navToggle) navToggle.classList.remove('active');
@@ -378,17 +382,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Export functions for potential future use
 window.TournamentApp = {
-  updatePlayerData: function(newData) {
+  updatePlayerData: function (newData) {
     tournamentData.players = newData;
     renderTable(tournamentData.players);
     updateStats();
   },
-  
-  getPlayerStats: function(playerId) {
+
+  getPlayerStats: function (playerId) {
     return tournamentData.players.find(p => p.id === playerId);
   },
 
-  refreshData: async function() {
+  refreshData: async function () {
     try {
       const data = await window.dataManager.loadAllData();
       tournamentData.players = data.players;
