@@ -4,39 +4,157 @@
       "id": "stokker",
       "name": "Stokker",
       "avatar": "src/pics/stokker.jpg",
-      "matches": 1,
-      "wins": 0,
-      "points": 3,
+      "matches": 3,
+      "wins": 1,
+      "points": 7,
       "joinDate": "06-07-2025",
       "favoriteStrategy": "none",
       "favoriteCivilization": "none",
       "status": "active",
       "categoryStats": {
-        "military": { "worst": 13791, "average": 13791, "best": 13791 },
-        "economy": { "worst": 17488, "average":17488 , "best": 17488 },
-        "technology": { "worst": 6040, "average": 6040, "best": 6040 },
-        "society": { "worst": 990, "average": 990, "best": 990 }
+        "military": {
+          "worst": 123,
+          "average": 8087,
+          "best": 13791,
+          "history": [
+            13791,
+            123,
+            10349
+          ]
+        },
+        "economy": {
+          "worst": 776,
+          "average": 10017,
+          "best": 17488,
+          "history": [
+            17488,
+            776,
+            11789
+          ]
+        },
+        "technology": {
+          "worst": 280,
+          "average": 3586,
+          "best": 6040,
+          "history": [
+            6040,
+            280,
+            4440
+          ]
+        },
+        "society": {
+          "worst": 130,
+          "average": 809,
+          "best": 1309,
+          "history": [
+            990,
+            1309,
+            130
+          ]
+        }
       },
-      "matchHistory": []
+      "matchHistory": [
+        {
+          "matchNumber": 2,
+          "categories": {
+            "military": 123,
+            "economy": 776,
+            "technology": 280,
+            "society": 1309
+          },
+          "result": "loss",
+          "pointsEarned": 1
+        },
+        {
+          "matchNumber": 3,
+          "categories": {
+            "military": 10349,
+            "economy": 11789,
+            "technology": 4440,
+            "society": 130
+          },
+          "result": "win",
+          "pointsEarned": 3
+        }
+      ]
     },
     {
       "id": "kylecher",
       "name": "Kylecher",
       "avatar": "src/pics/kylecher.jpg",
-      "matches": 2,
-      "wins": 0,
-      "points": 4,
+      "matches": 4,
+      "wins": 1,
+      "points": 8,
       "joinDate": "06-07-2025",
       "favoriteStrategy": "none",
       "favoriteCivilization": "none",
       "status": "active",
       "categoryStats": {
-        "military": { "worst": 9935, "average": 11256, "best": 12577 },
-        "economy": { "worst": 7959, "average": 9080, "best": 10201 },
-        "technology": { "worst": 6279, "average": 6934, "best": 7589},
-        "society": { "worst": 130, "average": 175, "best":221 }
+        "military": {
+          "worst": 5418,
+          "average": 12363,
+          "best": 20416,
+          "history": [
+            11256,
+            20416,
+            5418
+          ]
+        },
+        "economy": {
+          "worst": 1139,
+          "average": 10612,
+          "best": 21619,
+          "history": [
+            9080,
+            21619,
+            1139
+          ]
+        },
+        "technology": {
+          "worst": 4720,
+          "average": 6130,
+          "best": 6934,
+          "history": [
+            6934,
+            6737,
+            4720
+          ]
+        },
+        "society": {
+          "worst": 175,
+          "average": 231,
+          "best": 260,
+          "history": [
+            175,
+            260,
+            260
+          ]
+        }
       },
-      "matchHistory": []
+      "matchHistory": [
+        {
+          "matchNumber": 3,
+          "categories": {
+            "military": 20416,
+            "economy": 21619,
+            "technology": 6737,
+            "society": 260
+          },
+          "result": "win",
+          "pointsEarned": 3
+        },
+        {
+          "matchNumber": 4,
+          "categories": {
+            "military": 5418,
+            "economy": 1139,
+            "technology": 4720,
+            "society": 260
+          },
+          "result": "loss",
+          "pointsEarned": 1
+        }
+      ]
     },
     {
       "id": "nicoz",
@@ -50,10 +168,26 @@
       "favoriteCivilization": "none",
       "status": "active",
       "categoryStats": {
-        "military": { "worst": 0, "average": 0, "best": 0 },
-        "economy": { "worst": 0, "average": 0, "best": 0 },
-        "technology": { "worst": 0, "average": 0, "best": 0 },
-        "society": { "worst": 0, "average": 0, "best": 0 }
+        "military": {
+          "worst": 0,
+          "average": 0,
+          "best": 0
+        },
+        "economy": {
+          "worst": 0,
+          "average": 0,
+          "best": 0
+        },
+        "technology": {
+          "worst": 0,
+          "average": 0,
+          "best": 0
+        },
+        "society": {
+          "worst": 0,
+          "average": 0,
+          "best": 0
+        }
       },
       "matchHistory": []
     },
@@ -61,59 +195,205 @@
       "id": "gato_alado",
       "name": "Gato Alado",
       "avatar": "src/pics/gato_alado.jpg",
-      "matches": 2,
+      "matches": 3,
       "wins": 1,
-      "points": 4,
+      "points": 6,
       "joinDate": "06-07-2025",
       "favoriteStrategy": "none",
       "favoriteCivilization": "none",
       "status": "active",
       "categoryStats": {
-        "military": { "worst": 4821, "average": 6396, "best": 7972 },
-        "economy": { "worst": 6285, "average": 6389, "best": 6493 },
-        "technology": { "worst": 3495, "average":4678, "best": 5895 },
-        "society": { "worst": 130, "average": 365, "best": 600 }
+        "military": {
+          "worst": 6396,
+          "average": 8899,
+          "best": 11403,
+          "history": [
+            6396,
+            11403
+          ]
+        },
+        "economy": {
+          "worst": 910,
+          "average": 3649,
+          "best": 6389,
+          "history": [
+            6389,
+            910
+          ]
+        },
+        "technology": {
+          "worst": 4678,
+          "average": 6617,
+          "best": 8557,
+          "history": [
+            4678,
+            8557
+          ]
+        },
+        "society": {
+          "worst": 130,
+          "average": 247,
+          "best": 365,
+          "history": [
+            365,
+            130
+          ]
+        }
       },
-      "matchHistory": []
+      "matchHistory": [
+        {
+          "matchNumber": 3,
+          "categories": {
+            "military": 11403,
+            "economy": 910,
+            "technology": 8557,
+            "society": 130
+          },
+          "result": "loss",
+          "pointsEarned": 2
+        }
+      ]
     },
     {
       "id": "cairbus",
       "name": "Cairbus",
       "avatar": "src/pics/caribus.jpg",
-      "matches": 2,
+      "matches": 4,
       "wins": 1,
-      "points":5,
+      "points": 5,
       "joinDate": "06-07-2025",
       "favoriteStrategy": "Maravilla",
       "favoriteCivilization": "none",
       "status": "active",
       "categoryStats": {
-        "military": { "worst": 7921, "average": 9085, "best": 10250 },
-        "economy": { "worst": 8929, "average": 9115, "best": 9301 },
-        "technology": { "worst": 3495, "average": 3892, "best": 4290 },
-        "society": { "worst": 130, "average": 430, "best": 730 }
+        "military": {
+          "worst": 864,
+          "average": 4679,
+          "best": 9085,
+          "history": [
+            9085,
+            4088,
+            864
+          ]
+        },
+        "economy": {
+          "worst": 2025,
+          "average": 6761,
+          "best": 9143,
+          "history": [
+            9115,
+            9143,
+            2025
+          ]
+        },
+        "technology": {
+          "worst": 980,
+          "average": 3046,
+          "best": 4268,
+          "history": [
+            3892,
+            4268,
+            980
+          ]
+        },
+        "society": {
+          "worst": 130,
+          "average": 230,
+          "best": 430,
+          "history": [
+            430,
+            130,
+            130
+          ]
+        }
       },
-      "matchHistory": []
+      "matchHistory": [
+        {
+          "matchNumber": 3,
+          "categories": {
+            "military": 4088,
+            "economy": 9143,
+            "technology": 4268,
+            "society": 130
+          },
+          "result": "loss",
+          "pointsEarned": 0
+        },
+        {
+          "matchNumber": 4,
+          "categories": {
+            "military": 864,
+            "economy": 2025,
+            "technology": 980,
+            "society": 130
+          },
+          "result": "loss",
+          "pointsEarned": 0
+        }
+      ]
     },
     {
       "id": "artibool",
       "name": "Artibool",
       "avatar": "src/pics/artibool.jpg",
-      "matches": 2,
+      "matches": 3,
       "wins": 0,
-      "points": 0,
+      "points": 2,
       "joinDate": "06-07-2025",
       "favoriteStrategy": "none",
       "favoriteCivilization": "none",
       "status": "active",
       "categoryStats": {
-        "military": { "worst": 1848, "average": 2049, "best": 2250 },
-        "economy": { "worst": 5169, "average": 7650, "best": 10131 },
-        "technology": { "worst": 3128, "average": 3541, "best": 3954 },
-        "society": { "worst": 0, "average": 430, "best": 860 }
+        "military": {
+          "worst": 2049,
+          "average": 2251,
+          "best": 2454,
+          "history": [
+            2049,
+            2454
+          ]
+        },
+        "economy": {
+          "worst": 2025,
+          "average": 4837,
+          "best": 7650,
+          "history": [
+            7650,
+            2025
+          ]
+        },
+        "technology": {
+          "worst": 980,
+          "average": 2260,
+          "best": 3541,
+          "history": [
+            3541,
+            980
+          ]
+        },
+        "society": {
+          "worst": 130,
+          "average": 280,
+          "best": 430,
+          "history": [
+            430,
+            130
+          ]
+        }
       },
-      "matchHistory": []
+      "matchHistory": [
+        {
+          "matchNumber": 3,
+          "categories": {
+            "military": 2454,
+            "economy": 2025,
+            "technology": 980,
+            "society": 130
+          },
+          "result": "loss",
+          "pointsEarned": 2
+        }
+      ]
     }
-   
   ]
 }
