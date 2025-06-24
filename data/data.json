@@ -54,28 +54,6 @@
         }
       },
       "matchHistory": [
-        {
-          "matchNumber": 2,
-          "categories": {
-            "military": 123,
-            "economy": 776,
-            "technology": 280,
-            "society": 1309
-          },
-          "result": "loss",
-          "pointsEarned": 1
-        },
-        {
-          "matchNumber": 3,
-          "categories": {
-            "military": 10349,
-            "economy": 11789,
-            "technology": 4440,
-            "society": 130
-          },
-          "result": "win",
-          "pointsEarned": 3
-        }
       ]
     },
     {
@@ -132,28 +110,7 @@
         }
       },
       "matchHistory": [
-        {
-          "matchNumber": 3,
-          "categories": {
-            "military": 20416,
-            "economy": 21619,
-            "technology": 6737,
-            "society": 260
-          },
-          "result": "win",
-          "pointsEarned": 3
-        },
-        {
-          "matchNumber": 4,
-          "categories": {
-            "military": 5418,
-            "economy": 1139,
-            "technology": 4720,
-            "society": 260
-          },
-          "result": "loss",
-          "pointsEarned": 1
-        }
+        
       ]
     },
     {
@@ -241,17 +198,6 @@
         }
       },
       "matchHistory": [
-        {
-          "matchNumber": 3,
-          "categories": {
-            "military": 11403,
-            "economy": 910,
-            "technology": 8557,
-            "society": 130
-          },
-          "result": "loss",
-          "pointsEarned": 2
-        }
       ]
     },
     {
@@ -308,28 +254,6 @@
         }
       },
       "matchHistory": [
-        {
-          "matchNumber": 3,
-          "categories": {
-            "military": 4088,
-            "economy": 9143,
-            "technology": 4268,
-            "society": 130
-          },
-          "result": "loss",
-          "pointsEarned": 0
-        },
-        {
-          "matchNumber": 4,
-          "categories": {
-            "military": 864,
-            "economy": 2025,
-            "technology": 980,
-            "society": 130
-          },
-          "result": "loss",
-          "pointsEarned": 0
-        }
       ]
     },
     {
@@ -382,17 +306,6 @@
         }
       },
       "matchHistory": [
-        {
-          "matchNumber": 3,
-          "categories": {
-            "military": 2454,
-            "economy": 2025,
-            "technology": 980,
-            "society": 130
-          },
-          "result": "loss",
-          "pointsEarned": 2
-        }
       ]
     }
   ]
