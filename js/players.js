@@ -462,12 +462,20 @@ class PlayerProfileManager {
     });
   }
 
-  getBestPlayerInCategory(category) {
-    return this.players.reduce((best, player) => {
-      const playerAvg = player.categoryStats[category].average;
-      const bestAvg = best.categoryStats[category].average;
-      return playerAvg > bestAvg ? player : best;
-    });
+  getBestPlayerInCategory(category, mode = 'average') {
+    if (mode === 'best') {
+      return this.players.reduce((best, player) => {
+        const playerBest = player.categoryStats[category].best;
+        const bestBest = best.categoryStats[category].best;
+        return playerBest > bestBest ? player : best;
+      });
+    } else {
+      return this.players.reduce((best, player) => {
+        const playerAvg = player.categoryStats[category].average;
+        const bestAvg = best.categoryStats[category].average;
+        return playerAvg > bestAvg ? player : best;
+      });
+    }
   }
 }
 
@@ -483,10 +491,10 @@ function updateMainStatsWithPlayerData() {
   if (!window.playerProfileManager || !window.playerProfileManager.players.length) return;
 
   try {
-    const bestEconomy = playerProfileManager.getBestPlayerInCategory('economy');
-    const bestMilitary = playerProfileManager.getBestPlayerInCategory('military');
-    const bestTechnology = playerProfileManager.getBestPlayerInCategory('technology');
-    const bestSociety = playerProfileManager.getBestPlayerInCategory('society');
+    const bestEconomy = playerProfileManager.getBestPlayerInCategory('economy', 'best');
+    const bestMilitary = playerProfileManager.getBestPlayerInCategory('military', 'best');
+    const bestTechnology = playerProfileManager.getBestPlayerInCategory('technology', 'best');
+    const bestSociety = playerProfileManager.getBestPlayerInCategory('society', 'best');
 
     const bestEconomyEl = document.getElementById('best-economy');
     const bestMilitaryEl = document.getElementById('best-military');

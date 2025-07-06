@@ -290,8 +290,8 @@ function updateStats() {
       const bestRatioEl = document.getElementById('best-ratio');
       const bestRatioPlayerEl = document.getElementById('best-ratio-player');
 
-      if (bestRatioEl) bestRatioEl.textContent = `${ratio}%`;
-      if (bestRatioPlayerEl) bestRatioPlayerEl.textContent = stats.bestRatio.name;
+      if (bestRatioEl) bestRatioEl.textContent = `${ratio}% - ${stats.bestRatio.name}`;
+      if (bestRatioPlayerEl) bestRatioPlayerEl.textContent = "Porcentaje de victoria mas alto";
     }
 
   } catch (error) {
