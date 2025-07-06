@@ -53,16 +53,15 @@
           ]
         }
       },
-      "matchHistory": [
-      ]
+      "matchHistory": []
     },
     {
       "id": "kylecher",
       "name": "Kylecher",
       "avatar": "src/pics/kylecher.jpg",
-      "matches": 4,
+      "matches": 5,
       "wins": 1,
-      "points": 8,
+      "points": 10,
       "joinDate": "06-07-2025",
       "favoriteStrategy": "none",
       "favoriteCivilization": "none",
@@ -70,56 +69,34 @@
       "categoryStats": {
         "military": {
           "worst": 5418,
-          "average": 12363,
-          "best": 20416,
-          "history": [
-            11256,
-            20416,
-            5418
-          ]
+          "average": 14788,
+          "best": 20955
         },
         "economy": {
           "worst": 1139,
-          "average": 10612,
-          "best": 21619,
-          "history": [
-            9080,
-            21619,
-            1139
-          ]
+          "average": 8632,
+          "best": 21619
         },
         "technology": {
           "worst": 4720,
-          "average": 6130,
-          "best": 6934,
-          "history": [
-            6934,
-            6737,
-            4720
-          ]
+          "average": 6150,
+          "best": 6934
         },
         "society": {
           "worst": 175,
-          "average": 231,
-          "best": 260,
-          "history": [
-            175,
-            260,
-            260
-          ]
+          "average": 264,
+          "best": 390
         }
       },
-      "matchHistory": [
-        
-      ]
+      "matchHistory": []
     },
     {
       "id": "nicoz",
       "name": "NicoZ",
       "avatar": "",
-      "matches": 0,
+      "matches": 1,
       "wins": 0,
-      "points": 0,
+      "points": 1,
       "joinDate": "06-07-2025",
       "favoriteStrategy": "none",
       "favoriteCivilization": "none",
@@ -132,18 +109,18 @@
         },
         "economy": {
           "worst": 0,
-          "average": 0,
-          "best": 0
+          "average": 744,
+          "best": 2978
         },
         "technology": {
           "worst": 0,
-          "average": 0,
-          "best": 0
+          "average": 1142,
+          "best": 4568
         },
         "society": {
           "worst": 0,
-          "average": 0,
-          "best": 0
+          "average": 32,
+          "best": 130
         }
       },
       "matchHistory": []
@@ -152,9 +129,9 @@
       "id": "gato_alado",
       "name": "Gato Alado",
       "avatar": "src/pics/gato_alado.jpg",
-      "matches": 3,
+      "matches": 4,
       "wins": 1,
-      "points": 6,
+      "points": 9,
       "joinDate": "06-07-2025",
       "favoriteStrategy": "none",
       "favoriteCivilization": "none",
@@ -162,51 +139,34 @@
       "categoryStats": {
         "military": {
           "worst": 6396,
-          "average": 8899,
-          "best": 11403,
-          "history": [
-            6396,
-            11403
-          ]
+          "average": 11452,
+          "best": 19113
         },
         "economy": {
           "worst": 910,
-          "average": 3649,
-          "best": 6389,
-          "history": [
-            6389,
-            910
-          ]
+          "average": 4823,
+          "best": 8345
         },
         "technology": {
           "worst": 4678,
-          "average": 6617,
-          "best": 8557,
-          "history": [
-            4678,
-            8557
-          ]
+          "average": 6828,
+          "best": 8557
         },
         "society": {
           "worst": 130,
-          "average": 247,
-          "best": 365,
-          "history": [
-            365,
-            130
-          ]
+          "average": 218,
+          "best": 365
         }
       },
-      "matchHistory": [
-      ]
+      "matchHistory": []
     },
     {
       "id": "cairbus",
       "name": "Cairbus",
       "avatar": "src/pics/caribus.jpg",
-      "matches": 4,
-      "wins": 1,
-      "points": 5,
+      "matches": 5,
+      "wins": 2,
+      "points": 9,
       "joinDate": "06-07-2025",
       "favoriteStrategy": "Maravilla",
       "favoriteCivilization": "none",
@@ -214,53 +174,32 @@
       "categoryStats": {
         "military": {
           "worst": 864,
-          "average": 4679,
-          "best": 9085,
-          "history": [
-            9085,
-            4088,
-            864
-          ]
+          "average": 9486,
+          "best": 23318
         },
         "economy": {
           "worst": 2025,
-          "average": 6761,
-          "best": 9143,
-          "history": [
-            9115,
-            9143,
-            2025
-          ]
+          "average": 7947,
+          "best": 13860
         },
         "technology": {
           "worst": 980,
-          "average": 3046,
-          "best": 4268,
-          "history": [
-            3892,
-            4268,
-            980
-          ]
+          "average": 3009,
+          "best": 4268
         },
         "society": {
           "worst": 130,
           "average": 230,
-          "best": 430,
-          "history": [
-            430,
-            130,
-            130
-          ]
+          "best": 430
         }
       },
-      "matchHistory": [
-      ]
+      "matchHistory": []
     },
     {
       "id": "artibool",
       "name": "Artibool",
       "avatar": "src/pics/artibool.jpg",
-      "matches": 3,
+      "matches": 4,
       "wins": 0,
       "points": 2,
       "joinDate": "06-07-2025",
@@ -269,44 +208,27 @@
       "status": "active",
       "categoryStats": {
         "military": {
-          "worst": 2049,
-          "average": 2251,
-          "best": 2454,
-          "history": [
-            2049,
-            2454
-          ]
+          "worst": 2045,
+          "average": 2199,
+          "best": 2454
         },
         "economy": {
-          "worst": 2025,
-          "average": 4837,
-          "best": 7650,
-          "history": [
-            7650,
-            2025
-          ]
+          "worst": 1077,
+          "average": 3897,
+          "best": 7650
         },
         "technology": {
           "worst": 980,
-          "average": 2260,
-          "best": 3541,
-          "history": [
-            3541,
-            980
-          ]
+          "average": 2013,
+          "best": 3541
         },
         "society": {
           "worst": 130,
-          "average": 280,
-          "best": 430,
-          "history": [
-            430,
-            130
-          ]
+          "average": 307,
+          "best": 430
         }
       },
-      "matchHistory": [
-      ]
+      "matchHistory": []
     }
   ]
 }
