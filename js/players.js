@@ -1,7 +1,7 @@
 let playersData = { players: [] };
 
 // Cambia la carga de datos para usar la API del backend
-fetch('/api/players')
+fetch('https://aoe-server.onrender.com/api/players')
   .then(response => {
     if (!response.ok) {
       throw new Error(`HTTP ${response.status} - ${response.statusText}`);
@@ -9,8 +9,7 @@ fetch('/api/players')
     return response.json();
   })
   .then(data => {
-    // Si la API responde con { players: [...] }
-    playersData.players = data.players || data;
+    playersData.players = data.data || data.players || data;
     console.log("Datos cargados correctamente:", playersData.players);
     initializeProfiles();
   })

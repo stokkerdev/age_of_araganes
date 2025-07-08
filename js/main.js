@@ -1,7 +1,7 @@
 let tournamentData = { players: [] };
 
 // Cargar datos de jugadores desde la API en vez de data.json
-fetch('/api/players')
+fetch('https://aoe-server.onrender.com/api/players')
   .then(response => {
     if (!response.ok) {
       throw new Error(`HTTP ${response.status} - ${response.statusText}`);
@@ -9,7 +9,7 @@ fetch('/api/players')
     return response.json();
   })
   .then(data => {
-    tournamentData.players = data.players || data;
+    tournamentData.players = data.data || data.players || data;
     console.log("Jugadores cargados desde MongoDB:", tournamentData.players);
     initializeNavigation();
     initializeTable();
