@@ -1,6 +1,7 @@
 let playersData = { players: [] };
 
-fetch('data/data.json')
+// Cambia la carga de datos para usar la API del backend
+fetch('/api/players')
   .then(response => {
     if (!response.ok) {
       throw new Error(`HTTP ${response.status} - ${response.statusText}`);
@@ -8,12 +9,13 @@ fetch('data/data.json')
     return response.json();
   })
   .then(data => {
-    playersData.players = data.players;
+    // Si la API responde con { players: [...] }
+    playersData.players = data.players || data;
     console.log("Datos cargados correctamente:", playersData.players);
     initializeProfiles();
   })
   .catch(error => {
-    console.error("Error al cargar el JSON:", error);
+    console.error("Error al cargar los jugadores desde la API:", error);
   });
 
 window.initializeProfiles = function () {

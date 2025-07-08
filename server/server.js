@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const morgan = require('morgan');
 const compression = require('compression');
+const path = require('path');
 require('dotenv').config();
 
 // Importar rutas
@@ -55,12 +56,18 @@ mongoose.connect(process.env.MONGODB_URI, {
   process.exit(1);
 });
 
+// Servir archivos estáticos del frontend (ajusta la ruta si es necesario)
+app.use(express.static(path.join(__dirname, '..')));
+
 // Rutas de la API
 app.use('/api/players', playerRoutes);
 app.use('/api/matches', matchRoutes);
 app.use('/api/stats', statsRoutes);
 
 // Ruta de salud del servidor
+app.get('/api', (req, res) => {
+  res.json({ message: 'API funcionando' });
+});
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'OK',

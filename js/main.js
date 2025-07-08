@@ -1,5 +1,26 @@
 let tournamentData = { players: [] };
 
+// Cargar datos de jugadores desde la API en vez de data.json
+fetch('/api/players')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    tournamentData.players = data.players || data;
+    console.log("Jugadores cargados desde MongoDB:", tournamentData.players);
+    initializeNavigation();
+    initializeTable();
+    updateStats();
+    initializeScrollEffects();
+    cargarPartidas();
+  })
+  .catch(error => {
+    console.error("Error al cargar los jugadores desde la API:", error);
+  });
+
 // Inicializar el sistema cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', async function () {
   try {

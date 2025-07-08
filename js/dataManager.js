@@ -28,7 +28,7 @@ class DataManager {
       // Cargar jugadores desde API
       const playersResponse = await this.apiClient.getPlayers({ limit: 100 });
       this.playersData.players = playersResponse.data.map(player => ({
-        id: player.playerId,
+        id: player.id, // <-- usa 'id' en vez de playerId
         name: player.name,
         avatar: player.avatar,
         matches: player.matches,
