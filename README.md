@@ -1,6 +1,6 @@
 # Age of Araganes Tournament Website
 
-A professional tournament website for Age of Empires II competitions, built with modern web technologies and optimized for GitHub Pages.
+A professional tournament website for Age of Empires II competitions, built with modern web technologies, featuring a complete backend with MongoDB database.
 
 ## Features
 
@@ -9,6 +9,8 @@ A professional tournament website for Age of Empires II competitions, built with
 - **Player Statistics**: Comprehensive stats including win/loss ratios and match history
 - **Tournament Phases**: Support for group stages and elimination rounds
 - **Match Scheduling**: Display of upcoming matches and tournament calendar
+- **Database Persistence**: MongoDB backend for reliable data storage
+- **RESTful API**: Complete API for all tournament operations
 
 ### 🎨 Modern Design
 - **Responsive Layout**: Optimized for all devices (mobile, tablet, desktop)
@@ -21,99 +23,249 @@ A professional tournament website for Age of Empires II competitions, built with
 - **Dynamic Sorting**: Sort by points, wins, or matches played
 - **Statistics Dashboard**: Visual representation of tournament data
 - **Mobile Navigation**: Collapsible menu for mobile devices
+- **Real-time Updates**: Automatic synchronization with backend
 
-### 📱 GitHub Pages Ready
-- **Static Site**: No server-side dependencies
-- **Fast Loading**: Optimized assets and minimal JavaScript
-- **SEO Friendly**: Proper meta tags and semantic HTML
-- **Cross-browser Compatible**: Works on all modern browsers
+### 🚀 Backend Features
+- **Node.js + Express**: Robust server architecture
+- **MongoDB Database**: Scalable NoSQL database
+- **RESTful API**: Complete CRUD operations
+- **Data Validation**: Joi schema validation
+- **Error Handling**: Comprehensive error management
+- **Security**: Helmet, CORS, rate limiting
 
 ## File Structure
 
 ```
 ├── index.html              # Main tournament page
+├── server/                 # Backend application
+│   ├── server.js          # Main server file
+│   ├── models/            # MongoDB models
+│   ├── routes/            # API routes
+│   ├── middleware/        # Custom middleware
+│   └── scripts/           # Utility scripts
 ├── css/
 │   └── style.css          # Modern CSS with custom properties
 ├── js/
-│   └── main.js            # Interactive functionality
+│   ├── main.js            # Interactive functionality
+│   ├── apiClient.js       # API communication
+│   ├── dataManager.js     # Data management
+│   ├── matchManager.js    # Match operations
+│   └── players.js         # Player management
+├── data/                  # JSON fallback data
 ├── reglamento/
 │   └── reglamento.html    # Tournament rules and regulations
-├── docs/
-│   └── reglamento.pdf     # PDF version of rules (optional)
 └── README.md              # This file
 ```
 
-## Setup for GitHub Pages
+## Installation & Setup
 
-1. **Fork or Clone** this repository
-2. **Enable GitHub Pages** in repository settings
-3. **Select source**: Deploy from main branch
-4. **Custom Domain** (optional): Add your domain in settings
+### Prerequisites
+- Node.js (v16 or higher)
+- MongoDB (local or MongoDB Atlas)
+- Git
 
-### Local Development
+### Backend Setup
 
 ```bash
 # Clone the repository
 git clone https://github.com/yourusername/age-of-araganes.git
-
-# Navigate to project directory
 cd age-of-araganes
 
-# Open with a local server (recommended)
+# Install backend dependencies
+cd server
+npm install
+
+# Configure environment variables
+cp .env.example .env
+# Edit .env with your MongoDB URI and other settings
+
+# Start MongoDB (if using local installation)
+mongod
+
+# Run database migration (optional, to import existing JSON data)
+node scripts/migrate-data.js
+
+# Start the backend server
+npm run dev
+```
+
+### Frontend Setup
+
+```bash
+# Navigate back to root directory
+cd ..
+
+# Serve the frontend (choose one method)
 # Using Python
 python -m http.server 8000
 
 # Using Node.js
-npx serve .
+npx serve . -p 8080
 
-# Or simply open index.html in your browser
+# Using Live Server (VS Code extension)
+# Right-click index.html -> "Open with Live Server"
 ```
+
+### API Endpoints
+
+#### Players
+- `GET /api/players` - Get all players
+- `GET /api/players/:id` - Get specific player
+- `POST /api/players` - Create new player
+- `PUT /api/players/:id` - Update player
+- `DELETE /api/players/:id` - Delete player
+- `GET /api/players/:id/stats` - Get player statistics
+- `GET /api/players/leaderboard/ranking` - Get leaderboard
+
+#### Matches
+- `GET /api/matches` - Get all matches
+- `GET /api/matches/:id` - Get specific match
+- `POST /api/matches` - Create new match
+- `PUT /api/matches/:id` - Update match
+- `DELETE /api/matches/:id` - Delete match
+- `GET /api/matches/player/:playerId` - Get player's matches
+
+#### Statistics
+- `GET /api/stats/tournament` - Tournament statistics
+- `GET /api/stats/leaderboard` - Detailed leaderboard
+- `GET /api/stats/maps` - Map statistics
+- `GET /api/stats/recent-activity` - Recent activity
 
 ## Customization
 
-### Adding Players
-Edit the `tournamentData.players` array in `js/main.js`:
+### Adding Players via API
 
 ```javascript
-const tournamentData = {
+// Create a new player
+const newPlayer = await apiClient.createPlayer({
+  playerId: 'player_id',
+  name: 'Player Name',
+  avatar: 'https://example.com/avatar.jpg',
+  favoriteStrategy: 'Rush',
+  favoriteCivilization: 'Britons'
+});
+```
+
+### Adding Matches via API
+
+```javascript
+// Create a new match
+const newMatch = await apiClient.createMatch({
+  date: '2025-01-08',
+  duration: 45,
+  map: 'Arabia',
   players: [
-    { name: 'PlayerName', matches: 3, wins: 2, losses: 1, points: 6 },
-    // Add more players...
+    {
+      playerId: 'player1',
+      playerName: 'Player 1',
+      scores: { military: 1000, economy: 1500, technology: 800, society: 200 },
+      totalScore: 3500,
+      finalPosition: 1
+    }
+    // ... more players
   ]
-};
+});
 ```
 
-### Updating Matches
-Use the built-in API to add match results:
+### Database Schema
 
+#### Player Model
 ```javascript
-// Add a match result
-TournamentApp.addMatch('Player1', 'Player2', 'Player1'); // Player1 wins
-
-// Update all player data
-TournamentApp.updatePlayerData(newPlayerArray);
-```
-
-### Styling
-Modify CSS custom properties in `css/style.css`:
-
-```css
-:root {
-  --primary-color: #2563eb;    /* Main theme color */
-  --secondary-color: #f59e0b;  /* Accent color */
-  --accent-color: #10b981;     /* Success color */
-  /* ... more variables */
+{
+  playerId: String,        // Unique identifier
+  name: String,           // Display name
+  avatar: String,         // Avatar URL
+  matches: Number,        // Total matches played
+  wins: Number,          // Total wins
+  points: Number,        // Tournament points
+  joinDate: Date,        // Registration date
+  favoriteStrategy: String,
+  favoriteCivilization: String,
+  status: String,        // active, inactive, suspended
+  categoryStats: {       // Performance statistics
+    military: { worst, average, best },
+    economy: { worst, average, best },
+    technology: { worst, average, best },
+    society: { worst, average, best }
+  },
+  matchHistory: Array    // Recent matches
 }
 ```
 
-## Tournament Rules Integration
+#### Match Model
+```javascript
+{
+  date: Date,            // Match date
+  duration: Number,      // Duration in minutes
+  map: String,          // Map name
+  gameMode: String,     // FFA, Team, Wonder
+  totalPlayers: Number, // Number of participants
+  players: [{           // Player data for this match
+    playerId: String,
+    playerName: String,
+    scores: { military, economy, technology, society },
+    totalScore: Number,
+    finalPosition: Number,
+    pointsEarned: Number
+  }],
+  winner: { playerId, playerName },
+  status: String        // completed, disputed, cancelled
+}
+```
 
-The website includes a comprehensive rules page (`reglamento/reglamento.html`) with:
-- Tournament format and structure
-- Match rules and configurations
-- Scoring system
-- Code of conduct
-- Penalties and appeals process
+## Deployment
+
+### Backend Deployment (Heroku)
+
+```bash
+# Install Heroku CLI and login
+heroku login
+
+# Create Heroku app
+heroku create age-of-araganes-api
+
+# Set environment variables
+heroku config:set MONGODB_URI=your_mongodb_atlas_uri
+heroku config:set JWT_SECRET=your_jwt_secret
+heroku config:set NODE_ENV=production
+
+# Deploy
+git subtree push --prefix server heroku main
+```
+
+### Frontend Deployment (Netlify/Vercel)
+
+1. Update `js/apiClient.js` with your production API URL
+2. Deploy to Netlify, Vercel, or GitHub Pages
+3. Configure CORS in backend for your frontend domain
+
+## Development
+
+### Running in Development Mode
+
+```bash
+# Terminal 1: Backend
+cd server
+npm run dev
+
+# Terminal 2: Frontend
+cd ..
+python -m http.server 8080
+```
+
+### Database Management
+
+```bash
+# Migrate existing JSON data to MongoDB
+cd server
+node scripts/migrate-data.js
+
+# Backup database
+mongodump --uri="your_mongodb_uri" --out=backup/
+
+# Restore database
+mongorestore --uri="your_mongodb_uri" backup/
+```
 
 ## Browser Support
 
@@ -125,11 +277,20 @@ The website includes a comprehensive rules page (`reglamento/reglamento.html`) w
 
 ## Performance Features
 
-- **Optimized Images**: Uses external CDN for images
-- **Minimal JavaScript**: Vanilla JS without heavy frameworks
+- **API Caching**: Intelligent data caching
+- **Database Indexing**: Optimized MongoDB queries
+- **Compression**: Gzip compression enabled
 - **CSS Grid & Flexbox**: Modern layout techniques
-- **Lazy Loading**: Intersection Observer for animations
+- **Rate Limiting**: API protection
 - **Responsive Images**: Proper sizing for different devices
+
+## Security Features
+
+- **Helmet.js**: Security headers
+- **CORS**: Cross-origin resource sharing
+- **Rate Limiting**: Request throttling
+- **Input Validation**: Joi schema validation
+- **Error Handling**: Secure error responses
 
 ## Contributing
 
@@ -139,6 +300,21 @@ The website includes a comprehensive rules page (`reglamento/reglamento.html`) w
 4. Push to the branch (`git push origin feature/new-feature`)
 5. Create a Pull Request
 
+## API Documentation
+
+Full API documentation is available at `/api/docs` when running the server in development mode.
+
+## Testing
+
+```bash
+# Run backend tests
+cd server
+npm test
+
+# Run with coverage
+npm run test:coverage
+```
+
 ## License
 
 This project is open source and available under the [MIT License](LICENSE).
@@ -146,10 +322,20 @@ This project is open source and available under the [MIT License](LICENSE).
 ## Support
 
 For questions or support:
-- 📧 Email: torneo@ageofaraganes.com
-- 🎮 Discord: AgeOfAraganes
+- 📧 Email: stokkerma@gmail.com
+- 🎮 Discord: stokker_
 - 📱 Create an issue in this repository
 
 ---
 
 Built with ❤️ for the Age of Empires II community
+
+## Changelog
+
+### v2.0.0 - Backend Integration
+- ✅ Complete Node.js + Express backend
+- ✅ MongoDB database integration
+- ✅ RESTful API implementation
+- ✅ Data validation and security
+- ✅ Migration scripts for existing data
+- ✅ Hybrid JSON/API data loading
