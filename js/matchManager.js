@@ -54,6 +54,13 @@ class MatchManager {
           <form id="add-match-form">
             <div class="form-section">
               <h3>Información de la Partida</h3>
+              <div class="form-group">
+                <label for="match-phase">Fase del Torneo:</label>
+                <select id="match-phase" required>
+                  <option value="fase2" selected>Fase 2 - Liga Avanzada</option>
+                  <option value="fase1">Fase 1 - Liga Regular</option>
+                </select>
+              </div>
               <div class="form-row">
                 <div class="form-group">
                   <label for="match-date">Fecha:</label>
@@ -81,6 +88,18 @@ class MatchManager {
                   <option value="Hideout">Hideout</option>
                   <option value="Gold Rush">Gold Rush</option>
                 </select>
+              </div>
+              <div class="form-group">
+                <label for="admin-notes">Notas del Administrador:</label>
+                <textarea id="admin-notes" placeholder="Notas adicionales sobre la partida..." style="
+                  width: 100%;
+                  padding: 0.75rem;
+                  border: 1px solid var(--border-color);
+                  border-radius: 6px;
+                  font-size: 0.9rem;
+                  resize: vertical;
+                  min-height: 80px;
+                "></textarea>
               </div>
             </div>
 
@@ -401,9 +420,12 @@ class MatchManager {
       .map(cb => cb.value);
     
     const matchData = {
+      phaseId: modal.querySelector('#match-phase').value,
       date: modal.querySelector('#match-date').value,
       duration: parseInt(modal.querySelector('#match-duration').value),
       map: modal.querySelector('#match-map').value,
+      adminNotes: modal.querySelector('#admin-notes').value,
+      createdBy: 'admin',
       players: []
     };
 
