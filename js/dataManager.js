@@ -276,7 +276,7 @@ class DataManager {
       totalMatches: Math.max(...players.map(p => p.matches), 0),
 
       leader: this.getLeaderboard()[0],
-      bestRatio: this.getBestRatioPlayer(),
+      bestRatio: this.getBestRatioPlayer() || null,
       bestInCategories: {
         military: this.getBestInCategory('military'),
         economy: this.getBestInCategory('economy'),

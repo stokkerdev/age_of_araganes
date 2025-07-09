@@ -317,13 +317,18 @@ function updateStats() {
     });
 
     // Actualizar ratio si hay datos
-    if (stats.bestRatio && stats.bestRatio.matches > 0) {
+    if (stats.bestRatio && stats.bestRatio && stats.bestRatio.matches > 0) {
       const ratio = ((stats.bestRatio.wins / stats.bestRatio.matches) * 100).toFixed(1);
       const bestRatioEl = document.getElementById('best-ratio');
       const bestRatioPlayerEl = document.getElementById('best-ratio-player');
 
       if (bestRatioEl) bestRatioEl.textContent = `${ratio}% - ${stats.bestRatio.name}`;
       if (bestRatioPlayerEl) bestRatioPlayerEl.textContent = "Porcentaje de victoria mas alto";
+    } else {
+      const bestRatioEl = document.getElementById('best-ratio');
+      const bestRatioPlayerEl = document.getElementById('best-ratio-player');
+      if (bestRatioEl) bestRatioEl.textContent = '--';
+      if (bestRatioPlayerEl) bestRatioPlayerEl.textContent = 'Sin datos suficientes';
     }
 
   } catch (error) {

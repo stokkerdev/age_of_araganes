@@ -18,7 +18,7 @@ class PhaseManager {
 
   async loadPhases() {
     try {
-      const response = await this.apiClient.request('/phases');
+      const response = await this.apiClient.request('/api/phases');
       this.phases = response.data;
       
       if (this.phases.length === 0) {
@@ -56,7 +56,7 @@ class PhaseManager {
 
     try {
       for (const phase of initialPhases) {
-        await this.apiClient.request('/phases', {
+        await this.apiClient.request('/api/phases', {
           method: 'POST',
           body: JSON.stringify(phase)
         });
@@ -175,7 +175,7 @@ class PhaseManager {
     if (!currentPhaseData || !phaseInfo) return;
 
     try {
-      const response = await this.apiClient.request(`/phases/${this.currentPhase}`);
+      const response = await this.apiClient.request(`/api/phases/${this.currentPhase}`);
       const phaseData = response.data;
 
       phaseInfo.innerHTML = `
@@ -254,7 +254,7 @@ class PhaseManager {
 
   async updateResultsTable() {
     try {
-      const response = await this.apiClient.request(`/phases/${this.currentPhase}/leaderboard`);
+      const response = await this.apiClient.request(`/api/phases/${this.currentPhase}/leaderboard`);
       const leaderboard = response.data;
       
       // Actualizar tabla
@@ -292,7 +292,7 @@ class PhaseManager {
 
   async updatePhaseStats() {
     try {
-      const response = await this.apiClient.request(`/phases/${this.currentPhase}/leaderboard`);
+      const response = await this.apiClient.request(`/api/phases/${this.currentPhase}/leaderboard`);
       const leaderboard = response.data;
       
       if (leaderboard.length > 0) {
@@ -334,7 +334,7 @@ class PhaseManager {
 
   async createNewPhase(phaseData) {
     try {
-      const response = await this.apiClient.request('/phases', {
+      const response = await this.apiClient.request('/api/phases', {
         method: 'POST',
         body: JSON.stringify(phaseData)
       });
