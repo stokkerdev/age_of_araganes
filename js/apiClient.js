@@ -1,6 +1,6 @@
 class APIClient {
   constructor() {
-    this.baseURL = 'http://127.0.0.1:3000/api';
+    this.baseURL = 'https://aoe-server.onrender.com/api';
     this.headers = {
       'Content-Type': 'application/json'
     };

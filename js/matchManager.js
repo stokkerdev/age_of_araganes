@@ -388,11 +388,19 @@ class MatchManager {
       const formData = this.collectFormData(modal);
       
       if (!this.validateMatchData(formData)) {
+        // Restaurar botón en caso de error de validación
+        saveBtn.disabled = false;
+        btnText.style.display = 'inline';
+        btnLoading.style.display = 'none';
         return;
       }
 
+      console.log('Datos de partida a enviar:', formData);
+
       // Guardar partida usando el DataManager
       const savedMatch = await this.dataManager.saveMatch(formData);
+      
+      console.log('Partida guardada exitosamente:', savedMatch);
       
       // Actualizar datos locales
       this.players = this.dataManager.getPlayers();
@@ -406,11 +414,12 @@ class MatchManager {
       document.body.style.overflow = '';
       
       // Mostrar mensaje de éxito
-      this.showSuccessMessage(`Partida guardada exitosamente (ID: ${savedMatch.id.slice(-8)})`);
+      const matchId = savedMatch._id || savedMatch.id || 'unknown';
+      this.showSuccessMessage(`Partida guardada exitosamente en MongoDB (ID: ${matchId.toString().slice(-8)})`);
       
     } catch (error) {
       console.error('Error guardando partida:', error);
-      this.showErrorMessage('Error al guardar la partida. Inténtalo de nuevo.');
+      this.showErrorMessage(`Error al guardar la partida: ${error.message}`);
     } finally {
       // Restaurar botón
       saveBtn.disabled = false;

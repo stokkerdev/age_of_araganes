@@ -93,18 +93,25 @@ class DataManager {
 
   async saveMatch(matchData) {
     try {
+      console.log('Intentando guardar partida:', matchData);
+      
       // Intentar guardar en API primero
       try {
         const apiMatchData = this.convertToAPIFormat(matchData);
+        console.log('Datos convertidos para API:', apiMatchData);
+        
         const savedMatch = await this.apiClient.createMatch(apiMatchData);
+        
+        console.log('Respuesta de la API:', savedMatch);
         
         // Recargar datos desde API
         await this.loadFromAPI();
         
-        console.log('Partida guardada en API exitosamente:', savedMatch.data._id);
+        console.log('Partida guardada en MongoDB exitosamente:', savedMatch.data._id);
         return savedMatch.data;
       } catch (apiError) {
-        console.log('Error guardando en API, usando método local:', apiError);
+        console.error('Error guardando en API:', apiError);
+        console.log('Fallback: usando método local');
         return await this.saveMatchLocally(matchData);
       }
     } catch (error) {
@@ -140,10 +147,13 @@ class DataManager {
 
   convertToAPIFormat(matchData) {
     return {
+      phaseId: matchData.phaseId || 'fase2',
       date: matchData.date,
       duration: matchData.duration,
       map: matchData.map,
       gameMode: 'FFA',
+      adminNotes: matchData.adminNotes || '',
+      createdBy: matchData.createdBy || 'admin',
       players: matchData.players.map(player => {
         const ranking = matchData.finalRanking.find(r => r.playerId === player.id);
         return {
