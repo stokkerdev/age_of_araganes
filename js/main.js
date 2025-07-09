@@ -134,6 +134,17 @@ const searchInput = document.getElementById('search-player');
 const sortSelect = document.getElementById('sort-by');
 const tableBody = document.getElementById('table-body');
 
+// Función global para abrir modal de agregar partida
+window.openAddMatchModal = function() {
+  console.log('openAddMatchModal llamada');
+  if (window.matchManager) {
+    window.matchManager.showAddMatchModal();
+  } else {
+    console.error('MatchManager no está disponible');
+    alert('El sistema de partidas aún se está cargando. Intenta de nuevo en unos segundos.');
+  }
+};
+
 // Navigation functionality
 function initializeNavigation() {
   // Mobile menu toggle

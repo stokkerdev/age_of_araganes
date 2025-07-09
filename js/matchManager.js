@@ -28,11 +28,15 @@ class MatchManager {
   setupEventListeners() {
     const addMatchBtn = document.getElementById('add-match-btn');
     if (addMatchBtn) {
+      // Remover listeners existentes
+      addMatchBtn.removeEventListener('click', this.showAddMatchModal);
       addMatchBtn.addEventListener('click', () => this.showAddMatchModal());
+      console.log('Event listener agregado al botón de agregar partida');
     }
   }
 
   showAddMatchModal() {
+    console.log('Mostrando modal de agregar partida');
     const modal = this.createAddMatchModal();
     document.body.appendChild(modal);
     modal.classList.add('active');
@@ -575,6 +579,7 @@ class MatchManager {
 // Inicializar el gestor de partidas cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', async function() {
   try {
+    console.log('Inicializando MatchManager...');
     // Asegurar que el dataManager esté inicializado
     if (!window.dataManager.isLoaded) {
       await window.dataManager.loadAllData();
@@ -582,6 +587,22 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     window.matchManager = new MatchManager();
     console.log('MatchManager inicializado correctamente');
+    
+    // Verificar que el botón existe después de un pequeño delay
+    setTimeout(() => {
+      const addMatchBtn = document.getElementById('add-match-btn');
+      if (addMatchBtn) {
+        console.log('Botón de agregar partida encontrado');
+        // Re-asignar el event listener por si acaso
+        addMatchBtn.onclick = () => {
+          console.log('Botón clickeado');
+          window.matchManager.showAddMatchModal();
+        };
+      } else {
+        console.error('Botón de agregar partida NO encontrado');
+      }
+    }, 1000);
+    
   } catch (error) {
     console.error('Error inicializando MatchManager:', error);
   }
