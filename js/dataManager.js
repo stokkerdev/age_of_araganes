@@ -1,4 +1,5 @@
 class DataManager {
+  
   constructor() {
     this.apiClient = window.apiClient;
     this.isLoaded = false;
@@ -403,4 +404,7 @@ class DataManager {
 }
 
 // Instancia global del gestor de datos
+console.log("✅ window.apiClient al inicializar DataManager:", window.apiClient);
+
+
 window.dataManager = new DataManager();
